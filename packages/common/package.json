@@ -5,13 +5,17 @@
   "main": "src/index.ts",
   "license": "MIT",
   "private": true,
+  "exports": {
+    "import": "./src/index.ts",
+    "require": "./dist/index.js"
+  },
   "devDependencies": {
     "@types/node": "^18.15.11",
     "typescript": "^5.0.4"
   },
   "scripts": {
     "g:tsc": "tsc",
-    "build": "tsc",
+    "build:": "tsc",
     "build:watch": "tsc --watch"
   }
 }
