@@ -1,0 +1,17 @@
+{
+  "name": "@my-task/common",
+  "packageManager": "yarn@3.5.0",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "typescript": "^5.0.4"
+  },
+  "scripts": {
+    "g:tsc": "tsc",
+    "build": "tsc",
+    "build:watch": "tsc --watch"
+  }
+}
