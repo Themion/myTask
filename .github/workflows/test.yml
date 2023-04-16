@@ -1,0 +1,30 @@
+name: test
+on: push
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Transpile @my-task/common for test
+        run: yarn common build
+      - name: Test Backend
+        run: yarn backend test
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Test Frontend
+        run: yarn frontend test
