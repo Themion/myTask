@@ -9,6 +9,9 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "noEmit": true,
+    "paths": {
+      "~/*": ["./src/*"]
+    },
     "resolveJsonModule": true,
     "target": "ESNext",
     "useDefineForClassFields": true

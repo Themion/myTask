@@ -1707,7 +1707,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@my-task/common", "workspace:packages/common"],\
             ["@testing-library/jest-dom", "npm:5.16.5"],\
             ["@testing-library/react", "virtual:205b9b7e197ddef1e2f3fec6ad8948d365b8dd591d17761355527881937638136d7e367bc3d8a31ab7398a68ed56ae5da095777e97ea829bf704b54fe7ed5b70#npm:14.0.0"],\
-            ["@types/node", "npm:18.15.11"],\
+            ["@types/node", "npm:18.15.13"],\
             ["@types/react", "npm:18.0.35"],\
             ["@types/react-dom", "npm:18.0.11"],\
             ["@vitejs/plugin-react-swc", "virtual:205b9b7e197ddef1e2f3fec6ad8948d365b8dd591d17761355527881937638136d7e367bc3d8a31ab7398a68ed56ae5da095777e97ea829bf704b54fe7ed5b70#npm:3.3.0"],\
@@ -2490,6 +2490,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-node-npm-18.15.11-fd8ceaaffd-977b4ad047.zip/node_modules/@types/node/",\
           "packageDependencies": [\
             ["@types/node", "npm:18.15.11"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:18.15.13", {\
+          "packageLocation": "./.yarn/cache/@types-node-npm-18.15.13-14d4d1b98f-79cc5a2b5f.zip/node_modules/@types/node/",\
+          "packageDependencies": [\
+            ["@types/node", "npm:18.15.13"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9995,7 +10002,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["vite", "virtual:205b9b7e197ddef1e2f3fec6ad8948d365b8dd591d17761355527881937638136d7e367bc3d8a31ab7398a68ed56ae5da095777e97ea829bf704b54fe7ed5b70#npm:4.2.1"],\
             ["@types/less", null],\
-            ["@types/node", "npm:18.15.11"],\
+            ["@types/node", "npm:18.15.13"],\
             ["@types/sass", null],\
             ["@types/stylus", null],\
             ["@types/sugarss", null],\
@@ -10032,6 +10039,42 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["vite", "virtual:83f1035e95650c8aa08e8a4341020223b5c7a99e6a2ade0c883830c229ab53a671ca2b01f97d3f37718b748bab5d545a6c6cc740cee6522594b8ad5d44ed3150#npm:4.2.1"],\
             ["@types/less", null],\
             ["@types/node", null],\
+            ["@types/sass", null],\
+            ["@types/stylus", null],\
+            ["@types/sugarss", null],\
+            ["@types/terser", null],\
+            ["esbuild", "npm:0.17.16"],\
+            ["fsevents", "patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"],\
+            ["less", null],\
+            ["postcss", "npm:8.4.21"],\
+            ["resolve", "patch:resolve@npm%3A1.22.2#~builtin<compat/resolve>::version=1.22.2&hash=c3c19d"],\
+            ["rollup", "npm:3.20.2"],\
+            ["sass", null],\
+            ["stylus", null],\
+            ["sugarss", null],\
+            ["terser", null]\
+          ],\
+          "packagePeers": [\
+            "@types/less",\
+            "@types/node",\
+            "@types/sass",\
+            "@types/stylus",\
+            "@types/sugarss",\
+            "@types/terser",\
+            "less",\
+            "sass",\
+            "stylus",\
+            "sugarss",\
+            "terser"\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["virtual:a2044d67015b86141c4e9e1a7246407151055f09b0f6f331615aced8f0d40099184e94f3bad679f71d7f295cd904dc3d35a00157ca9f17ddf4922c77ceff5384#npm:4.2.1", {\
+          "packageLocation": "./.yarn/__virtual__/vite-virtual-f94a56f678/0/cache/vite-npm-4.2.1-a0fa6996de-70eb162ffc.zip/node_modules/vite/",\
+          "packageDependencies": [\
+            ["vite", "virtual:a2044d67015b86141c4e9e1a7246407151055f09b0f6f331615aced8f0d40099184e94f3bad679f71d7f295cd904dc3d35a00157ca9f17ddf4922c77ceff5384#npm:4.2.1"],\
+            ["@types/less", null],\
+            ["@types/node", "npm:18.15.11"],\
             ["@types/sass", null],\
             ["@types/stylus", null],\
             ["@types/sugarss", null],\
@@ -10128,7 +10171,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["strip-literal", "npm:1.0.1"],\
             ["tinybench", "npm:2.4.0"],\
             ["tinypool", "npm:0.4.0"],\
-            ["vite", "virtual:205b9b7e197ddef1e2f3fec6ad8948d365b8dd591d17761355527881937638136d7e367bc3d8a31ab7398a68ed56ae5da095777e97ea829bf704b54fe7ed5b70#npm:4.2.1"],\
+            ["vite", "virtual:a2044d67015b86141c4e9e1a7246407151055f09b0f6f331615aced8f0d40099184e94f3bad679f71d7f295cd904dc3d35a00157ca9f17ddf4922c77ceff5384#npm:4.2.1"],\
             ["vite-node", "npm:0.30.1"],\
             ["webdriverio", null],\
             ["why-is-node-running", "npm:2.2.2"]\
