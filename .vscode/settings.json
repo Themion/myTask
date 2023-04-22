@@ -4,5 +4,15 @@
     "**/.pnp.*": true
   },
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+    "soruce.fixAll.eslint": true
+  },
+  "editor.formatOnSave": true,
+
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "eslint.packageManager": "yarn",
+  "eslint.probe": ["typescript", "typescriptreact", "html", "markdown"]
 }
