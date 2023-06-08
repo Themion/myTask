@@ -7,11 +7,20 @@
     ]
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "eslint": "latest",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-import": "^0.13.0",
+    "eslint-plugin-import": "^2.27.5",
     "typescript": "^5.0.4"
   },
   "scripts": {
     "frontend": "yarn workspace @my-task/frontend",
     "backend": "yarn workspace @my-task/backend",
-    "common": "yarn workspace @my-task/common"
+    "common": "yarn workspace @my-task/common",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   }
 }
