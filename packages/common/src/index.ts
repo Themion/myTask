@@ -1,2 +1,1 @@
-import { hello } from "./hello";
-export { hello };
+export * from "./hello";
