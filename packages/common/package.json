@@ -14,8 +14,7 @@
     "typescript": "^5.0.4"
   },
   "scripts": {
-    "g:tsc": "tsc",
-    "build:": "tsc",
+    "build": "tsc",
     "build:watch": "tsc --watch"
   }
 }

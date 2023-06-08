@@ -8,5 +8,10 @@
   },
   "devDependencies": {
     "typescript": "^5.0.4"
+  },
+  "scripts": {
+    "frontend": "yarn workspace @my-task/frontend",
+    "backend": "yarn workspace @my-task/backend",
+    "common": "yarn workspace @my-task/common"
   }
 }
