@@ -9,6 +9,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
+      - name: Install yarn
+        run: npm i yarn -g
       - name: Install dependencies
         run: yarn install
       - name: Transpile @my-task/common for test
@@ -24,6 +26,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
+      - name: Install yarn
+        run: npm i yarn -g
       - name: Install dependencies
         run: yarn install
       - name: Test Frontend
