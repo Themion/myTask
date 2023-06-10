@@ -10,7 +10,7 @@ jobs:
         with:
           node-version: '18.x'
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
       - name: Transpile @my-task/common for test
         run: yarn common build
       - name: Test Backend
@@ -25,6 +25,6 @@ jobs:
         with:
           node-version: '18.x'
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
       - name: Test Frontend
         run: yarn frontend test

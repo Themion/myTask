@@ -21,6 +21,7 @@
     "frontend": "yarn workspace @my-task/frontend",
     "backend": "yarn workspace @my-task/backend",
     "common": "yarn workspace @my-task/common",
+    "database": "yarn workspace @my-task/database",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   }

@@ -1091,6 +1091,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@my-task/database@workspace:packages/database":
+  version: 0.0.0-use.local
+  resolution: "@my-task/database@workspace:packages/database"
+  languageName: unknown
+  linkType: soft
+
 "@my-task/frontend@workspace:packages/frontend":
   version: 0.0.0-use.local
   resolution: "@my-task/frontend@workspace:packages/frontend"
