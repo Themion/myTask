@@ -5,6 +5,18 @@ networks:
     driver: bridge
 
 services:
+  database:
+    build:
+      dockerfile: packages/database/Dockerfile
+      context: .
+    restart: always
+    networks:
+      - app
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+
   backend:
     build:
       dockerfile: packages/backend/Dockerfile
@@ -13,6 +25,10 @@ services:
       - app
     ports:
       - 3000:3000
+    expose:
+      - 3000
+    depends_on:
+      - database
 
   frontend:
     build:
@@ -22,3 +38,7 @@ services:
       - app
     ports:
       - 5173:5173
+    expose:
+      - 5173
+    depends_on:
+      - backend
