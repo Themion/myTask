@@ -1,2 +1,4 @@
 import removePrefix from './removePrefix';
-export default removePrefix(import.meta.env);
+import validate from './validate';
+const prefixRemovedEnv = removePrefix(import.meta.env);
+export default validate(prefixRemovedEnv);

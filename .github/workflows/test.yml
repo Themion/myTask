@@ -26,6 +26,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
+
+      - name: Generate Environment Variables File for Production
+        run: |
+          jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
+          jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$VARIABLES_CONTEXT" > .env
+          cat .env
+        env:
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
+          VARIABLES_CONTEXT: ${{ toJson(vars) }}
+
       - name: Install yarn
         run: npm i yarn -g
       - name: Install dependencies
