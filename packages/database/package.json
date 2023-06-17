@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "docker build . -t database",
-    "start": "./start.sh"
+    "start": "./start.sh",
+    "start:init": "yarn build && yarn start",
+    "stop": "docker stop database"
   }
 }

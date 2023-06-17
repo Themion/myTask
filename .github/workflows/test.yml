@@ -24,12 +24,29 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.16'
+
+      - name: Move GitHub Secrets to .env
+        run: |
+          jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
+        env:
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
+      - name: Move GitHub Variables to .env
+        run: |
+          jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$VARS_CONTEXT" >> .env
+        env:
+          VARS_CONTEXT: ${{ toJson(vars) }}
+
       - name: Install yarn
         run: npm i yarn -g
       - name: Install dependencies
         run: yarn install
+
       - name: Transpile @my-task/common for test
         run: yarn common build
+
+      - name: Run Database Image for testing
+        run: yarn database start:init
+
       - name: Test Backend
         run: yarn backend test
 
@@ -57,5 +74,6 @@ jobs:
         run: npm i yarn -g
       - name: Install dependencies
         run: yarn install
+
       - name: Test Frontend
         run: yarn frontend test
