@@ -1768,7 +1768,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-dom", "virtual:205b9b7e197ddef1e2f3fec6ad8948d365b8dd591d17761355527881937638136d7e367bc3d8a31ab7398a68ed56ae5da095777e97ea829bf704b54fe7ed5b70#npm:18.2.0"],\
             ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"],\
             ["vite", "virtual:205b9b7e197ddef1e2f3fec6ad8948d365b8dd591d17761355527881937638136d7e367bc3d8a31ab7398a68ed56ae5da095777e97ea829bf704b54fe7ed5b70#npm:4.3.0"],\
-            ["vitest", "virtual:205b9b7e197ddef1e2f3fec6ad8948d365b8dd591d17761355527881937638136d7e367bc3d8a31ab7398a68ed56ae5da095777e97ea829bf704b54fe7ed5b70#npm:0.30.1"]\
+            ["vitest", "virtual:205b9b7e197ddef1e2f3fec6ad8948d365b8dd591d17761355527881937638136d7e367bc3d8a31ab7398a68ed56ae5da095777e97ea829bf704b54fe7ed5b70#npm:0.30.1"],\
+            ["zod", "npm:3.21.4"]\
           ],\
           "linkType": "SOFT"\
         }]\
