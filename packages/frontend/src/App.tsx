@@ -3,11 +3,14 @@ import { useState } from 'react';
 import '~/App.css';
 import reactLogo from '~/assets/react.svg';
 import viteLogo from '~/assets/vite.svg';
+import env from '~/env';
 
 function App() {
   const [count, setCount] = useState(0);
 
   console.log(hello());
+
+  console.log(env);
 
   return (
     <div className="App">
