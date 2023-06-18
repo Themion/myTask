@@ -1,18 +1,21 @@
 {
-  "search.exclude": {
-    "**/.yarn": true,
-    "**/.pnp.*": true
-  },
-  "typescript.tsdk": ".yarn/sdks/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true,
-    "soruce.fixAll.eslint": true
+    "soruce.fixAll.eslint": true,
+    "source.organizeImports": true
   },
   "editor.formatOnSave": true,
-
-  "eslint.workingDirectories": [{ "mode": "auto" }],
   "eslint.packageManager": "yarn",
-  "eslint.probe": ["typescript", "typescriptreact", "html", "markdown"]
+  "eslint.probe": ["typescript", "typescriptreact", "html", "markdown"],
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "search.exclude": {
+    "**/.pnp.*": true,
+    "**/.yarn": true
+  },
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.tsdk": ".yarn/sdks/typescript/lib"
 }
