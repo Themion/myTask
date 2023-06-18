@@ -7,7 +7,10 @@
   "private": true,
   "exports": {
     "import": "./src/index.ts",
-    "require": "./dist/index.js"
+    "require": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
@@ -18,5 +21,8 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch"
+  },
+  "dependencies": {
+    "zod": "^3.21.4"
   }
 }

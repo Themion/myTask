@@ -1,17 +1,10 @@
+import { PORT_RULE } from '@my-task/common';
 import { z } from 'zod';
-
-const SYSTEM_PORT_MAX = 1024;
-const PORT_MAX = 65535;
-
-const PORT_RULE = z
-  .number()
-  .min(SYSTEM_PORT_MAX, `${SYSTEM_PORT_MAX} 이하 포트는 시스템 포트입니다.`)
-  .max(PORT_MAX, `포트 값은 반드시 ${PORT_MAX} 이하여야 합니다.`);
 
 const envSchema = z
   .object({
-    FE_PORT: z.string().transform(Number).pipe(PORT_RULE),
-    BE_PORT: z.string().transform(Number).pipe(PORT_RULE),
+    FE_PORT: PORT_RULE,
+    BE_PORT: PORT_RULE,
   })
   .refine(
     ({ FE_PORT, BE_PORT }) => FE_PORT != BE_PORT,
