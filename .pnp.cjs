@@ -1728,7 +1728,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:18.15.11"],\
             ["@typescript-eslint/eslint-plugin", "virtual:ec460f7b9669e9526be8d95ae865879fa75c18cc6dd56e9b411673f447efcb78b543355086075a52c7ac25d888e2171e528ed008b24aaf36bb94fbde779182d8#npm:5.59.0"],\
             ["eslint-plugin-import", "virtual:ec460f7b9669e9526be8d95ae865879fa75c18cc6dd56e9b411673f447efcb78b543355086075a52c7ac25d888e2171e528ed008b24aaf36bb94fbde779182d8#npm:2.27.5"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"],\
+            ["zod", "npm:3.21.4"]\
           ],\
           "linkType": "SOFT"\
         }]\
