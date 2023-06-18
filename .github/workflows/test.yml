@@ -26,6 +26,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
+
+      - name: Move GitHub Secrets to .env
+        run: |
+          jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
+        env:
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
+      - name: Move GitHub Variables to .env
+        run: |
+          jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$VARS_CONTEXT" >> .env
+        env:
+          VARS_CONTEXT: ${{ toJson(vars) }}
+
       - name: Install yarn
         run: npm i yarn -g
       - name: Install dependencies
