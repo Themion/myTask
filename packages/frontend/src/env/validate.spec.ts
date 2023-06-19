@@ -20,7 +20,7 @@ describe('env validation', () => {
 
     it('should be numeric string input', () => {
       testEnv.FE_PORT = 'non-numeric string';
-      expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_type);
+      expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
     });
 
     it('should not be in system port range', () => {
