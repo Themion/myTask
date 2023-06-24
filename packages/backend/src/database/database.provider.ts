@@ -1,10 +1,10 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Pool } from 'pg';
 import { Env } from '~/types';
 
 @Injectable()
-export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
+export class DatabaseProvider {
   private readonly _pool;
 
   constructor(configService: ConfigService<Env>) {
@@ -17,14 +17,6 @@ export class DatabaseProvider implements OnModuleInit, OnModuleDestroy {
     };
 
     this._pool = new Pool(config);
-  }
-
-  async onModuleInit() {
-    await this._pool.connect();
-  }
-
-  async onModuleDestroy() {
-    await this.pool.end();
   }
 
   get pool() {
