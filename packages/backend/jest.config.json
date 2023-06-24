@@ -8,6 +8,7 @@
   "collectCoverageFrom": [
     "!<rootDir>/**/*.module.ts",
     "!<rootDir>/**/index.ts",
+    "!<rootDir>/**/migrations/*",
     "!<rootDir>/main.ts"
   ],
   "coverageDirectory": "../coverage",
