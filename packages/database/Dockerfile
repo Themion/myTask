@@ -1,4 +1,1 @@
 FROM postgres:15.3
-
-ENV POSTGRES_USER myTask
-ENV POSTGRES_PASSWORD password
