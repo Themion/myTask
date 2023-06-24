@@ -1705,6 +1705,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:18.15.11"],\
             ["@types/supertest", "npm:2.0.12"],\
             ["@typescript-eslint/eslint-plugin", "virtual:e96441f8d0c35e985c5ba196554d76a3c79a59df59d90231dbf951dcf460b16cfac56e994239cc949b1697a8447f744cad17f1769651344951e0398e16836eb5#npm:5.59.0"],\
+            ["dotenv", "npm:16.3.1"],\
+            ["dotenv-expand", "npm:10.0.0"],\
             ["eslint-plugin-import", "virtual:ec460f7b9669e9526be8d95ae865879fa75c18cc6dd56e9b411673f447efcb78b543355086075a52c7ac25d888e2171e528ed008b24aaf36bb94fbde779182d8#npm:2.27.5"],\
             ["jest", "virtual:e96441f8d0c35e985c5ba196554d76a3c79a59df59d90231dbf951dcf460b16cfac56e994239cc949b1697a8447f744cad17f1769651344951e0398e16836eb5#npm:29.5.0"],\
             ["reflect-metadata", "npm:0.1.13"],\
@@ -5270,6 +5272,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/dotenv-npm-16.1.4-c4499a21eb-c1b2e13df4.zip/node_modules/dotenv/",\
           "packageDependencies": [\
             ["dotenv", "npm:16.1.4"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:16.3.1", {\
+          "packageLocation": "./.yarn/cache/dotenv-npm-16.3.1-e6d380a398-15d75e7279.zip/node_modules/dotenv/",\
+          "packageDependencies": [\
+            ["dotenv", "npm:16.3.1"]\
           ],\
           "linkType": "HARD"\
         }]\
