@@ -16,6 +16,10 @@ describe('host', () => {
     it('localhost', () => {
       expect(() => HOST_RULE.parse('localhost')).not.throw();
     });
+
+    it('docker host', () => {
+      expect(() => HOST_RULE.parse('host.docker.internal')).not.throw();
+    });
   });
 
   describe('should throw error when', () => {
