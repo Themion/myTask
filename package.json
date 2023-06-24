@@ -24,6 +24,8 @@
     "backend": "yarn workspace @my-task/backend",
     "common": "yarn workspace @my-task/common",
     "database": "yarn workspace @my-task/database",
+    "stop": "docker-compose down --rmi all && docker image prune -f",
+    "start": "yarn stop && docker-compose up -d",
     "test": "act --secret-file=.env --env-file=.env",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
