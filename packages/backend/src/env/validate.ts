@@ -3,13 +3,14 @@ import { ZodIssueCode, z } from 'zod';
 
 const envSchema = z
   .object({
-    BE_PORT: PORT_RULE,
+    HOST: HOST_RULE,
 
-    DB_HOST: HOST_RULE,
     DB_PORT: PORT_RULE,
     DB_USER: z.string(),
     DB_PASSWORD: z.string(),
     DB_DB: z.string(),
+
+    BE_PORT: PORT_RULE,
   })
   .refine(({ BE_PORT, DB_PORT }) => BE_PORT != DB_PORT, ZodIssueCode.invalid_string);
 

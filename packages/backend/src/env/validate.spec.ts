@@ -7,7 +7,8 @@ describe('env validation', () => {
 
   beforeEach(() => {
     testEnv = {
-      DB_HOST: 'localhost',
+      HOST: 'localhost',
+
       DB_PORT: '5432',
       DB_USER: '',
       DB_PASSWORD: '',
@@ -15,6 +16,36 @@ describe('env validation', () => {
 
       BE_PORT: '3000',
     };
+  });
+
+  describe('HOST', () => {
+    const v4 = 256;
+    const randint = (val: number = 1) => Math.floor(Math.random() * Math.floor(val));
+
+    describe('should work with', () => {
+      it('ipv4', () => {
+        testEnv.HOST = `${randint(v4 - 1) + 1}.${randint(v4)}.${randint(v4)}.${randint(v4)}`;
+        expect(() => validate(testEnv)).not.toThrow();
+      });
+
+      it('localhost', () => {
+        expect(() => validate(testEnv)).not.toThrow();
+      });
+
+      it('docker host', () => {
+        testEnv.HOST = 'host.docker.internal';
+        expect(() => validate(testEnv)).not.toThrow();
+      });
+    });
+
+    describe('should throw error when', () => {
+      describe('value', () => {
+        it('ipv4 starting with 0', () => {
+          testEnv.HOST = `0.${randint(v4)}.${randint(v4)}.${randint(v4)}`;
+          expect(() => validate(testEnv)).toThrowError(ZodIssueCode.invalid_string);
+        });
+      });
+    });
   });
 
   describe('DB_PORT', () => {
@@ -47,31 +78,6 @@ describe('env validation', () => {
         it('bigger than max port', () => {
           testEnv.DB_PORT = '100000';
           expect(() => validate(testEnv)).toThrow(ZodIssueCode.too_big);
-        });
-      });
-    });
-  });
-
-  describe('DB_HOST', () => {
-    const v4 = 256;
-    const randint = (val: number = 1) => Math.floor(Math.random() * Math.floor(val));
-
-    describe('should work with', () => {
-      it('ipv4', () => {
-        testEnv.DB_HOST = `${randint(v4 - 1) + 1}.${randint(v4)}.${randint(v4)}.${randint(v4)}`;
-        expect(() => validate(testEnv)).not.toThrow();
-      });
-
-      it('localhost', () => {
-        expect(() => validate(testEnv)).not.toThrow();
-      });
-    });
-
-    describe('should throw error when', () => {
-      describe('value', () => {
-        it('ipv4 starting with 0', () => {
-          testEnv.DB_HOST = `0.${randint(v4)}.${randint(v4)}.${randint(v4)}`;
-          expect(() => validate(testEnv)).toThrowError(ZodIssueCode.invalid_string);
         });
       });
     });

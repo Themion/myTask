@@ -13,7 +13,7 @@ export default {
   schema: './src/database/schema/index.ts',
   out: './drizzle',
   dbCredentials: {
-    host: env.DB_HOST,
+    host: env.HOST,
     port: env.DB_PORT,
     user: env.DB_USER,
     password: env.DB_PASSWORD,
