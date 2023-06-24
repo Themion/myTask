@@ -24,14 +24,20 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.16'
+
       - name: Install yarn
         run: npm i yarn -g
       - name: Install dependencies
         run: yarn install
+
       - name: Transpile @my-task/common for test
         run: yarn common build
+
       - name: Test Backend
         run: yarn backend test
+        env:
+          DB_PORT: 5432
+          BE_PORT: ${{ vars.BE_PORT }}
 
   frontend:
     runs-on: ubuntu-latest
@@ -57,5 +63,6 @@ jobs:
         run: npm i yarn -g
       - name: Install dependencies
         run: yarn install
+
       - name: Test Frontend
         run: yarn frontend test
