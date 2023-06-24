@@ -23,7 +23,7 @@
     "backend": "yarn workspace @my-task/backend",
     "common": "yarn workspace @my-task/common",
     "database": "yarn workspace @my-task/database",
-    "test": "act --secret-file=../../.env",
+    "test": "act --secret-file=.env --env-file=.env",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   }

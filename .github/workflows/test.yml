@@ -18,6 +18,21 @@ jobs:
 
   backend:
     runs-on: ubuntu-latest
+    services:
+      database:
+        image: postgres:15.3
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js
@@ -37,6 +52,11 @@ jobs:
         run: yarn backend test
         env:
           DB_PORT: 5432
+          DB_HOST: ${{ vars.DB_HOST }}
+          DB_USER: ${{ secrets.POSTGRES_USER }}
+          DB_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          DB_DB: ${{ secrets.POSTGRES_DB }}
+
           BE_PORT: ${{ vars.BE_PORT }}
 
   frontend:
