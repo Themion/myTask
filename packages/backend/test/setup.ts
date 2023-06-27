@@ -1,6 +1,5 @@
 import { config } from 'dotenv';
 import { expand } from 'dotenv-expand';
-import { resolve } from 'path';
+import { envPaths } from '~/constants';
 
-const path = resolve(process.cwd(), '..', '..', '.env');
-expand(config({ path }));
+envPaths.forEach((path) => expand(config({ path })));

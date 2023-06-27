@@ -27,6 +27,7 @@ services:
       - app
     env_file:
       - .env
+      - .env.production
     ports:
       - ${BE_PORT}:${BE_PORT}
     expose:
@@ -42,6 +43,7 @@ services:
       - app
     env_file:
       - .env
+      - .env.production
     ports:
       - ${FE_PORT}:${FE_PORT}
     expose:
