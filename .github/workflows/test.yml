@@ -9,10 +9,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.16'
+
       - name: Install yarn
         run: npm i yarn -g
       - name: Install dependencies
         run: yarn install
+
       - name: Test Common
         run: yarn common test
 
@@ -51,8 +53,9 @@ jobs:
       - name: Test Backend
         run: yarn backend test:migrate
         env:
+          HOST: ${{ secrets.HOST }}
+
           DB_PORT: 5432
-          DB_HOST: ${{ vars.DB_HOST }}
           DB_USER: ${{ secrets.POSTGRES_USER }}
           DB_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           DB_DB: ${{ secrets.POSTGRES_DB }}
@@ -83,6 +86,9 @@ jobs:
         run: npm i yarn -g
       - name: Install dependencies
         run: yarn install
+
+      - name: Transpile @my-task/common for test
+        run: yarn common build
 
       - name: Test Frontend
         run: yarn frontend test

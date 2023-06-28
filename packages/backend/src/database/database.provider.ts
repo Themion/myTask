@@ -9,7 +9,7 @@ export class DatabaseProvider {
 
   constructor(configService: ConfigService<Env>) {
     const config = {
-      host: configService.getOrThrow<Env['DB_HOST']>('DB_HOST'),
+      host: configService.getOrThrow<Env['HOST']>('HOST'),
       port: configService.getOrThrow<Env['DB_PORT']>('DB_PORT'),
       database: configService.getOrThrow<Env['DB_DB']>('DB_DB'),
       user: configService.getOrThrow<Env['DB_USER']>('DB_USER'),
