@@ -1,11 +1,10 @@
 import { config } from 'dotenv';
 import { expand } from 'dotenv-expand';
 import type { Config } from 'drizzle-kit';
-import { resolve } from 'path';
+import { envPaths } from '~/constants';
 import { validate } from '~/env';
 
-const path = resolve(process.cwd(), '..', '..', '.env');
-expand(config({ path }));
+envPaths.forEach((path) => expand(config({ path })));
 
 const env = validate(process.env);
 
