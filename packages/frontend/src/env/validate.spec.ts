@@ -7,9 +7,31 @@ describe('env validation', () => {
 
   beforeEach(() => {
     testEnv = {
+      HOST: 'localhost',
       FE_PORT: '5173',
       BE_PORT: '3000',
     };
+  });
+
+  describe('HOST', () => {
+    const v4 = 256;
+    const randint = (val: number = 1) => Math.floor(Math.random() * Math.floor(val));
+
+    describe('should work with', () => {
+      it('ipv4', () => {
+        testEnv.HOST = `${randint(v4 - 1) + 1}.${randint(v4)}.${randint(v4)}.${randint(v4)}`;
+        expect(() => validate(testEnv)).not.toThrow();
+      });
+
+      it('localhost', () => {
+        expect(() => validate(testEnv)).not.toThrow();
+      });
+
+      it('docker host', () => {
+        testEnv.HOST = 'host.docker.internal';
+        expect(() => validate(testEnv)).not.toThrow();
+      });
+    });
   });
 
   describe('FE_PORT', () => {
