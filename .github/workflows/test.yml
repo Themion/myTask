@@ -61,6 +61,7 @@ jobs:
           DB_DB: ${{ secrets.POSTGRES_DB }}
 
           BE_PORT: ${{ vars.BE_PORT }}
+          FE_PORT: ${{ vars.FE_PORT }}
 
   frontend:
     runs-on: ubuntu-latest
