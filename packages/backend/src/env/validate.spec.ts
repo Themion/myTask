@@ -15,6 +15,8 @@ describe('env validation', () => {
       DB_DB: '',
 
       BE_PORT: '3000',
+
+      FE_PORT: '5173',
     };
   });
 
@@ -79,6 +81,16 @@ describe('env validation', () => {
           testEnv.DB_PORT = '100000';
           expect(() => validate(testEnv)).toThrow(ZodIssueCode.too_big);
         });
+
+        it('FE_PORT', () => {
+          testEnv.DB_PORT = testEnv.FE_PORT;
+          expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
+        });
+
+        it('BE_PORT', () => {
+          testEnv.DB_PORT = testEnv.BE_PORT;
+          expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
+        });
       });
     });
   });
@@ -115,8 +127,58 @@ describe('env validation', () => {
           expect(() => validate(testEnv)).toThrow(ZodIssueCode.too_big);
         });
 
+        it('FE_PORT', () => {
+          testEnv.BE_PORT = testEnv.FE_PORT;
+          expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
+        });
+
         it('DB_PORT', () => {
           testEnv.BE_PORT = testEnv.DB_PORT;
+          expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
+        });
+      });
+    });
+  });
+
+  describe('FE_PORT', () => {
+    describe('should work with', () => {
+      it('should be numeric string', () => {
+        const parsedEnv = validate(testEnv);
+        expect(parsedEnv.FE_PORT).toEqual(parseInt(testEnv.FE_PORT));
+      });
+    });
+
+    describe('should throw error when', () => {
+      describe('type', () => {
+        it('number', () => {
+          testEnv.FE_PORT = 5173;
+          expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_type);
+        });
+
+        it('not-numeric string', () => {
+          testEnv.FE_PORT = 'non-numeric string';
+          expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
+        });
+      });
+
+      describe('value', () => {
+        it('in system port range', () => {
+          testEnv.FE_PORT = '1000';
+          expect(() => validate(testEnv)).toThrow(ZodIssueCode.too_small);
+        });
+
+        it('bigger than max port', () => {
+          testEnv.FE_PORT = '100000';
+          expect(() => validate(testEnv)).toThrow(ZodIssueCode.too_big);
+        });
+
+        it('BE_PORT', () => {
+          testEnv.FE_PORT = testEnv.BE_PORT;
+          expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
+        });
+
+        it('DB_PORT', () => {
+          testEnv.FE_PORT = testEnv.DB_PORT;
           expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
         });
       });
