@@ -1,15 +1,14 @@
-import { hello } from '@my-task/common';
 import { useState } from 'react';
 import '~/App.css';
+import { getConnectionTest } from '~/api';
 import reactLogo from '~/assets/react.svg';
 import viteLogo from '~/assets/vite.svg';
-import env from '~/env';
 
 function App() {
   const [count, setCount] = useState(0);
+  const connection = getConnectionTest();
 
-  console.log(hello());
-  console.log(env);
+  if (connection.data) console.log(connection.data);
 
   return (
     <div className="App">
