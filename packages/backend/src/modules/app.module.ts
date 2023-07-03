@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from '~/app.controller';
-import { AppService } from '~/app.service';
 import { envPaths } from '~/constants';
-import { DatabaseModule } from '~/database/database.module';
 import { validate } from '~/env';
+import { AppController } from '~/modules/app.controller';
+import { AppService } from '~/modules/app.service';
+import { DatabaseModule } from '~/modules/database/database.module';
 
 @Module({
   imports: [
