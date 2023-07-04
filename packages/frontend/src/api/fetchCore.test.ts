@@ -10,9 +10,17 @@ describe('fetchCore', () => {
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
-  it('shold work', async () => {
-    const result = await fetchCore('/');
-    expect(result).toStrictEqual({ foo: 'bar' });
+  describe('should work with', () => {
+    it('no body', async () => {
+      const result = await fetchCore('/');
+      expect(result).toStrictEqual({ foo: 'bar' });
+    });
+
+    it('body', async () => {
+      const body = { date: new Date().getTime() };
+      const result = await fetchCore('/', { method: 'POST', body });
+      expect(result).toStrictEqual(body);
+    });
   });
 
   describe('should throw error when', () => {
