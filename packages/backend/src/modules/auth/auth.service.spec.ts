@@ -1,7 +1,6 @@
 import { CreateUserDTO } from '@my-task/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ZodIssueCode } from 'zod';
 import { AuthService } from '~/modules/auth/auth.service';
 import { DatabaseProvider } from '~/modules/database/database.provider';
 import { DatabaseService } from '~/modules/database/database.service';
@@ -40,20 +39,10 @@ describe('AuthService', () => {
   });
 
   describe('createUser', () => {
-    it('should work', async () => {
+    it('should work (validation will be in controller)', async () => {
       const userToAdd: CreateUserDTO = { email: 'create@example.email' };
       const createdUser = await service.createUser(userToAdd);
       expect(createdUser.email).toEqual(userToAdd.email);
-    });
-
-    describe('should throw error with', () => {
-      it('invalid email', async () => {
-        const userToAdd: CreateUserDTO = { email: 'invalid@email' };
-
-        await expect(async () => service.createUser(userToAdd)).rejects.toThrow(
-          ZodIssueCode.invalid_string,
-        );
-      });
     });
   });
 });
