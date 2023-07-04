@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { CreateUserDTO, createUserDTO } from '@my-task/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseService } from '~/modules/database/database.service';
 import { users } from '~/modules/database/schema';
 
@@ -11,5 +12,13 @@ export class AuthService {
 
   readAll() {
     return this.db.select().from(users).execute();
+  }
+
+  async createUser(dto: CreateUserDTO) {
+    const parsedDTO = createUserDTO.parse(dto);
+    const insertedUsers = await this.db.insert(users).values(parsedDTO).returning();
+
+    if (insertedUsers.length !== 1) throw new InternalServerErrorException('DB insertion failed!');
+    else return insertedUsers[0];
   }
 }

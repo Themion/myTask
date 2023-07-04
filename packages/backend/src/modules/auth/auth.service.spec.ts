@@ -1,8 +1,10 @@
+import { CreateUserDTO } from '@my-task/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { ZodIssueCode } from 'zod';
+import { AuthService } from '~/modules/auth/auth.service';
 import { DatabaseProvider } from '~/modules/database/database.provider';
 import { DatabaseService } from '~/modules/database/database.service';
-import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -14,6 +16,8 @@ describe('AuthService', () => {
     }).compile();
 
     const databaseService = databaseModule.get<DatabaseService>(DatabaseService);
+
+    await databaseService.onModuleInit();
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [DatabaseService, AuthService],
@@ -27,5 +31,29 @@ describe('AuthService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  describe('readAll', () => {
+    it('should work', async () => {
+      await expect(service.readAll()).resolves.not.toThrow();
+    });
+  });
+
+  describe('createUser', () => {
+    it('should work', async () => {
+      const userToAdd: CreateUserDTO = { email: 'create@example.email' };
+      const createdUser = await service.createUser(userToAdd);
+      expect(createdUser.email).toEqual(userToAdd.email);
+    });
+
+    describe('should throw error with', () => {
+      it('invalid email', async () => {
+        const userToAdd: CreateUserDTO = { email: 'invalid@email' };
+
+        await expect(async () => service.createUser(userToAdd)).rejects.toThrow(
+          ZodIssueCode.invalid_string,
+        );
+      });
+    });
   });
 });
