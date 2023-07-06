@@ -1,7 +1,6 @@
-import { CreateUserDTO } from '@my-task/common';
+import { CreateUserDTO, users } from '@my-task/common';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseService } from '~/modules/database/database.service';
-import { users } from '~/modules/database/schema';
 
 @Injectable()
 export class AuthService {
