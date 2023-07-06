@@ -1,0 +1,60 @@
+import { CreateUserDTO } from '@my-task/common';
+import { QueryClient, QueryClientProvider, UseMutationResult } from '@tanstack/react-query';
+import { RenderHookResult, renderHook, waitFor } from '@testing-library/react';
+import { describe } from 'vitest';
+import postJoin from '~/api/postJoin';
+import { BE_ORIGIN } from '~/constants';
+import { server } from '~/mock';
+
+describe('postJoin', () => {
+  let renderedHook: RenderHookResult<UseMutationResult<any, any, Object, any>, unknown>;
+
+  const testQueryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+    logger: {
+      log: console.log,
+      warn: console.warn,
+      error: () => {},
+    },
+  });
+  const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={testQueryClient}>{children}</QueryClientProvider>
+  );
+
+  beforeAll(() => server.listen());
+  // https://stackoverflow.com/questions/76046546/fetch-error-typeerror-err-invalid-url-invalid-url-for-requests-made-in-test
+  beforeEach(() => location.replace(BE_ORIGIN));
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
+
+  beforeEach(() => {
+    renderedHook = renderHook(() => postJoin({}), { wrapper });
+  });
+
+  afterEach(() => {
+    testQueryClient.clear();
+  });
+
+  it('should work', async () => {
+    const dto: CreateUserDTO = { email: 'test@email.com' };
+    renderedHook.result.current.mutate(dto);
+    await waitFor(() => expect(renderedHook.result.current.isSuccess).toEqual(true));
+    expect(renderedHook.result.current.data.email).toEqual(dto.email);
+  });
+
+  describe('should fail with', () => {
+    it('empty email', async () => {
+      renderedHook.result.current.mutate({});
+      await waitFor(() => expect(renderedHook.result.current.isError).toBe(true));
+    });
+
+    it('invalid email', async () => {
+      renderedHook.result.current.mutate({ email: 'invalid@email' });
+      await waitFor(() => expect(renderedHook.result.current.isError).toBe(true));
+    });
+  });
+});

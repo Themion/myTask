@@ -1,2 +1,3 @@
 import getConnectionTest from './getConnectionTest';
-export { getConnectionTest };
+import postJoin from './postJoin';
+export { getConnectionTest, postJoin };
