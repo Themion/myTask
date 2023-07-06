@@ -9,7 +9,7 @@ envPaths.forEach((path) => expand(config({ path })));
 const env = validate(process.env);
 
 export default {
-  schema: './src/database/schema/index.ts',
+  schema: './src/modules/database/schema/index.ts',
   out: './drizzle',
   dbCredentials: {
     host: env.HOST,

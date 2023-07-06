@@ -1,7 +1,7 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Client } from 'pg';
-import { DatabaseProvider } from './database.provider';
+import { DatabaseProvider } from '~/modules/database/database.provider';
 
 describe('DatabaseProvider', () => {
   let provider: DatabaseProvider;
