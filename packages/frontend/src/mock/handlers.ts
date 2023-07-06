@@ -1,4 +1,4 @@
-import { createUserDTO } from '@my-task/common';
+import { createUserDTO, parseWithZod } from '@my-task/common';
 import { rest } from 'msw';
 import { BE_ORIGIN } from '~/constants';
 
@@ -19,12 +19,11 @@ export const handlers = [
 
     ctx.delay();
 
-    try {
-      const dto = createUserDTO.parse(body);
-      const id = Math.floor(Math.random() * 10);
-      return res(ctx.status(200), ctx.json({ ...dto, id }));
-    } catch (error) {
-      return res(ctx.status(400), ctx.json({ errorMessage: 'Wrong DTO: try again!' }));
-    }
+    const { data, error } = parseWithZod(body, createUserDTO);
+
+    if (error) return res(ctx.status(400), ctx.json({ errorMessage: 'Wrong DTO: try again!' }));
+
+    const id = Math.floor(Math.random() * 10);
+    return res(ctx.status(200), ctx.json({ ...data, id }));
   }),
 ];
