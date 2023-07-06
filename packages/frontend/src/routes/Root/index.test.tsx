@@ -1,9 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import App from '~/App';
 import { BE_ORIGIN } from '~/constants';
 import { server } from '~/mock';
+import Root from './index';
 
 describe('App', () => {
   beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
@@ -15,7 +15,7 @@ describe('App', () => {
   it('renders', () => {
     render(
       <QueryClientProvider client={new QueryClient()}>
-        <App />
+        <Root />
       </QueryClientProvider>,
     );
     const linkElement = screen.getByText(/Vite \+ React/i);
