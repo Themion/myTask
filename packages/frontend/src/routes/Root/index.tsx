@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import '~/App.css';
 import { getConnectionTest } from '~/api';
 import reactLogo from '~/assets/react.svg';
 import viteLogo from '~/assets/vite.svg';
+import './index.css';
 
-function App() {
+function Root() {
   const [count, setCount] = useState(0);
   const connection = getConnectionTest();
 
@@ -34,4 +34,4 @@ function App() {
   );
 }
 
-export default App;
+export default Root;
