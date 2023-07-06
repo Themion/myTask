@@ -18,6 +18,7 @@ const fetchCore = async (path: string, option: RequestOption = {}) => {
   const fetchOption = { ...mergeObjects(option, DEFAULT_FETCH_OPTION), body } as RequestInit;
 
   const res = await fetch(url.href, fetchOption);
+  if (!res.ok) throw { ...(await res.json()), status: res.status };
   return res.json();
 };
 
