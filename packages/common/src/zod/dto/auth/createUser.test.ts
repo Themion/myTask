@@ -1,10 +1,11 @@
 import { expect } from 'chai';
 import { describe } from 'mocha';
+import { JsonObject } from 'src/types';
 import { ZodIssueCode } from 'zod';
 import { createUserDTO, CreateUserDTO } from './createUser';
 
 describe('createUserDTO', () => {
-  let dto: { [key: string]: any };
+  let dto: JsonObject;
 
   beforeEach(() => {
     dto = { email: 'testing@example.com' };
@@ -40,7 +41,7 @@ describe('createUserDTO', () => {
 });
 
 describe('CreateUserDTO', () => {
-  let dto: { [key: string]: any };
+  let dto: JsonObject;
 
   beforeEach(() => {
     dto = { email: 'testing@example.com' };
