@@ -5,21 +5,19 @@ type RequestOption = Omit<RequestInit, 'body'> & {
   body?: { [key: string]: any };
 };
 
-const getBody = (option: RequestOption) => {
-  const body = option.body && JSON.stringify(option.body);
-  delete option.body;
-  return body;
-};
+const getBody = ({ body }: RequestOption) => body && JSON.stringify(body);
 
-const fetchCore = async (path: string, option: RequestOption = {}) => {
+const fetchCore = async <Output = any>(path: string, option: RequestOption = {}) => {
   const body = getBody(option);
   const url = new URL(path, BE_ORIGIN);
 
-  const fetchOption = { ...mergeObjects(option, DEFAULT_FETCH_OPTION), body } as RequestInit;
+  const fetchOption = mergeObjects({ body }, option, DEFAULT_FETCH_OPTION) as RequestInit;
 
   const res = await fetch(url.href, fetchOption);
-  if (!res.ok) throw { ...(await res.json()), status: res.status };
-  return res.json();
+  const data = await res.json();
+
+  if (!res.ok) throw { ...data, status: res.status };
+  return data as Output;
 };
 
 export default fetchCore;

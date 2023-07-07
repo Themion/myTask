@@ -1,7 +1,7 @@
-import { CreateUserDTO } from '@my-task/common';
+import { CreateUserDTO, User } from '@my-task/common';
 import { QueryClient, QueryClientProvider, UseMutationResult } from '@tanstack/react-query';
 import { RenderHookResult, renderHook, waitFor } from '@testing-library/react';
-import { describe } from 'vitest';
+import { describe, expectTypeOf } from 'vitest';
 import postJoin from '~/api/postJoin';
 import { BE_ORIGIN } from '~/constants';
 import { server } from '~/mock';
@@ -25,7 +25,7 @@ describe('postJoin', () => {
     <QueryClientProvider client={testQueryClient}>{children}</QueryClientProvider>
   );
 
-  beforeAll(() => server.listen());
+  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
   // https://stackoverflow.com/questions/76046546/fetch-error-typeerror-err-invalid-url-invalid-url-for-requests-made-in-test
   beforeEach(() => location.replace(BE_ORIGIN));
   afterEach(() => server.resetHandlers());
@@ -43,18 +43,21 @@ describe('postJoin', () => {
     const dto: CreateUserDTO = { email: 'test@email.com' };
     renderedHook.result.current.mutate(dto);
     await waitFor(() => expect(renderedHook.result.current.isSuccess).toEqual(true));
-    expect(renderedHook.result.current.data.email).toEqual(dto.email);
+
+    const data = renderedHook.result.current.data;
+    expectTypeOf(data).toMatchTypeOf<User>();
+    expect(data.email).toEqual(dto.email);
   });
 
   describe('should fail with', () => {
     it('empty email', async () => {
       renderedHook.result.current.mutate({});
-      await waitFor(() => expect(renderedHook.result.current.isError).toBe(true));
+      await waitFor(() => expect(renderedHook.result.current.isError).toEqual(true));
     });
 
     it('invalid email', async () => {
       renderedHook.result.current.mutate({ email: 'invalid@email' });
-      await waitFor(() => expect(renderedHook.result.current.isError).toBe(true));
+      await waitFor(() => expect(renderedHook.result.current.isError).toEqual(true));
     });
   });
 });
