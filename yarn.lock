@@ -1611,6 +1611,7 @@ __metadata:
     "@types/express": ^4.17.13
     "@types/jest": 29.5.0
     "@types/node": 18.15.11
+    "@types/nodemailer": ^6.4.8
     "@types/pg": ^8.10.2
     "@types/supertest": ^2.0.11
     "@typescript-eslint/eslint-plugin": ^5.59.0
@@ -1620,6 +1621,7 @@ __metadata:
     drizzle-orm: ^0.27.0
     eslint-plugin-import: ^2.27.5
     jest: 29.5.0
+    nodemailer: ^6.9.3
     pg: ^8.11.0
     reflect-metadata: ^0.1.13
     rxjs: ^7.2.0
@@ -2420,6 +2422,15 @@ __metadata:
   version: 18.15.13
   resolution: "@types/node@npm:18.15.13"
   checksum: 79cc5a2b5f98e8973061a4260a781425efd39161a0e117a69cd089603964816c1a14025e1387b4590c8e82d05133b7b4154fa53a7dffb3877890a66145e76515
+  languageName: node
+  linkType: hard
+
+"@types/nodemailer@npm:^6.4.8":
+  version: 6.4.8
+  resolution: "@types/nodemailer@npm:6.4.8"
+  dependencies:
+    "@types/node": "*"
+  checksum: 3cc9b6a0e54f25a1b36124df413964ff5a69e8dc4558c5dfc06818917313a50f4dbfe31fc9190e4270d07a0f8678474da24a2eae42f907933ea81d983b4772d4
   languageName: node
   linkType: hard
 
@@ -8340,6 +8351,13 @@ __metadata:
   version: 2.0.10
   resolution: "node-releases@npm:2.0.10"
   checksum: d784ecde25696a15d449c4433077f5cce620ed30a1656c4abf31282bfc691a70d9618bae6868d247a67914d1be5cc4fde22f65a05f4398cdfb92e0fc83cadfbc
+  languageName: node
+  linkType: hard
+
+"nodemailer@npm:^6.9.3":
+  version: 6.9.3
+  resolution: "nodemailer@npm:6.9.3"
+  checksum: 3bea8316652c0578515d9146d2f24660e4855807520153f061d39af76b440a4f61b4e70f10fed35f8f12f115f6aea1aeb483ea7ba0337c0e3e675f117c41c611
   languageName: node
   linkType: hard
 
