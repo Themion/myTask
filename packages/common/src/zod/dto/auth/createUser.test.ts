@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { describe } from 'mocha';
-import { JsonObject } from 'src/types';
 import { ZodIssueCode } from 'zod';
+import { JsonObject } from '~/types';
 import { createUserDTO, CreateUserDTO } from './createUser';
 
 describe('createUserDTO', () => {
