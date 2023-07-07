@@ -1,5 +1,5 @@
+import { users } from '@my-task/common';
 import { InferModel } from 'drizzle-orm';
-import { users } from '~/modules/database/schema';
 
 type User = InferModel<typeof users>;
 

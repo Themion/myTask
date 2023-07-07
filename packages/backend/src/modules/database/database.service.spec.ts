@@ -1,8 +1,8 @@
+import { users } from '@my-task/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseProvider } from '~/modules/database/database.provider';
 import { DatabaseService } from '~/modules/database/database.service';
-import { users } from '~/modules/database/schema';
 
 describe('DatabaseService', () => {
   let service: DatabaseService;
