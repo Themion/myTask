@@ -1,4 +1,4 @@
-import { JsonObject } from 'src/types';
+import { JsonObject } from '~/types';
 
 const isObject = (item: any) => typeof item === 'object';
 
