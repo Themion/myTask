@@ -2096,6 +2096,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:18.15.11"],\
             ["@typescript-eslint/eslint-plugin", "virtual:ec460f7b9669e9526be8d95ae865879fa75c18cc6dd56e9b411673f447efcb78b543355086075a52c7ac25d888e2171e528ed008b24aaf36bb94fbde779182d8#npm:5.59.0"],\
             ["chai", "npm:4.3.7"],\
+            ["drizzle-orm", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:0.27.0"],\
             ["eslint-plugin-import", "virtual:ec460f7b9669e9526be8d95ae865879fa75c18cc6dd56e9b411673f447efcb78b543355086075a52c7ac25d888e2171e528ed008b24aaf36bb94fbde779182d8#npm:2.27.5"],\
             ["mocha", "npm:10.2.0"],\
             ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"],\
