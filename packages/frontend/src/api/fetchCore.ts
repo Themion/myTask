@@ -1,13 +1,19 @@
 import { mergeObjects } from '@my-task/common';
 import { BE_ORIGIN, DEFAULT_FETCH_OPTION } from '~/constants';
 
-type RequestOption = Omit<RequestInit, 'body'> & {
-  body?: { [key: string]: any };
+type BasicBodyType = { [key: string]: any };
+
+type RequestOption<BodyType extends BasicBodyType> = Omit<RequestInit, 'body'> & {
+  body?: BodyType;
 };
 
-const getBody = ({ body }: RequestOption) => body && JSON.stringify(body);
+const getBody = <Input extends BasicBodyType>({ body }: RequestOption<Input>) =>
+  body && JSON.stringify(body);
 
-const fetchCore = async <Output = any>(path: string, option: RequestOption = {}) => {
+const fetchCore = async <Output = any, Input extends BasicBodyType = BasicBodyType>(
+  path: string,
+  option: RequestOption<Input> = {},
+) => {
   const body = getBody(option);
   const url = new URL(path, BE_ORIGIN);
 
