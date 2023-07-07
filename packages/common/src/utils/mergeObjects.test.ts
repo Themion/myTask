@@ -1,8 +1,9 @@
 import { expect } from 'chai';
+import { JsonObject } from 'src/types';
 import mergeObjects from './mergeObjects';
 
 describe('mergeObjects', () => {
-  let obj1: object, obj2: object;
+  let obj1: JsonObject, obj2: JsonObject;
 
   beforeEach(() => {
     obj1 = { a: 1, b: 2 };
