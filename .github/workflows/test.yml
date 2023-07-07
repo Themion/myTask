@@ -60,6 +60,13 @@ jobs:
           DB_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           DB_DB: ${{ secrets.POSTGRES_DB }}
 
+          EMAIL_HREF: ${{secrets.EMAIL_HREF}}
+          EMAIL_PORT: ${{secrets.EMAIL_PORT}}
+          EMAIL_USER: ${{secrets.EMAIL_USER}}
+          EMAIL_PASS: ${{secrets.EMAIL_PASS}}
+          EMAIL_ADDRESS: ${{secrets.EMAIL_ADDRESS}}
+          EMAIL_PASSWORD: ${{secrets.EMAIL_PASSWORD}}
+
           BE_PORT: ${{ vars.BE_PORT }}
           FE_PORT: ${{ vars.FE_PORT }}
 

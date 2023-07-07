@@ -16,6 +16,14 @@ describe('env validation', () => {
 
       BE_PORT: '3000',
 
+      EMAIL_HREF: 'smtp.gmail.com',
+      EMAIL_PORT: '587',
+      EMAIL_USER: '',
+      EMAIL_PASS: '',
+
+      EMAIL_ADDRESS: 'test@example.com',
+      EMAIL_PASSWORD: '',
+
       FE_PORT: '5173',
     };
   });
@@ -31,6 +39,7 @@ describe('env validation', () => {
       });
 
       it('localhost', () => {
+        testEnv.HOST = 'localhost';
         expect(() => validate(testEnv)).not.toThrow();
       });
 
@@ -136,6 +145,80 @@ describe('env validation', () => {
           testEnv.BE_PORT = testEnv.DB_PORT;
           expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
         });
+      });
+    });
+  });
+
+  describe('EMAIL_PORT', () => {
+    const PORT_MIN = 0;
+    const PORT_MAX = 65535;
+
+    describe('should work with', () => {
+      it(`${PORT_MIN} <= value <= ${PORT_MAX} (numeric number in range)`, () => {
+        const parsedEnv = validate(testEnv);
+        expect(parsedEnv.EMAIL_PORT).toEqual(parseInt(testEnv.EMAIL_PORT));
+      });
+
+      it('system port', () => {
+        testEnv.EMAIL_PORT = '589';
+        const parsedEnv = validate(testEnv);
+        expect(parsedEnv.EMAIL_PORT).toEqual(parseInt(testEnv.EMAIL_PORT));
+      });
+
+      it('user port', () => {
+        testEnv.EMAIL_PORT = '2525';
+        const parsedEnv = validate(testEnv);
+        expect(parsedEnv.EMAIL_PORT).toEqual(parseInt(testEnv.EMAIL_PORT));
+      });
+    });
+
+    describe('should throw error when', () => {
+      describe('type', () => {
+        it('number', () => {
+          testEnv.EMAIL_PORT = 3000;
+          expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_type);
+        });
+
+        it('not-numeric string', () => {
+          testEnv.EMAIL_PORT = 'non-numeric string';
+          expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
+        });
+      });
+
+      describe('value', () => {
+        it('out of port range', () => {
+          testEnv.EMAIL_PORT = '100000';
+          expect(() => validate(testEnv)).toThrow(ZodIssueCode.too_big);
+        });
+      });
+    });
+  });
+
+  describe('EMAIL_ADDRESS', () => {
+    it('should work', () => {
+      const parsedEnv = validate(testEnv);
+      expect(parsedEnv.EMAIL_ADDRESS).toEqual(testEnv.EMAIL_ADDRESS);
+    });
+
+    describe('should throw error with', () => {
+      it('empty field', () => {
+        delete testEnv.EMAIL_ADDRESS;
+        expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_type);
+      });
+
+      it('invalid email', () => {
+        testEnv.EMAIL_ADDRESS = 'invalid.email';
+        expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
+      });
+
+      it('email with invalid domain', () => {
+        testEnv.EMAIL_ADDRESS = 'invalid@email.';
+        expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
+      });
+
+      it('email with invalid identifier', () => {
+        testEnv.EMAIL_ADDRESS = '@invalid.email';
+        expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
       });
     });
   });
