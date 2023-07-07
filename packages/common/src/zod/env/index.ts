@@ -1,4 +1,6 @@
 import HOST_RULE from './host';
 import NUMERIC_STRING_RULE from './numericString';
 import PORT_RULE from './port';
-export { HOST_RULE, NUMERIC_STRING_RULE, PORT_RULE };
+import SYSTEM_PORT_RULE from './systemPort';
+import USER_PORT_RULE from './userPort';
+export { HOST_RULE, NUMERIC_STRING_RULE, PORT_RULE, SYSTEM_PORT_RULE, USER_PORT_RULE };
