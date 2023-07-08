@@ -1,5 +1,5 @@
 import { InferModel } from 'drizzle-orm';
-import { users } from '~/database/schema';
+import { users } from '../schema';
 
 type User = InferModel<typeof users>;
 

@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import { JsonObject } from '~/types';
+import { beforeEach, describe, it } from 'mocha';
+import { JsonObject } from '../types';
 import mergeObjects from './mergeObjects';
 
 describe('mergeObjects', () => {
