@@ -17,4 +17,16 @@ describe('EmailService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  describe('sendTestEmail', () => {
+    it('should work', async () => {
+      const target = process.env.EMAIL_TEST_ADDRESS as string;
+      await expect(service.sendTestEmail(target)).resolves.not.toThrow();
+    });
+
+    it('should throw with invalid email address', async () => {
+      const target = 'invalid@email';
+      await expect(async () => await service.sendTestEmail(target)).rejects.toThrow();
+    });
+  });
 });
