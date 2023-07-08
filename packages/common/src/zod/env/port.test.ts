@@ -3,7 +3,7 @@ import { describe, it } from 'mocha';
 import PORT_RULE from './port';
 
 describe('port', () => {
-  const SYSTEM_PORT_MAX = 1024;
+  const PORT_MIN = 0;
   const PORT_MAX = 65535;
 
   const randint = (min: number, max: number) => {
@@ -13,31 +13,26 @@ describe('port', () => {
   };
 
   describe('should work with', () => {
-    it('1024 < value <= 65535 (numeric number in range)', () => {
-      const after = randint(SYSTEM_PORT_MAX, PORT_MAX);
+    it(`${PORT_MIN} <= value <= ${PORT_MAX} (numeric number in range)`, () => {
+      const after = randint(PORT_MIN, PORT_MAX);
       const before = after.toString();
-      expect(after).equal(parseInt(before));
+      expect(PORT_RULE.parse(before)).equal(after);
     });
   });
 
   describe('should throw error when', () => {
     describe('value', () => {
       it('value != round(value)', () => {
-        const before = randint(SYSTEM_PORT_MAX, PORT_MAX) + Math.random();
+        const before = randint(PORT_MIN, PORT_MAX) + Math.random();
         expect(() => PORT_RULE.parse(before)).throw();
       });
 
-      it('value < 0 (out of port range)', () => {
+      it(`value < ${PORT_MIN} (out of port range)`, () => {
         const before = (randint(0, PORT_MAX) * -1).toString();
         expect(() => PORT_RULE.parse(before)).throw();
       });
 
-      it('0 <= vaule <= 1024 (system port range)', () => {
-        const before = randint(0, SYSTEM_PORT_MAX).toString();
-        expect(() => PORT_RULE.parse(before)).throw();
-      });
-
-      it('65535 < vaule (out of port range)', () => {
+      it(`${PORT_MAX} < vaule (out of port range)`, () => {
         const before = randint(PORT_MAX, PORT_MAX + 1000).toString();
         expect(() => PORT_RULE.parse(before)).throw();
       });

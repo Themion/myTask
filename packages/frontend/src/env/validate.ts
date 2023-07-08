@@ -1,11 +1,11 @@
-import { HOST_RULE, PORT_RULE } from '@my-task/common';
+import { HOST_RULE, USER_PORT_RULE } from '@my-task/common';
 import { ZodIssueCode, z } from 'zod';
 
 const envSchema = z
   .object({
     HOST: HOST_RULE,
-    FE_PORT: PORT_RULE,
-    BE_PORT: PORT_RULE,
+    FE_PORT: USER_PORT_RULE,
+    BE_PORT: USER_PORT_RULE,
   })
   .refine(({ FE_PORT, BE_PORT }) => FE_PORT != BE_PORT, ZodIssueCode.invalid_string);
 
