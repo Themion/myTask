@@ -2219,6 +2219,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/nodemailer", "npm:6.4.8"],\
             ["@types/pg", "npm:8.10.2"],\
             ["@types/supertest", "npm:2.0.12"],\
+            ["@types/uuid", "npm:9.0.2"],\
             ["@typescript-eslint/eslint-plugin", "virtual:e96441f8d0c35e985c5ba196554d76a3c79a59df59d90231dbf951dcf460b16cfac56e994239cc949b1697a8447f744cad17f1769651344951e0398e16836eb5#npm:5.59.0"],\
             ["dotenv", "npm:16.3.1"],\
             ["dotenv-expand", "npm:10.0.0"],\
@@ -2237,6 +2238,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-node", "virtual:e96441f8d0c35e985c5ba196554d76a3c79a59df59d90231dbf951dcf460b16cfac56e994239cc949b1697a8447f744cad17f1769651344951e0398e16836eb5#npm:10.9.1"],\
             ["tsconfig-paths", "npm:4.2.0"],\
             ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"],\
+            ["uuid", "npm:9.0.0"],\
             ["zod", "npm:3.21.4"]\
           ],\
           "linkType": "SOFT"\
