@@ -1,9 +1,10 @@
 import { CreateUserDTO } from '@my-task/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from '~/modules/auth/auth.service';
+import { z } from 'zod';
 import { DatabaseProvider } from '~/modules/database/database.provider';
 import { DatabaseService } from '~/modules/database/database.service';
+import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -39,10 +40,19 @@ describe('AuthService', () => {
   });
 
   describe('createUser', () => {
-    it('should work (validation will be in controller)', async () => {
+    it('should work (validation will be in controller)', () => {
       const userToAdd: CreateUserDTO = { email: 'create@example.email' };
-      const createdUser = await service.createUser(userToAdd);
-      expect(createdUser.email).toEqual(userToAdd.email);
+      const result = service.createUser(userToAdd);
+      const parsedResult = z.string().uuid().safeParse(result);
+      expect(parsedResult.success).toEqual(true);
+    });
+
+    describe('should throw error when', () => {
+      it('pass same parameter', async () => {
+        const userToAdd: CreateUserDTO = { email: 'duplicate@example.email' };
+        service.createUser(userToAdd);
+        expect(() => service.createUser(userToAdd)).toThrow();
+      });
     });
   });
 });

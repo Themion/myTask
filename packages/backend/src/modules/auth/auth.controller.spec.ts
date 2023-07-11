@@ -8,7 +8,7 @@ describe('AuthController', () => {
 
   beforeEach(async () => {
     const mockAuthService = {
-      createUser: (data: any) => createUserDTO.parseAsync(data),
+      createUser: (data: any) => createUserDTO.parse(data),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -27,13 +27,13 @@ describe('AuthController', () => {
   });
 
   describe('createUser', () => {
-    it('should work', async () => {
+    it('should work', () => {
       const userToAdd = { email: 'create@example.email' };
-      await expect(controller.createUser(userToAdd)).resolves.not.toThrow();
+      expect(() => controller.createUser(userToAdd)).not.toThrow();
     });
 
     describe('should throw error with', () => {
-      it('non-object', async () => {
+      it('non-object', () => {
         const data = 'create@example.email';
         expect(() => controller.createUser(data)).toThrow();
       });
