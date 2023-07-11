@@ -22,8 +22,6 @@ export const handlers = [
     const { data, error } = parseWithZod(body, createUserDTO);
 
     if (error) return res(ctx.status(400), ctx.json({ errorMessage: 'Wrong DTO: try again!' }));
-
-    const id = Math.floor(Math.random() * 10);
-    return res(ctx.status(200), ctx.json({ ...data, id }));
+    return res(ctx.status(200), ctx.json(data));
   }),
 ];
