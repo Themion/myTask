@@ -1,4 +1,4 @@
-import { createUserDTO } from '@my-task/common';
+import { createUserConfirmDTO, createUserDTO } from '@my-task/common';
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from '~/modules/auth/auth.service';
 
@@ -8,10 +8,16 @@ export class AuthController {
 
   @Post()
   createUser(@Body() body: any) {
-    try {
-      return this.authService.createUser(createUserDTO.parse(body));
-    } catch (error) {
-      throw new BadRequestException('Wrong DTO: try again!');
-    }
+    const parsedBody = createUserDTO.safeParse(body);
+    if (!parsedBody.success) throw new BadRequestException('Wrong DTO: try again!');
+    this.authService.createUser(parsedBody.data);
+    return parsedBody.data;
+  }
+
+  @Post('confirm')
+  createUserConfirm(@Body() body: any) {
+    const parsedBody = createUserConfirmDTO.safeParse(body);
+    if (!parsedBody.success) throw new BadRequestException('Wrong DTO: try again!');
+    return this.authService.createUserConfirm(parsedBody.data);
   }
 }

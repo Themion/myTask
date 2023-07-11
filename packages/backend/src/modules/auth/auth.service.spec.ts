@@ -1,6 +1,7 @@
-import { CreateUserDTO } from '@my-task/common';
+import { CreateUserDTO, User } from '@my-task/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import { DatabaseProvider } from '~/modules/database/database.provider';
 import { DatabaseService } from '~/modules/database/database.service';
@@ -48,10 +49,36 @@ describe('AuthService', () => {
     });
 
     describe('should throw error when', () => {
-      it('pass same parameter', async () => {
+      it('pass same parameter', () => {
         const userToAdd: CreateUserDTO = { email: 'duplicate@example.email' };
         service.createUser(userToAdd);
         expect(() => service.createUser(userToAdd)).toThrow();
+      });
+    });
+  });
+
+  describe('createUserConfirm (validation will be in controller)', () => {
+    it('should work', async () => {
+      const userToAdd: CreateUserDTO = { email: 'create@example.email' };
+      const uuid = service.createUser(userToAdd);
+
+      let createdUser: User = { id: -1, email: '' };
+      expect((createdUser = await service.createUserConfirm({ uuid }))).toBeDefined();
+      expect(createdUser.email).toEqual(userToAdd.email);
+    });
+
+    describe('should throw error when', () => {
+      it('non-existing uuid', async () => {
+        const uuid = uuidv4();
+        await expect(async () => service.createUserConfirm({ uuid })).rejects.toThrow();
+      });
+
+      it('pass same parameter', async () => {
+        const userToAdd: CreateUserDTO = { email: 'create@example.email' };
+        const uuid = service.createUser(userToAdd);
+
+        await service.createUserConfirm({ uuid });
+        await expect(async () => service.createUserConfirm({ uuid })).rejects.toThrow();
       });
     });
   });

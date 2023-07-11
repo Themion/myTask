@@ -1,5 +1,5 @@
-import { CreateUserDTO, users } from '@my-task/common';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { CreateUserConfirmDTO, CreateUserDTO, users } from '@my-task/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { DatabaseService } from '~/modules/database/database.service';
 
@@ -25,5 +25,18 @@ export class AuthService {
     this.uuidToEmail.set(uuid, dto);
     this.pendingEmail.add(dto.email);
     return uuid;
+  }
+
+  async createUserConfirm(dto: CreateUserConfirmDTO) {
+    if (!this.uuidToEmail.has(dto.uuid))
+      throw new BadRequestException('UUID cannot be found: Wrong DTO!');
+
+    const data = this.uuidToEmail.get(dto.uuid) as CreateUserDTO;
+    this.uuidToEmail.delete(dto.uuid);
+    this.pendingEmail.delete(data.email);
+
+    const insertedUsers = await this.db.insert(users).values(data).returning();
+    if (insertedUsers.length !== 1) throw new InternalServerErrorException('DB insertion failed!');
+    else return insertedUsers[0];
   }
 }
