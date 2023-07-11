@@ -1,9 +1,12 @@
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import SMTPPool from 'nodemailer/lib/smtp-pool';
+import { v4 as uuidv4 } from 'uuid';
 import { EmailService } from './email.service';
 
 describe('EmailService', () => {
   let service: EmailService;
+  const target = process.env.EMAIL_TEST_ADDRESS as string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -14,19 +17,39 @@ describe('EmailService', () => {
     service = module.get<EmailService>(EmailService);
   });
 
+  afterEach(() => {
+    service.onModuleDestroy();
+  });
+
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  describe('sendTestEmail', () => {
+  describe('sendEmail', () => {
     it('should work', async () => {
-      const target = process.env.EMAIL_TEST_ADDRESS as string;
-      await expect(service.sendTestEmail(target)).resolves.not.toThrow();
+      let result: SMTPPool.SentMessageInfo;
+      expect(
+        (result = await service.sendEmail(target, 'test', '<div>test123</div>')),
+      ).toBeDefined();
+      expect(result.accepted.length).toEqual(1);
+      expect(result.rejected.length).toEqual(0);
     });
 
-    it('should throw with invalid email address', async () => {
-      const target = 'invalid@email';
-      await expect(async () => await service.sendTestEmail(target)).rejects.toThrow();
+    describe('should throw error when', () => {
+      it('empty target', async () => {
+        await expect(
+          async () => await service.sendEmail('', 'test', '<div>test123</div>'),
+        ).rejects.toThrow();
+      });
+    });
+  });
+
+  describe('sendJoinEmail', () => {
+    it('should work', async () => {
+      let result: SMTPPool.SentMessageInfo;
+      expect((result = await service.sendJoinEmail(target, uuidv4()))).toBeDefined();
+      expect(result.accepted.length).toEqual(1);
+      expect(result.rejected.length).toEqual(0);
     });
   });
 });
