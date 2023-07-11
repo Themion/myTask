@@ -3,7 +3,7 @@ import { RenderResult, fireEvent, render, waitFor } from '@testing-library/react
 import { describe, expect, it } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
 import { server } from '~/mock';
-import Join from '.';
+import Join from './page';
 
 describe('Join', () => {
   let screen: RenderResult;
