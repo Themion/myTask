@@ -2,11 +2,13 @@ import { CreateUserConfirmDTO, CreateUserDTO, User } from '@my-task/common';
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { v4 as uuidv4 } from 'uuid';
-import { AuthService } from '~/modules/auth/auth.service';
+import { EmailService } from '~/modules/email/email.service';
 import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 
 describe('AuthController', () => {
   let mockAuthService: any;
+  let mockEmailService: any;
   let controller: AuthController;
 
   beforeEach(async () => {
@@ -29,10 +31,17 @@ describe('AuthController', () => {
       },
     };
 
+    mockEmailService = {
+      sendJoinEmail: (target: string, uuid: string) =>
+        new Promise((resolve) => resolve({ target, uuid })),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService],
+      providers: [EmailService, AuthService],
       controllers: [AuthController],
     })
+      .overrideProvider(EmailService)
+      .useValue(mockEmailService)
       .overrideProvider(AuthService)
       .useValue(mockAuthService)
       .compile();
