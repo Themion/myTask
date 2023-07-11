@@ -1,4 +1,4 @@
-import { createUserDTO, parseWithZod } from '@my-task/common';
+import { User, createUserConfirmDTO, createUserDTO, parseWithZod } from '@my-task/common';
 import { rest } from 'msw';
 import { BE_ORIGIN } from '~/constants';
 
@@ -23,5 +23,22 @@ export const handlers = [
 
     if (error) return res(ctx.status(400), ctx.json({ errorMessage: 'Wrong DTO: try again!' }));
     return res(ctx.status(200), ctx.json(data));
+  }),
+
+  rest.post(mockDir('/auth/confirm'), async (req, res, ctx) => {
+    const body = await req.json();
+
+    ctx.delay();
+
+    const { data, error } = parseWithZod(body, createUserConfirmDTO);
+    if (error) return res(ctx.status(400), ctx.json({ errorMessage: 'Wrong DTO: try again!' }));
+
+    if (data?.uuid === '6aa6ee8e-a4f8-49f6-817f-1c9342aae29e')
+      return res(ctx.status(400), ctx.json({ errorMessage: 'UUID cannot be found: Wrong DTO!' }));
+
+    const id = Math.floor(Math.random() * 10);
+    const success: User = { id, email: 'success@example.com' };
+
+    return res(ctx.status(200), ctx.json(success));
   }),
 ];
