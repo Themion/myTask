@@ -7,7 +7,7 @@ import { BE_ORIGIN } from '~/constants';
 import { server } from '~/mock';
 
 describe('postJoin', () => {
-  let renderedHook: RenderHookResult<UseMutationResult<any, any, Object, any>, unknown>;
+  let renderedHook: RenderHookResult<UseMutationResult<any, any, CreateUserDTO, any>, unknown>;
 
   const testQueryClient = new QueryClient({
     defaultOptions: {
@@ -50,11 +50,6 @@ describe('postJoin', () => {
   });
 
   describe('should fail with', () => {
-    it('empty email', async () => {
-      renderedHook.result.current.mutate({});
-      await waitFor(() => expect(renderedHook.result.current.isError).toEqual(true));
-    });
-
     it('invalid email', async () => {
       renderedHook.result.current.mutate({ email: 'invalid@email' });
       await waitFor(() => expect(renderedHook.result.current.isError).toEqual(true));
