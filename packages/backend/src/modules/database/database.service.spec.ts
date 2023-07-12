@@ -1,18 +1,12 @@
 import { users } from '@my-task/common';
-import { ConfigModule } from '@nestjs/config';
-import { Test, TestingModule } from '@nestjs/testing';
-import { DatabaseProvider } from '~/modules/database/database.provider';
+import { mockDatabaseModule } from '~/mock';
 import { DatabaseService } from '~/modules/database/database.service';
 
 describe('DatabaseService', () => {
   let service: DatabaseService;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forFeature(() => process.env)],
-      providers: [DatabaseService, DatabaseProvider],
-    }).compile();
-
+    const module = await mockDatabaseModule();
     service = module.get<DatabaseService>(DatabaseService);
     await service.onModuleInit();
   });
