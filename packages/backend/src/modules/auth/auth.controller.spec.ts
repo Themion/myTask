@@ -1,10 +1,13 @@
 import { User } from '@my-task/common';
-import { Test, TestingModule } from '@nestjs/testing';
 import { v4 as uuidv4 } from 'uuid';
-import { MockAuthService, MockEmailService, mockAuthService, mockEmailService } from '~/mock';
-import { EmailService } from '~/modules/email/email.service';
+import {
+  MockAuthService,
+  MockEmailService,
+  mockAuthModule,
+  mockAuthService,
+  mockEmailService,
+} from '~/mock';
 import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
 
 describe('AuthController', () => {
   let authService: MockAuthService;
@@ -13,16 +16,7 @@ describe('AuthController', () => {
 
   beforeEach(async () => {
     [authService, emailService] = await Promise.all([mockAuthService(), mockEmailService()]);
-
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [EmailService, AuthService],
-      controllers: [AuthController],
-    })
-      .overrideProvider(EmailService)
-      .useValue(emailService)
-      .overrideProvider(AuthService)
-      .useValue(authService)
-      .compile();
+    const module = await mockAuthModule({ authService, emailService });
 
     controller = module.get<AuthController>(AuthController);
   });

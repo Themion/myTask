@@ -1,7 +1,6 @@
-import { ConfigModule } from '@nestjs/config';
-import { Test, TestingModule } from '@nestjs/testing';
 import SMTPPool from 'nodemailer/lib/smtp-pool';
 import { v4 as uuidv4 } from 'uuid';
+import { mockEmailModule } from '~/mock';
 import { EmailService } from './email.service';
 
 describe('EmailService', () => {
@@ -9,11 +8,7 @@ describe('EmailService', () => {
   const receiver = process.env.EMAIL_TEST_RECEIVER as string;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forFeature(() => process.env)],
-      providers: [EmailService],
-    }).compile();
-
+    const module = await mockEmailModule();
     service = module.get<EmailService>(EmailService);
   });
 
