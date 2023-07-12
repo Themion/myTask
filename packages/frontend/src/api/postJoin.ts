@@ -1,19 +1,13 @@
 import { CreateUserDTO } from '@my-task/common';
 import { useMutation } from '@tanstack/react-query';
-import fetchCore from '~/api/fetchCore';
+import { MutationOptions } from '~/types';
+import fetchCore from './fetchCore';
 
-type Function = (...args: any[]) => any;
-type MutationOption = {
-  onSuccess?: Function;
-  onError?: Function;
-};
-
-const postJoin = ({ onSuccess, onError }: MutationOption) =>
+const postJoin = (options: MutationOptions) =>
   useMutation({
     mutationFn: (body: CreateUserDTO) =>
       fetchCore<CreateUserDTO>('/auth', { method: 'POST', body }),
-    onSuccess,
-    onError,
+    ...options,
   });
 
 export default postJoin;

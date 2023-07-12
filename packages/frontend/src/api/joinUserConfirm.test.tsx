@@ -4,7 +4,7 @@ import { RenderHookResult, renderHook, waitFor } from '@testing-library/react';
 import { describe, expectTypeOf } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
 import { server } from '~/mock';
-import createUserConfirm from './joinUserConfirm';
+import joinUserConfirm from './joinUserConfirm';
 
 describe('postJoin', () => {
   let renderedHook: RenderHookResult<
@@ -35,7 +35,7 @@ describe('postJoin', () => {
   afterAll(() => server.close());
 
   beforeEach(() => {
-    renderedHook = renderHook(() => createUserConfirm({}), { wrapper });
+    renderedHook = renderHook(() => joinUserConfirm({}), { wrapper });
   });
 
   afterEach(() => {

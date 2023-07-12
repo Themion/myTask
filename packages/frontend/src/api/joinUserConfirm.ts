@@ -1,19 +1,13 @@
 import { CreateUserConfirmDTO, User } from '@my-task/common';
 import { useMutation } from '@tanstack/react-query';
+import { MutationOptions } from '~/types';
 import fetchCore from './fetchCore';
 
-type Function = (...args: any[]) => any;
-type MutationOption = {
-  onSuccess?: Function;
-  onError?: Function;
-};
-
-const joinUserConfirm = ({ onSuccess, onError }: MutationOption) =>
+const joinUserConfirm = (options: MutationOptions) =>
   useMutation({
     mutationFn: (body: CreateUserConfirmDTO) =>
       fetchCore<User>('/auth/confirm', { method: 'POST', body }),
-    onSuccess,
-    onError,
+    ...options,
   });
 
 export default joinUserConfirm;
