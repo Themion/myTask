@@ -20,9 +20,7 @@ describe('env validation', () => {
       EMAIL_PORT: '587',
       EMAIL_USER: '',
       EMAIL_PASS: '',
-
       EMAIL_ADDRESS: 'test@example.com',
-      EMAIL_PASSWORD: '',
 
       FE_PORT: '5173',
     };

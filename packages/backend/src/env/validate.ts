@@ -18,7 +18,6 @@ const envSchema = z
     EMAIL_PASS: z.string(),
 
     EMAIL_ADDRESS: z.string().email(),
-    EMAIL_PASSWORD: z.string(),
 
     FE_PORT: USER_PORT_RULE,
   })
