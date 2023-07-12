@@ -1,4 +1,4 @@
-import { createUserConfirmDTO, createUserDTO, parseWithZod } from '@my-task/common';
+import { createUserConfirmDTO, createUserDTO } from '@my-task/common';
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { EmailService } from '~/modules/email/email.service';
 import { AuthService } from './auth.service';
@@ -12,8 +12,9 @@ export class AuthController {
 
   @Post()
   createUser(@Body() body: any) {
-    const { data, error } = parseWithZod(body, createUserDTO);
-    if (!data || error) throw new BadRequestException('Wrong DTO: try again!');
+    const result = createUserDTO.safeParse(body);
+    if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
+    const { data } = result;
 
     const uuid = this.authService.createUser(data);
     // E-Mail 송신은 동기적으로 진행할 필요 없음
@@ -24,8 +25,10 @@ export class AuthController {
 
   @Post('confirm')
   createUserConfirm(@Body() body: any) {
-    const { data, error } = parseWithZod(body, createUserConfirmDTO);
-    if (!data || error) throw new BadRequestException('Wrong DTO: try again!');
+    const result = createUserConfirmDTO.safeParse(body);
+    if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
+    const { data } = result;
+
     return this.authService.createUserConfirm(data);
   }
 }
