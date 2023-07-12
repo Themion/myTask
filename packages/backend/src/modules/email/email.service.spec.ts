@@ -6,7 +6,7 @@ import { EmailService } from './email.service';
 
 describe('EmailService', () => {
   let service: EmailService;
-  const target = process.env.EMAIL_TEST_ADDRESS as string;
+  const receiver = process.env.EMAIL_TEST_RECEIVER as string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -29,14 +29,14 @@ describe('EmailService', () => {
     it('should work', async () => {
       let result: SMTPPool.SentMessageInfo;
       expect(
-        (result = await service.sendEmail(target, 'test', '<div>test123</div>')),
+        (result = await service.sendEmail(receiver, 'test', '<div>test123</div>')),
       ).toBeDefined();
       expect(result.accepted.length).toEqual(1);
       expect(result.rejected.length).toEqual(0);
     });
 
     describe('should throw error when', () => {
-      it('empty target', async () => {
+      it('empty receiver', async () => {
         await expect(
           async () => await service.sendEmail('', 'test', '<div>test123</div>'),
         ).rejects.toThrow();
@@ -47,7 +47,7 @@ describe('EmailService', () => {
   describe('sendJoinEmail', () => {
     it('should work', async () => {
       let result: SMTPPool.SentMessageInfo;
-      expect((result = await service.sendJoinEmail(target, uuidv4()))).toBeDefined();
+      expect((result = await service.sendJoinEmail(receiver, uuidv4()))).toBeDefined();
       expect(result.accepted.length).toEqual(1);
       expect(result.rejected.length).toEqual(0);
     });

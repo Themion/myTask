@@ -23,18 +23,18 @@ export class EmailService implements OnModuleDestroy {
       },
     });
 
-    this.sender = this.configService.getOrThrow<Env['EMAIL_ADDRESS']>('EMAIL_ADDRESS');
+    this.sender = this.configService.getOrThrow<Env['EMAIL_SENDER']>('EMAIL_SENDER');
   }
 
   onModuleDestroy() {
     return this.transport.close();
   }
 
-  sendEmail(target: string, title: string, body: string): Promise<SMTPPool.SentMessageInfo> {
+  sendEmail(receiver: string, title: string, body: string): Promise<SMTPPool.SentMessageInfo> {
     const mailOption: Mail.Options = {
       from: `MyTask <${this.sender}>`,
       sender: this.sender,
-      to: target,
+      to: receiver,
       subject: title,
       html: body,
     };
@@ -44,13 +44,13 @@ export class EmailService implements OnModuleDestroy {
     });
   }
 
-  sendJoinEmail(target: string, uuid: string) {
+  sendJoinEmail(receiver: string, uuid: string) {
     const HOST = this.configService.getOrThrow<Env['HOST']>('HOST');
     const FE_PORT = this.configService.getOrThrow<Env['FE_PORT']>('FE_PORT');
     const FE_ORIGIN = `http://${HOST}:${FE_PORT}`;
 
     return this.sendEmail(
-      target,
+      receiver,
       '[MyTask] Please verify your E-Mail!',
       `Click <a href="${FE_ORIGIN}/welcome/${uuid}">HERE</a> to verify your E-Mail!`,
     );
