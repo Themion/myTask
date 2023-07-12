@@ -1,4 +1,4 @@
-import { User, parseWithZod } from '@my-task/common';
+import { User } from '@my-task/common';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { z } from 'zod';
@@ -20,10 +20,8 @@ const Welcome = () => {
   if (error) throw error;
 
   if (!email && !error && !joinConfirm.isLoading) {
-    const result = parseWithZod(uuid, z.string().uuid());
-
-    if (result.error) throw result.error;
-    else if (!result.data) throw { errorMessage: '잘못된 경로로 Welcome 페이지에 접근하였습니다!' };
+    const result = z.string().uuid().safeParse(uuid);
+    if (!result.success) throw result.error;
 
     joinConfirm.mutate({ uuid: result.data });
   }
