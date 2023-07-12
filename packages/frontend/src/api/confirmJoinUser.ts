@@ -3,10 +3,10 @@ import { useMutation } from '@tanstack/react-query';
 import { MutationOptions } from '~/types';
 import fetchCore from './fetchCore';
 
-const joinUserConfirm = (options: MutationOptions<User, CreateUserConfirmDTO>) =>
+const confirmJoinUser = (options: MutationOptions<User, CreateUserConfirmDTO>) =>
   useMutation({
     mutationFn: (body) => fetchCore('/auth/confirm', { method: 'POST', body }),
     ...options,
   });
 
-export default joinUserConfirm;
+export default confirmJoinUser;

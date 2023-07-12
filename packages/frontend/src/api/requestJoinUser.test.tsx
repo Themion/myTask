@@ -1,16 +1,13 @@
-import { CreateUserConfirmDTO, User } from '@my-task/common';
+import { CreateUserDTO, User } from '@my-task/common';
 import { QueryClient, QueryClientProvider, UseMutationResult } from '@tanstack/react-query';
 import { RenderHookResult, renderHook, waitFor } from '@testing-library/react';
 import { describe, expectTypeOf } from 'vitest';
+import requestJoinUser from '~/api/requestJoinUser';
 import { BE_ORIGIN } from '~/constants';
 import { server } from '~/mock';
-import joinUserConfirm from './joinUserConfirm';
 
-describe('postJoin', () => {
-  let renderedHook: RenderHookResult<
-    UseMutationResult<any, any, CreateUserConfirmDTO, any>,
-    unknown
-  >;
+describe('requestJoinUser', () => {
+  let renderedHook: RenderHookResult<UseMutationResult<any, any, CreateUserDTO, any>, unknown>;
 
   const testQueryClient = new QueryClient({
     defaultOptions: {
@@ -35,7 +32,7 @@ describe('postJoin', () => {
   afterAll(() => server.close());
 
   beforeEach(() => {
-    renderedHook = renderHook(() => joinUserConfirm({}), { wrapper });
+    renderedHook = renderHook(() => requestJoinUser({}), { wrapper });
   });
 
   afterEach(() => {
@@ -43,19 +40,18 @@ describe('postJoin', () => {
   });
 
   it('should work', async () => {
-    const dto: CreateUserConfirmDTO = { uuid: '993ae2a1-2554-404c-8a86-660b5ee7fedd' };
+    const dto: CreateUserDTO = { email: 'test@email.com' };
     renderedHook.result.current.mutate(dto);
     await waitFor(() => expect(renderedHook.result.current.isSuccess).toEqual(true));
 
     const data = renderedHook.result.current.data;
     expectTypeOf(data).toMatchTypeOf<User>();
-    expect(data.email).toEqual('success@example.com');
+    expect(data.email).toEqual(dto.email);
   });
 
   describe('should fail with', () => {
     it('invalid email', async () => {
-      const dto: CreateUserConfirmDTO = { uuid: '6aa6ee8e-a4f8-49f6-817f-1c9342aae29e' };
-      renderedHook.result.current.mutate(dto);
+      renderedHook.result.current.mutate({ email: 'invalid@email' });
       await waitFor(() => expect(renderedHook.result.current.isError).toEqual(true));
     });
   });
