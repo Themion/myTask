@@ -12,7 +12,7 @@ const envSchema = z
 
     BE_PORT: USER_PORT_RULE,
 
-    EMAIL_HREF: z.string(),
+    EMAIL_HOST: z.string(),
     EMAIL_PORT: PORT_RULE,
     EMAIL_USER: z.string(),
     EMAIL_PASS: z.string(),
