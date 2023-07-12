@@ -20,7 +20,7 @@ describe('env validation', () => {
       EMAIL_PORT: '587',
       EMAIL_USER: '',
       EMAIL_PASS: '',
-      EMAIL_ADDRESS: 'test@example.com',
+      EMAIL_SENDER: 'test@example.com',
 
       FE_PORT: '5173',
     };
@@ -192,30 +192,30 @@ describe('env validation', () => {
     });
   });
 
-  describe('EMAIL_ADDRESS', () => {
+  describe('EMAIL_SENDER', () => {
     it('should work', () => {
       const parsedEnv = validate(testEnv);
-      expect(parsedEnv.EMAIL_ADDRESS).toEqual(testEnv.EMAIL_ADDRESS);
+      expect(parsedEnv.EMAIL_SENDER).toEqual(testEnv.EMAIL_SENDER);
     });
 
     describe('should throw error with', () => {
       it('empty field', () => {
-        delete testEnv.EMAIL_ADDRESS;
+        delete testEnv.EMAIL_SENDER;
         expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_type);
       });
 
       it('invalid email', () => {
-        testEnv.EMAIL_ADDRESS = 'invalid.email';
+        testEnv.EMAIL_SENDER = 'invalid.email';
         expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
       });
 
       it('email with invalid domain', () => {
-        testEnv.EMAIL_ADDRESS = 'invalid@email.';
+        testEnv.EMAIL_SENDER = 'invalid@email.';
         expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
       });
 
       it('email with invalid identifier', () => {
-        testEnv.EMAIL_ADDRESS = '@invalid.email';
+        testEnv.EMAIL_SENDER = '@invalid.email';
         expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
       });
     });
