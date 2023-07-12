@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { describe } from 'mocha';
 import { v4 as uuidv4 } from 'uuid';
 import { ZodIssueCode } from 'zod';
-import { JsonObject } from '../../../types';
+import { JsonObject } from '../../types';
 import { createUserConfirmDTO } from './createUserConfirm';
 
 describe('createUserConfirmDTO', () => {
