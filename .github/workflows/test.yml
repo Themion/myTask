@@ -65,7 +65,6 @@ jobs:
           EMAIL_USER: ${{secrets.EMAIL_USER}}
           EMAIL_PASS: ${{secrets.EMAIL_PASS}}
           EMAIL_ADDRESS: ${{secrets.EMAIL_ADDRESS}}
-          EMAIL_PASSWORD: ${{secrets.EMAIL_PASSWORD}}
           EMAIL_TEST_ADDRESS: ${{secrets.EMAIL_TEST_ADDRESS}}
 
           BE_PORT: ${{ vars.BE_PORT }}
