@@ -1,9 +1,7 @@
 import { CreateUserDTO, User } from '@my-task/common';
-import { ConfigModule } from '@nestjs/config';
-import { Test, TestingModule } from '@nestjs/testing';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
-import { DatabaseProvider } from '~/modules/database/database.provider';
+import { mockAuthModule, mockDatabaseModule } from '~/mock';
 import { DatabaseService } from '~/modules/database/database.service';
 import { AuthService } from './auth.service';
 
@@ -11,22 +9,11 @@ describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(async () => {
-    const databaseModule: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forFeature(() => process.env)],
-      providers: [DatabaseService, DatabaseProvider],
-    }).compile();
-
+    const databaseModule = await mockDatabaseModule();
     const databaseService = databaseModule.get<DatabaseService>(DatabaseService);
-
     await databaseService.onModuleInit();
 
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [DatabaseService, AuthService],
-    })
-      .overrideProvider(DatabaseService)
-      .useValue(databaseService)
-      .compile();
-
+    const module = await mockAuthModule({ databaseService });
     service = module.get<AuthService>(AuthService);
   });
 
