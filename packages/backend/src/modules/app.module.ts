@@ -7,6 +7,7 @@ import { AppService } from '~/modules/app.service';
 import { DatabaseModule } from '~/modules/database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { EmailModule } from './email/email.module';
+import { GroupModule } from './group/group.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { EmailModule } from './email/email.module';
     DatabaseModule,
     AuthModule,
     EmailModule,
+    GroupModule,
   ],
   controllers: [AppController],
   providers: [AppService],
