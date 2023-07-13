@@ -5,7 +5,7 @@ import fetchCore from './fetchCore';
 
 const requestJoinUser = (options: MutationOptions<CreateUserDTO, CreateUserDTO>) =>
   useMutation({
-    mutationFn: (body) => fetchCore('/auth', { method: 'POST', body }),
+    mutationFn: (body) => fetchCore('/auth/join/syn', { method: 'POST', body }),
     ...options,
   });
 

@@ -25,42 +25,40 @@ describe('AuthController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('createUser', () => {
+  describe('requestJoinUser', () => {
     it('should work', () => {
       const userToAdd = { email: 'create@example.email' };
-      expect(() => controller.createUser(userToAdd)).not.toThrow();
+      expect(() => controller.requestJoinUser(userToAdd)).not.toThrow();
     });
 
     describe('should throw error with', () => {
       it('non-object', () => {
         const data = 'create@example.email';
-        expect(() => controller.createUser(data)).toThrow();
+        expect(() => controller.requestJoinUser(data)).toThrow();
       });
     });
   });
 
-  describe('createUserConfirm', () => {
+  describe('confirmJoinUser', () => {
     it('should work', async () => {
       const userToAdd = { email: 'create@example.email' };
-      const { email } = controller.createUser(userToAdd);
+      const { email } = controller.requestJoinUser(userToAdd);
 
       const uuid = authService.emailToUuid.get(email);
       let user: User;
-      expect((user = await controller.createUserConfirm({ uuid }))).toBeDefined();
+      expect((user = await controller.confirmJoinUser({ uuid }))).toBeDefined();
       expect(user.email).toEqual(userToAdd.email);
     });
 
     describe('should throw error with', () => {
       it('wrong dto', async () => {
         const wrongUUID = 'this is not uuid';
-        await expect(async () =>
-          controller.createUserConfirm({ uuid: wrongUUID }),
-        ).rejects.toThrow();
+        await expect(async () => controller.confirmJoinUser({ uuid: wrongUUID })).rejects.toThrow();
       });
 
       it('non-existing uuid', async () => {
         const uuid = uuidv4();
-        await expect(async () => controller.createUserConfirm({ uuid })).rejects.toThrow();
+        await expect(async () => controller.confirmJoinUser({ uuid })).rejects.toThrow();
       });
     });
   });
