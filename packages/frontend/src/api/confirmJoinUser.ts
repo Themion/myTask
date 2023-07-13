@@ -5,7 +5,7 @@ import fetchCore from './fetchCore';
 
 const confirmJoinUser = (options: MutationOptions<User, CreateUserConfirmDTO>) =>
   useMutation({
-    mutationFn: (body) => fetchCore('/auth/confirm', { method: 'POST', body }),
+    mutationFn: (body) => fetchCore('/auth/join/ack', { method: 'POST', body }),
     ...options,
   });
 

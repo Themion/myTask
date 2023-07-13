@@ -17,7 +17,7 @@ export class AuthService {
     return this.db.select().from(users).execute();
   }
 
-  createUser(dto: CreateUserDTO) {
+  requestJoinUser(dto: CreateUserDTO) {
     if (this.pendingEmail.has(dto.email)) throw new BadRequestException('Emali already exists!');
 
     const uuid = uuidv4();
@@ -27,7 +27,7 @@ export class AuthService {
     return uuid;
   }
 
-  async createUserConfirm(dto: CreateUserConfirmDTO) {
+  async confirmJoinUser(dto: CreateUserConfirmDTO) {
     if (!this.uuidToEmail.has(dto.uuid))
       throw new BadRequestException('UUID cannot be found: Wrong DTO!');
 

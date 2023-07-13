@@ -14,7 +14,7 @@ export const handlers = [
     res(ctx.status(400), ctx.json({ errorMessage: 'Error thrown for unknown reason.' })),
   ),
 
-  rest.post(mockDir('/auth'), async (req, res, ctx) => {
+  rest.post(mockDir('/auth/join/syn'), async (req, res, ctx) => {
     const body = await req.json();
 
     ctx.delay();
@@ -27,7 +27,7 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(data));
   }),
 
-  rest.post(mockDir('/auth/confirm'), async (req, res, ctx) => {
+  rest.post(mockDir('/auth/join/ack'), async (req, res, ctx) => {
     const body = await req.json();
 
     ctx.delay();

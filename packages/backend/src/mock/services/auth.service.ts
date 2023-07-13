@@ -5,13 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 const mockAuthService = async () => ({
   uuidToEmail: new Map<string, CreateUserDTO>(),
   emailToUuid: new Map<string, string>(),
-  createUser(dto: CreateUserDTO) {
+  requestJoinUser(dto: CreateUserDTO) {
     const uuid = uuidv4();
     this.uuidToEmail.set(uuid, dto);
     this.emailToUuid.set(dto.email, uuid);
     return uuid;
   },
-  createUserConfirm(dto: CreateUserConfirmDTO) {
+  confirmJoinUser(dto: CreateUserConfirmDTO) {
     if (!this.uuidToEmail.has(dto.uuid))
       throw new BadRequestException('UUID cannot be found: Wrong DTO!');
     const data = this.uuidToEmail.get(dto.uuid) as CreateUserDTO;
