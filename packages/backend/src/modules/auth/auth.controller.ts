@@ -1,4 +1,4 @@
-import { createUserConfirmDTO, createUserDTO } from '@my-task/common';
+import { confirmJoinUserDTO, requestJoinUserDTO } from '@my-task/common';
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { EmailService } from '~/modules/email/email.service';
 import { AuthService } from './auth.service';
@@ -12,7 +12,7 @@ export class AuthController {
 
   @Post('join/syn')
   requestJoinUser(@Body() body: any) {
-    const result = createUserDTO.safeParse(body);
+    const result = requestJoinUserDTO.safeParse(body);
     if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
     const { data } = result;
 
@@ -25,7 +25,7 @@ export class AuthController {
 
   @Post('join/ack')
   confirmJoinUser(@Body() body: any) {
-    const result = createUserConfirmDTO.safeParse(body);
+    const result = confirmJoinUserDTO.safeParse(body);
     if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
     const { data } = result;
 

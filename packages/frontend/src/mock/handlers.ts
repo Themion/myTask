@@ -1,4 +1,4 @@
-import { User, createUserConfirmDTO, createUserDTO } from '@my-task/common';
+import { User, confirmJoinUserDTO, requestJoinUserDTO } from '@my-task/common';
 import { rest } from 'msw';
 import { BE_ORIGIN } from '~/constants';
 
@@ -19,7 +19,7 @@ export const handlers = [
 
     ctx.delay();
 
-    const result = createUserDTO.safeParse(body);
+    const result = requestJoinUserDTO.safeParse(body);
     if (!result.success)
       return res(ctx.status(400), ctx.json({ errorMessage: 'Wrong DTO: try again!' }));
     const { data } = result;
@@ -32,7 +32,7 @@ export const handlers = [
 
     ctx.delay();
 
-    const result = createUserConfirmDTO.safeParse(body);
+    const result = confirmJoinUserDTO.safeParse(body);
     if (!result.success)
       return res(ctx.status(400), ctx.json({ errorMessage: 'Wrong DTO: try again!' }));
     const { data } = result;

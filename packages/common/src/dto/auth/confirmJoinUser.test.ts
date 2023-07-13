@@ -3,9 +3,9 @@ import { describe } from 'mocha';
 import { v4 as uuidv4 } from 'uuid';
 import { ZodIssueCode } from 'zod';
 import { JsonObject } from '../../types';
-import { createUserConfirmDTO } from './createUserConfirm';
+import { confirmJoinUserDTO } from './confirmJoinUser';
 
-describe('createUserConfirmDTO', () => {
+describe('confirmJoinUserDTO', () => {
   let dto: JsonObject;
 
   beforeEach(() => {
@@ -13,7 +13,7 @@ describe('createUserConfirmDTO', () => {
   });
 
   it('should work', () => {
-    expect(() => createUserConfirmDTO.parse(dto))
+    expect(() => confirmJoinUserDTO.parse(dto))
       .not.throw()
       .equal(dto);
   });
@@ -21,17 +21,17 @@ describe('createUserConfirmDTO', () => {
   describe('should throw error with', () => {
     it('no uuid field', () => {
       delete dto.uuid;
-      expect(() => createUserConfirmDTO.parse(dto)).throw(ZodIssueCode.invalid_type);
+      expect(() => confirmJoinUserDTO.parse(dto)).throw(ZodIssueCode.invalid_type);
     });
 
     it('non-uuid string', () => {
       dto.uuid = 'invalid uuid';
-      expect(() => createUserConfirmDTO.parse(dto)).throw(ZodIssueCode.invalid_string);
+      expect(() => confirmJoinUserDTO.parse(dto)).throw(ZodIssueCode.invalid_string);
     });
 
     it('invalid uuid', () => {
       dto.uuid = 'a2b68b19-asdf-asdf-zzzz-asdasdasdasd';
-      expect(() => createUserConfirmDTO.parse(dto)).throw(ZodIssueCode.invalid_string);
+      expect(() => confirmJoinUserDTO.parse(dto)).throw(ZodIssueCode.invalid_string);
     });
   });
 });
