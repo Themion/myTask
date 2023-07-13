@@ -2,14 +2,14 @@ import { User } from '@my-task/common';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { z } from 'zod';
-import { joinUserConfirm } from '~/api';
+import { confirmJoinUser } from '~/api';
 
 const Welcome = () => {
   const { uuid } = useParams();
   const [email, setEmail] = useState<string>();
   const [error, setError] = useState<any>();
 
-  const joinConfirm = joinUserConfirm({
+  const joinConfirm = confirmJoinUser({
     onSuccess: (data: User) => {
       console.log(data); // striceMode를 사용하므로 디버깅을 위함
       setEmail(data.email as string);

@@ -1,12 +1,12 @@
 import { CreateUserDTO } from '@my-task/common';
 import { FormEventHandler, useRef, useState } from 'react';
-import { postJoin } from '~/api';
+import { requestJoinUser } from '~/api';
 import './style.css';
 
 const Join = () => {
   const [statusText, setStatusText] = useState('');
   const emailInputRef = useRef<HTMLInputElement>(null);
-  const joinMutation = postJoin({
+  const joinMutation = requestJoinUser({
     onSuccess: (data: CreateUserDTO) =>
       setStatusText(`User(${data.email}) has successfully joined!`),
     onError: (err) => setStatusText(err.errorMessage),

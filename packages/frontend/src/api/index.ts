@@ -1,4 +1,4 @@
+import confirmJoinUser from './confirmJoinUser';
 import getConnectionTest from './getConnectionTest';
-import joinUserConfirm from './joinUserConfirm';
-import postJoin from './postJoin';
-export { getConnectionTest, postJoin, joinUserConfirm };
+import requestJoinUser from './requestJoinUser';
+export { getConnectionTest, requestJoinUser, confirmJoinUser };
