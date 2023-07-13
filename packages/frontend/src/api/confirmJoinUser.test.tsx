@@ -1,4 +1,4 @@
-import { CreateUserConfirmDTO, User } from '@my-task/common';
+import { ConfirmJoinUserDTO, User } from '@my-task/common';
 import { QueryClient, QueryClientProvider, UseMutationResult } from '@tanstack/react-query';
 import { RenderHookResult, renderHook, waitFor } from '@testing-library/react';
 import { describe, expectTypeOf } from 'vitest';
@@ -7,10 +7,7 @@ import { server } from '~/mock';
 import confirmJoinUser from './confirmJoinUser';
 
 describe('requestJoinUser', () => {
-  let renderedHook: RenderHookResult<
-    UseMutationResult<any, any, CreateUserConfirmDTO, any>,
-    unknown
-  >;
+  let renderedHook: RenderHookResult<UseMutationResult<any, any, ConfirmJoinUserDTO, any>, unknown>;
 
   const testQueryClient = new QueryClient({
     defaultOptions: {
@@ -43,7 +40,7 @@ describe('requestJoinUser', () => {
   });
 
   it('should work', async () => {
-    const dto: CreateUserConfirmDTO = { uuid: '993ae2a1-2554-404c-8a86-660b5ee7fedd' };
+    const dto: ConfirmJoinUserDTO = { uuid: '993ae2a1-2554-404c-8a86-660b5ee7fedd' };
     renderedHook.result.current.mutate(dto);
     await waitFor(() => expect(renderedHook.result.current.isSuccess).toEqual(true));
 
@@ -54,7 +51,7 @@ describe('requestJoinUser', () => {
 
   describe('should fail with', () => {
     it('invalid email', async () => {
-      const dto: CreateUserConfirmDTO = { uuid: '6aa6ee8e-a4f8-49f6-817f-1c9342aae29e' };
+      const dto: ConfirmJoinUserDTO = { uuid: '6aa6ee8e-a4f8-49f6-817f-1c9342aae29e' };
       renderedHook.result.current.mutate(dto);
       await waitFor(() => expect(renderedHook.result.current.isError).toEqual(true));
     });

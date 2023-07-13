@@ -1,4 +1,4 @@
-import { CreateUserDTO, User } from '@my-task/common';
+import { RequestJoinUserDTO, User } from '@my-task/common';
 import { QueryClient, QueryClientProvider, UseMutationResult } from '@tanstack/react-query';
 import { RenderHookResult, renderHook, waitFor } from '@testing-library/react';
 import { describe, expectTypeOf } from 'vitest';
@@ -7,7 +7,7 @@ import { BE_ORIGIN } from '~/constants';
 import { server } from '~/mock';
 
 describe('requestJoinUser', () => {
-  let renderedHook: RenderHookResult<UseMutationResult<any, any, CreateUserDTO, any>, unknown>;
+  let renderedHook: RenderHookResult<UseMutationResult<any, any, RequestJoinUserDTO, any>, unknown>;
 
   const testQueryClient = new QueryClient({
     defaultOptions: {
@@ -40,7 +40,7 @@ describe('requestJoinUser', () => {
   });
 
   it('should work', async () => {
-    const dto: CreateUserDTO = { email: 'test@email.com' };
+    const dto: RequestJoinUserDTO = { email: 'test@email.com' };
     renderedHook.result.current.mutate(dto);
     await waitFor(() => expect(renderedHook.result.current.isSuccess).toEqual(true));
 
