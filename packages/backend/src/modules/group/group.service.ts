@@ -1,5 +1,6 @@
 import { User, groups, members } from '@my-task/common';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { eq, getTableColumns } from 'drizzle-orm';
 import { DatabaseService } from '~/modules/database/database.service';
 
 @Injectable()
@@ -25,5 +26,14 @@ export class GroupService {
 
       return createdGroup;
     });
+  }
+
+  async findGroupByMember(member: User) {
+    return this.db
+      .select(getTableColumns(groups))
+      .from(groups)
+      .innerJoin(members, eq(groups.id, members.groupId))
+      .where(eq(members.userId, member.id))
+      .execute();
   }
 }
