@@ -10,7 +10,7 @@ type BodyObject = { body: string } | {};
 const getBody = <Input extends JsonObject>({ body }: RequestOption<Input>): BodyObject =>
   body ? { body: JSON.stringify(body) } : {};
 
-const fetchCore = async <Output = any, Input extends JsonObject = JsonObject>(
+const _fetch = async <Output = any, Input extends JsonObject = JsonObject>(
   path: string,
   option: RequestOption<Input> = {},
 ) => {
@@ -25,4 +25,4 @@ const fetchCore = async <Output = any, Input extends JsonObject = JsonObject>(
   return data as Output;
 };
 
-export default fetchCore;
+export default _fetch;
