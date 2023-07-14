@@ -1,11 +1,11 @@
 import { ConfirmJoinUserDTO, User } from '@my-task/common';
 import { useMutation } from '@tanstack/react-query';
 import { MutationOptions } from '~/types';
-import fetchCore from './fetchCore';
+import _fetch from './core';
 
 const confirmJoinUser = (options: MutationOptions<User, ConfirmJoinUserDTO>) =>
   useMutation({
-    mutationFn: (body) => fetchCore('/auth/join/ack', { method: 'POST', body }),
+    mutationFn: (body) => _fetch('/auth/join/ack', { method: 'POST', body }),
     ...options,
   });
 

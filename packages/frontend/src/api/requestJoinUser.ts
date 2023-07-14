@@ -1,11 +1,11 @@
 import { RequestJoinUserDTO } from '@my-task/common';
 import { useMutation } from '@tanstack/react-query';
 import { MutationOptions } from '~/types';
-import fetchCore from './fetchCore';
+import _fetch from './core';
 
 const requestJoinUser = (options: MutationOptions<RequestJoinUserDTO, RequestJoinUserDTO>) =>
   useMutation({
-    mutationFn: (body) => fetchCore('/auth/join/syn', { method: 'POST', body }),
+    mutationFn: (body) => _fetch('/auth/join/syn', { method: 'POST', body }),
     ...options,
   });
 

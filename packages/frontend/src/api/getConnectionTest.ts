@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import fetchCore from '~/api/fetchCore';
+import _fetch from './core';
 
 const getConnectionTest = () =>
   useQuery({
     queryKey: ['Connection Test'],
-    queryFn: () => fetchCore(''),
+    queryFn: () => _fetch(''),
   });
 
 export default getConnectionTest;
