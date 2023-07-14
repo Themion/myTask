@@ -3,20 +3,27 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   MockAuthService,
   MockEmailService,
+  MockGroupService,
   mockAuthModule,
   mockAuthService,
   mockEmailService,
+  mockGroupService,
 } from '~/mock';
 import { AuthController } from './auth.controller';
 
 describe('AuthController', () => {
   let authService: MockAuthService;
   let emailService: MockEmailService;
+  let groupService: MockGroupService;
   let controller: AuthController;
 
   beforeEach(async () => {
-    [authService, emailService] = await Promise.all([mockAuthService(), mockEmailService()]);
-    const module = await mockAuthModule({ authService, emailService });
+    [authService, emailService, groupService] = await Promise.all([
+      mockAuthService(),
+      mockEmailService(),
+      mockGroupService(),
+    ]);
+    const module = await mockAuthModule({ authService, emailService, groupService });
 
     controller = module.get<AuthController>(AuthController);
   });
@@ -48,6 +55,7 @@ describe('AuthController', () => {
       let user: User;
       expect((user = await controller.confirmJoinUser({ uuid }))).toBeDefined();
       expect(user.email).toEqual(userToAdd.email);
+      expect((await groupService.findGroupByMember(user)).length).toBeGreaterThan(0);
     });
 
     describe('should throw error with', () => {
