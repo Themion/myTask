@@ -1,3 +1,4 @@
 import groups from './group.schema';
+import members from './member.schema';
 import users from './user.schema';
-export { users, groups };
+export { groups, members, users };
