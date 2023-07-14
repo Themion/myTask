@@ -11,19 +11,16 @@ export class EmailService implements OnModuleDestroy {
   private readonly sender;
 
   constructor(private readonly configService: ConfigService<Env>) {
+    const { CONFIG, SENDER } = this.configService.getOrThrow<Env['EMAIL']>('EMAIL');
+
     // https://velog.io/@mimi0905/Nodemailer%EB%A1%9C-%EB%A9%94%EC%9D%BC-%EB%B3%B4%EB%82%B4%EA%B8%B0-with-%EC%B2%A8%EB%B6%80%ED%8C%8C%EC%9D%BC
     this.transport = createTransport({
       pool: true,
-      host: this.configService.getOrThrow<Env['EMAIL_HOST']>('EMAIL_HOST'),
-      port: this.configService.getOrThrow<Env['EMAIL_PORT']>('EMAIL_PORT'),
       secure: false,
-      auth: {
-        user: this.configService.getOrThrow<Env['EMAIL_USER']>('EMAIL_USER'),
-        pass: this.configService.getOrThrow<Env['EMAIL_PASS']>('EMAIL_PASS'),
-      },
+      ...CONFIG,
     });
 
-    this.sender = this.configService.getOrThrow<Env['EMAIL_SENDER']>('EMAIL_SENDER');
+    this.sender = SENDER;
   }
 
   onModuleDestroy() {
@@ -45,8 +42,7 @@ export class EmailService implements OnModuleDestroy {
   }
 
   sendJoinEmail(receiver: string, uuid: string) {
-    const HOST = this.configService.getOrThrow<Env['HOST']>('HOST');
-    const FE_PORT = this.configService.getOrThrow<Env['FE_PORT']>('FE_PORT');
+    const { HOST, FE_PORT } = this.configService.getOrThrow<Env['NETWORK']>('NETWORK');
     const FE_ORIGIN = `http://${HOST}:${FE_PORT}`;
 
     return this.sendEmail(
