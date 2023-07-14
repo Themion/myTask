@@ -1,4 +1,4 @@
-import { groups } from '@my-task/common';
+import { User, groups, members } from '@my-task/common';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseService } from '~/modules/database/database.service';
 
@@ -9,9 +9,21 @@ export class GroupService {
     this.db = databaseService.db;
   }
 
-  async createGroup(name: string = 'My First Group') {
-    const createdGroups = await this.db.insert(groups).values({ name }).returning();
-    if (createdGroups.length !== 1) throw new InternalServerErrorException('DB insertion failed!');
-    else return createdGroups[0];
+  async createGroup(creator: User, name: string = 'My First Group') {
+    return this.db.transaction(async (tx) => {
+      const createdGroups = await tx.insert(groups).values({ name }).returning();
+      if (createdGroups.length !== 1)
+        throw new InternalServerErrorException('DB insertion failed when creating group!');
+      const createdGroup = createdGroups[0];
+
+      const createdCreators = await tx
+        .insert(members)
+        .values({ groupId: createdGroup.id, userId: creator.id })
+        .returning();
+      if (createdCreators.length !== 1)
+        throw new InternalServerErrorException('DB insertion failed when inserting member!');
+
+      return createdGroup;
+    });
   }
 }
