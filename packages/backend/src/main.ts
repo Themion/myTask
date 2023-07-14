@@ -16,11 +16,7 @@ async function bootstrap() {
 
 function getConfig(app: INestApplication) {
   const configService = app.get(ConfigService<Env>);
-  const HOST = configService.getOrThrow<Env['HOST']>('HOST');
-  const BE_PORT = configService.getOrThrow<Env['BE_PORT']>('BE_PORT');
-  const FE_PORT = configService.getOrThrow<Env['FE_PORT']>('FE_PORT');
-
-  return { HOST, BE_PORT, FE_PORT };
+  return configService.getOrThrow<Env['NETWORK']>('NETWORK');
 }
 
 bootstrap();
