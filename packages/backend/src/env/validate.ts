@@ -23,7 +23,32 @@ const envSchema = z
   })
   .refine(({ BE_PORT, DB_PORT }) => BE_PORT !== DB_PORT, ZodIssueCode.invalid_string)
   .refine(({ BE_PORT, FE_PORT }) => BE_PORT !== FE_PORT, ZodIssueCode.invalid_string)
-  .refine(({ FE_PORT, DB_PORT }) => FE_PORT !== DB_PORT, ZodIssueCode.invalid_string);
+  .refine(({ FE_PORT, DB_PORT }) => FE_PORT !== DB_PORT, ZodIssueCode.invalid_string)
+  .transform((env) => ({
+    DB: {
+      host: env.HOST,
+      port: env.DB_PORT,
+      database: env.DB_DB,
+      user: env.DB_USER,
+      password: env.DB_PASSWORD,
+    },
+    EMAIL: {
+      CONFIG: {
+        host: env.EMAIL_HOST,
+        port: env.EMAIL_PORT,
+        auth: {
+          user: env.EMAIL_USER,
+          pass: env.EMAIL_PASS,
+        },
+      },
+      SENDER: env.EMAIL_SENDER,
+    },
+    NETWORK: {
+      HOST: env.HOST,
+      BE_PORT: env.BE_PORT,
+      FE_PORT: env.FE_PORT,
+    },
+  }));
 
 // 잘못된 환경 변수가 들어올 경우 반드시 Exception을 띄워야 함
 export default envSchema.parse;
