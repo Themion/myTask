@@ -1,14 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { mockSignInModule } from '~/mock';
 import { SignInService } from './signin.service';
 
 describe('SignInService', () => {
   let service: SignInService;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [SignInService],
-    }).compile();
-
+    const module = await mockSignInModule({});
     service = module.get<SignInService>(SignInService);
   });
 
