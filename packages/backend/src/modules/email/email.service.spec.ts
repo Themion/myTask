@@ -1,5 +1,4 @@
 import SMTPPool from 'nodemailer/lib/smtp-pool';
-import { v4 as uuidv4 } from 'uuid';
 import { mockEmailModule } from '~/mock';
 import { EmailService } from './email.service';
 
@@ -36,15 +35,6 @@ describe('EmailService', () => {
           async () => await service.sendEmail('', 'test', '<div>test123</div>'),
         ).rejects.toThrow();
       });
-    });
-  });
-
-  describe('sendSignUpEmail', () => {
-    it('should work', async () => {
-      let result: SMTPPool.SentMessageInfo;
-      expect((result = await service.sendSignUpEmail(receiver, uuidv4()))).toBeDefined();
-      expect(result.accepted.length).toEqual(1);
-      expect(result.rejected.length).toEqual(0);
     });
   });
 });

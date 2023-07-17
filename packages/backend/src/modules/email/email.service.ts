@@ -40,15 +40,4 @@ export class EmailService implements OnModuleDestroy {
       this.transport.sendMail(mailOption, (err, info) => (err ? reject(err) : resolve(info)));
     });
   }
-
-  sendSignUpEmail(receiver: string, uuid: string) {
-    const { HOST, FE_PORT } = this.configService.getOrThrow<Env['NETWORK']>('NETWORK');
-    const FE_ORIGIN = `http://${HOST}:${FE_PORT}`;
-
-    return this.sendEmail(
-      receiver,
-      '[MyTask] Please verify your E-Mail!',
-      `Click <a href="${FE_ORIGIN}/welcome/${uuid}">HERE</a> to verify your E-Mail!`,
-    );
-  }
 }

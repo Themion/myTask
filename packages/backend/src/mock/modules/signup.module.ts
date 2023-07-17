@@ -1,5 +1,6 @@
 import { Provider } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import mockConfigModule from '~/mock/modules/config.module';
 import { MockEmailService, MockGroupService, MockSignUpService } from '~/mock/services';
 import { SignUpController } from '~/modules/auth/signup/signup.controller';
 import { SignUpService } from '~/modules/auth/signup/signup.service';
@@ -14,7 +15,7 @@ type Props = {
   groupService?: MockGroupService;
 };
 
-const mockSignUpModule = ({
+const mockSignUpModule = async ({
   signupService,
   databaseService,
   emailService,
@@ -31,6 +32,7 @@ const mockSignUpModule = ({
   const useController = !!signupService && !!emailService;
 
   const moduleFactory = Test.createTestingModule({
+    imports: [await mockConfigModule()],
     providers,
     controllers: useController ? controllers : [],
   });
