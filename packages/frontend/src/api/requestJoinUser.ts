@@ -5,7 +5,7 @@ import _fetch from './core';
 
 const requestJoinUser = (options: MutationOptions<RequestJoinUserDTO, RequestJoinUserDTO>) =>
   useMutation({
-    mutationFn: (body) => _fetch('/auth/join/syn', { method: 'POST', body }),
+    mutationFn: (body) => _fetch('/auth/signup/syn', { method: 'POST', body }),
     ...options,
   });
 
