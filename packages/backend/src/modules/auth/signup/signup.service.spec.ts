@@ -27,10 +27,10 @@ describe('SignUpService', () => {
     });
   });
 
-  describe('requestSignUpUser', () => {
+  describe('requestSignUp', () => {
     it('should work (validation will be in controller)', () => {
       const userToAdd: RequestSignUpDTO = { email: 'create@example.email' };
-      const result = service.requestSignUpUser(userToAdd);
+      const result = service.requestSignUp(userToAdd);
       const parsedResult = z.string().uuid().safeParse(result);
       expect(parsedResult.success).toEqual(true);
     });
@@ -38,34 +38,34 @@ describe('SignUpService', () => {
     describe('should throw error when', () => {
       it('pass same parameter', () => {
         const userToAdd: RequestSignUpDTO = { email: 'duplicate@example.email' };
-        service.requestSignUpUser(userToAdd);
-        expect(() => service.requestSignUpUser(userToAdd)).toThrow();
+        service.requestSignUp(userToAdd);
+        expect(() => service.requestSignUp(userToAdd)).toThrow();
       });
     });
   });
 
-  describe('confirmSignUpUser (validation will be in controller)', () => {
+  describe('confirmSignUp (validation will be in controller)', () => {
     it('should work', async () => {
       const userToAdd: RequestSignUpDTO = { email: 'create@example.email' };
-      const uuid = service.requestSignUpUser(userToAdd);
+      const uuid = service.requestSignUp(userToAdd);
 
       let createdUser: User = { id: -1, email: '' };
-      expect((createdUser = await service.confirmSignUpUser({ uuid }))).toBeDefined();
+      expect((createdUser = await service.confirmSignUp({ uuid }))).toBeDefined();
       expect(createdUser.email).toEqual(userToAdd.email);
     });
 
     describe('should throw error when', () => {
       it('non-existing uuid', async () => {
         const uuid = uuidv4();
-        await expect(async () => service.confirmSignUpUser({ uuid })).rejects.toThrow();
+        await expect(async () => service.confirmSignUp({ uuid })).rejects.toThrow();
       });
 
       it('pass same parameter', async () => {
         const userToAdd: RequestSignUpDTO = { email: 'create@example.email' };
-        const uuid = service.requestSignUpUser(userToAdd);
+        const uuid = service.requestSignUp(userToAdd);
 
-        await service.confirmSignUpUser({ uuid });
-        await expect(async () => service.confirmSignUpUser({ uuid })).rejects.toThrow();
+        await service.confirmSignUp({ uuid });
+        await expect(async () => service.confirmSignUp({ uuid })).rejects.toThrow();
       });
     });
   });

@@ -1,4 +1,4 @@
-import confirmSignUpUser from './confirmSignUpUser';
+import confirmSignUp from './confirmSignUp';
 import getConnectionTest from './getConnectionTest';
-import requestSignUpUser from './requestSignUpUser';
-export { getConnectionTest, requestSignUpUser, confirmSignUpUser };
+import requestSignUp from './requestSignUp';
+export { getConnectionTest, requestSignUp, confirmSignUp };
