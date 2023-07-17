@@ -39,10 +39,10 @@ describe('EmailService', () => {
     });
   });
 
-  describe('sendJoinEmail', () => {
+  describe('sendSignUpEmail', () => {
     it('should work', async () => {
       let result: SMTPPool.SentMessageInfo;
-      expect((result = await service.sendJoinEmail(receiver, uuidv4()))).toBeDefined();
+      expect((result = await service.sendSignUpEmail(receiver, uuidv4()))).toBeDefined();
       expect(result.accepted.length).toEqual(1);
       expect(result.rejected.length).toEqual(0);
     });

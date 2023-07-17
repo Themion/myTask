@@ -1,5 +1,5 @@
 const mockEmailService = async () => ({
-  sendJoinEmail: (target: string, uuid: string) =>
+  sendSignUpEmail: (target: string, uuid: string) =>
     new Promise((resolve) => resolve({ target, uuid })),
 });
 

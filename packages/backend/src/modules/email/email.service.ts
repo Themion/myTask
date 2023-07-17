@@ -41,7 +41,7 @@ export class EmailService implements OnModuleDestroy {
     });
   }
 
-  sendJoinEmail(receiver: string, uuid: string) {
+  sendSignUpEmail(receiver: string, uuid: string) {
     const { HOST, FE_PORT } = this.configService.getOrThrow<Env['NETWORK']>('NETWORK');
     const FE_ORIGIN = `http://${HOST}:${FE_PORT}`;
 
