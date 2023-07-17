@@ -3,9 +3,9 @@ import { describe } from 'mocha';
 import { v4 as uuidv4 } from 'uuid';
 import { ZodIssueCode } from 'zod';
 import { JsonObject } from '../../types';
-import { confirmSignUpUserDTO } from './confirmSignUpUser';
+import { confirmSignUpDTOSchema } from './confirmSignUp.dto';
 
-describe('confirmSignUpUserDTO', () => {
+describe('confirmSignUpDTOSchema', () => {
   let dto: JsonObject;
 
   beforeEach(() => {
@@ -13,7 +13,7 @@ describe('confirmSignUpUserDTO', () => {
   });
 
   it('should work', () => {
-    expect(() => confirmSignUpUserDTO.parse(dto))
+    expect(() => confirmSignUpDTOSchema.parse(dto))
       .not.throw()
       .equal(dto);
   });
@@ -21,17 +21,17 @@ describe('confirmSignUpUserDTO', () => {
   describe('should throw error with', () => {
     it('no uuid field', () => {
       delete dto.uuid;
-      expect(() => confirmSignUpUserDTO.parse(dto)).throw(ZodIssueCode.invalid_type);
+      expect(() => confirmSignUpDTOSchema.parse(dto)).throw(ZodIssueCode.invalid_type);
     });
 
     it('non-uuid string', () => {
       dto.uuid = 'invalid uuid';
-      expect(() => confirmSignUpUserDTO.parse(dto)).throw(ZodIssueCode.invalid_string);
+      expect(() => confirmSignUpDTOSchema.parse(dto)).throw(ZodIssueCode.invalid_string);
     });
 
     it('invalid uuid', () => {
       dto.uuid = 'a2b68b19-asdf-asdf-zzzz-asdasdasdasd';
-      expect(() => confirmSignUpUserDTO.parse(dto)).throw(ZodIssueCode.invalid_string);
+      expect(() => confirmSignUpDTOSchema.parse(dto)).throw(ZodIssueCode.invalid_string);
     });
   });
 });
