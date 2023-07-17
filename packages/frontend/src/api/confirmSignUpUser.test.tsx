@@ -4,9 +4,9 @@ import { RenderHookResult, renderHook, waitFor } from '@testing-library/react';
 import { describe, expectTypeOf } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
 import { server } from '~/mock';
-import confirmJoinUser from './confirmJoinUser';
+import confirmSignUpUser from './confirmSignUpUser';
 
-describe('requestJoinUser', () => {
+describe('confirmSignUpUser', () => {
   let renderedHook: RenderHookResult<UseMutationResult<any, any, ConfirmJoinUserDTO, any>, unknown>;
 
   const testQueryClient = new QueryClient({
@@ -32,7 +32,7 @@ describe('requestJoinUser', () => {
   afterAll(() => server.close());
 
   beforeEach(() => {
-    renderedHook = renderHook(() => confirmJoinUser({}), { wrapper });
+    renderedHook = renderHook(() => confirmSignUpUser({}), { wrapper });
   });
 
   afterEach(() => {

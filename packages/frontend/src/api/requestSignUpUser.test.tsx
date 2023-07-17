@@ -2,11 +2,11 @@ import { RequestJoinUserDTO, User } from '@my-task/common';
 import { QueryClient, QueryClientProvider, UseMutationResult } from '@tanstack/react-query';
 import { RenderHookResult, renderHook, waitFor } from '@testing-library/react';
 import { describe, expectTypeOf } from 'vitest';
-import requestJoinUser from '~/api/requestJoinUser';
+import requestSignUpUser from '~/api/requestSignUpUser';
 import { BE_ORIGIN } from '~/constants';
 import { server } from '~/mock';
 
-describe('requestJoinUser', () => {
+describe('requestSignUpUser', () => {
   let renderedHook: RenderHookResult<UseMutationResult<any, any, RequestJoinUserDTO, any>, unknown>;
 
   const testQueryClient = new QueryClient({
@@ -32,7 +32,7 @@ describe('requestJoinUser', () => {
   afterAll(() => server.close());
 
   beforeEach(() => {
-    renderedHook = renderHook(() => requestJoinUser({}), { wrapper });
+    renderedHook = renderHook(() => requestSignUpUser({}), { wrapper });
   });
 
   afterEach(() => {
