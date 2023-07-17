@@ -12,18 +12,18 @@ import {
 import { SignUpController } from './signup.controller';
 
 describe('SignUpController', () => {
-  let signupService: MockSignUpService;
+  let signUpService: MockSignUpService;
   let emailService: MockEmailService;
   let groupService: MockGroupService;
   let controller: SignUpController;
 
   beforeEach(async () => {
-    [signupService, emailService, groupService] = await Promise.all([
+    [signUpService, emailService, groupService] = await Promise.all([
       mockSignUpService(),
       mockEmailService(),
       mockGroupService(),
     ]);
-    const module = await mockSignUpModule({ signupService, emailService, groupService });
+    const module = await mockSignUpModule({ signUpService, emailService, groupService });
 
     controller = module.get<SignUpController>(SignUpController);
   });
@@ -51,7 +51,7 @@ describe('SignUpController', () => {
       const userToAdd = { email: 'create@example.email' };
       const { email } = controller.requestSignUpUser(userToAdd);
 
-      const uuid = signupService.emailToUuid.get(email);
+      const uuid = signUpService.emailToUuid.get(email);
       let user: User;
       expect((user = await controller.confirmSignUpUser({ uuid }))).toBeDefined();
       expect(user.email).toEqual(userToAdd.email);

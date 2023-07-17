@@ -6,12 +6,12 @@ import { GroupService } from '~/modules/group/group.service';
 import { Env } from '~/types';
 import { SignUpService } from './signup.service';
 
-@Controller('signup')
+@Controller()
 export class SignUpController {
   private readonly FE_ORIGIN: string;
 
   constructor(
-    private readonly signupService: SignUpService,
+    private readonly signUpService: SignUpService,
     private readonly groupService: GroupService,
     private readonly emailService: EmailService,
     configService: ConfigService<Env>,
@@ -34,7 +34,7 @@ export class SignUpController {
     if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
     const { data } = result;
 
-    const uuid = this.signupService.requestSignUpUser(data);
+    const uuid = this.signUpService.requestSignUpUser(data);
     // E-Mail 송신은 동기적으로 진행할 필요 없음
     this.sendSignUpEmail(data.email, uuid);
 
@@ -47,7 +47,7 @@ export class SignUpController {
     if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
     const { data } = result;
 
-    const newUser = await this.signupService.confirmSignUpUser(data);
+    const newUser = await this.signUpService.confirmSignUpUser(data);
     await this.groupService.createGroup(newUser);
 
     return newUser;
