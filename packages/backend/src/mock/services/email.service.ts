@@ -1,6 +1,6 @@
 const mockEmailService = async () => ({
-  sendSignUpEmail: (target: string, uuid: string) =>
-    new Promise((resolve) => resolve({ target, uuid })),
+  sendEmail: (receiver: string, title: string, body: string) =>
+    new Promise((resolve) => resolve({ receiver, title, body })),
 });
 
 type MockEmailService = Awaited<ReturnType<typeof mockEmailService>>;
