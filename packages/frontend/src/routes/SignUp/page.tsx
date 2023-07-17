@@ -1,12 +1,12 @@
 import { RequestSignUpDTO } from '@my-task/common';
 import { FormEventHandler, useRef, useState } from 'react';
-import { requestSignUpUser } from '~/api';
+import { requestSignUp } from '~/api';
 import './style.css';
 
 const SignUp = () => {
   const [statusText, setStatusText] = useState('');
   const emailInputRef = useRef<HTMLInputElement>(null);
-  const joinMutation = requestSignUpUser({
+  const joinMutation = requestSignUp({
     onSuccess: (data: RequestSignUpDTO) =>
       setStatusText(`User(${data.email}) has successfully joined!`),
     onError: (err) => setStatusText(err.errorMessage),

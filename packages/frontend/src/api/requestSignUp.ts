@@ -3,10 +3,10 @@ import { useMutation } from '@tanstack/react-query';
 import { MutationOptions } from '~/types';
 import _fetch from './core';
 
-const requestSignUpUser = (options: MutationOptions<RequestSignUpDTO, RequestSignUpDTO>) =>
+const requestSignUp = (options: MutationOptions<RequestSignUpDTO, RequestSignUpDTO>) =>
   useMutation({
     mutationFn: (body) => _fetch('/auth/signup/syn', { method: 'POST', body }),
     ...options,
   });
 
-export default requestSignUpUser;
+export default requestSignUp;

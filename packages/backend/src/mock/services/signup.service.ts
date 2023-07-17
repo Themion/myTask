@@ -5,13 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 const mockSignUpService = async () => ({
   uuidToEmail: new Map<string, RequestSignUpDTO>(),
   emailToUuid: new Map<string, string>(),
-  requestSignUpUser(dto: RequestSignUpDTO) {
+  requestSignUp(dto: RequestSignUpDTO) {
     const uuid = uuidv4();
     this.uuidToEmail.set(uuid, dto);
     this.emailToUuid.set(dto.email, uuid);
     return uuid;
   },
-  confirmSignUpUser(dto: ConfirmSignUpDTO) {
+  confirmSignUp(dto: ConfirmSignUpDTO) {
     if (!this.uuidToEmail.has(dto.uuid))
       throw new BadRequestException('UUID cannot be found: Wrong DTO!');
     const data = this.uuidToEmail.get(dto.uuid) as RequestSignUpDTO;

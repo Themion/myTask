@@ -29,12 +29,12 @@ export class SignUpController {
   }
 
   @Post('syn')
-  requestSignUpUser(@Body() body: any) {
+  requestSignUp(@Body() body: any) {
     const result = requestSignUpDTOSchema.safeParse(body);
     if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
     const { data } = result;
 
-    const uuid = this.signUpService.requestSignUpUser(data);
+    const uuid = this.signUpService.requestSignUp(data);
     // E-Mail 송신은 동기적으로 진행할 필요 없음
     this.sendSignUpEmail(data.email, uuid);
 
@@ -42,12 +42,12 @@ export class SignUpController {
   }
 
   @Post('ack')
-  async confirmSignUpUser(@Body() body: any) {
+  async confirmSignUp(@Body() body: any) {
     const result = confirmSignUpDTOSchema.safeParse(body);
     if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
     const { data } = result;
 
-    const newUser = await this.signUpService.confirmSignUpUser(data);
+    const newUser = await this.signUpService.confirmSignUp(data);
     await this.groupService.createGroup(newUser);
 
     return newUser;
