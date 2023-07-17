@@ -1,4 +1,4 @@
-import { confirmJoinUserDTO, requestJoinUserDTO } from '@my-task/common';
+import { confirmSignUpUserDTO, requestSignUpUserDTO } from '@my-task/common';
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { EmailService } from '~/modules/email/email.service';
 import { GroupService } from '~/modules/group/group.service';
@@ -14,7 +14,7 @@ export class SignUpController {
 
   @Post('syn')
   requestSignUpUser(@Body() body: any) {
-    const result = requestJoinUserDTO.safeParse(body);
+    const result = requestSignUpUserDTO.safeParse(body);
     if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
     const { data } = result;
 
@@ -27,7 +27,7 @@ export class SignUpController {
 
   @Post('ack')
   async confirmSignUpUser(@Body() body: any) {
-    const result = confirmJoinUserDTO.safeParse(body);
+    const result = confirmSignUpUserDTO.safeParse(body);
     if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
     const { data } = result;
 
