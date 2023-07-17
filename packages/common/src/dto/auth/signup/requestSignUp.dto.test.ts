@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { describe } from 'mocha';
 import { ZodIssueCode } from 'zod';
-import { JsonObject } from '../../types';
+import { JsonObject } from '../../../types';
 import { RequestSignUpDTO, requestSignUpDTOSchema } from './requestSignUp.dto';
 
 describe('requestSignUpDTOSchema', () => {
