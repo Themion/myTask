@@ -1,20 +1,20 @@
 import { RequestJoinUserDTO, User } from '@my-task/common';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
-import { mockAuthModule, mockDatabaseModule } from '~/mock';
+import { mockDatabaseModule, mockSignupModule } from '~/mock';
 import { DatabaseService } from '~/modules/database/database.service';
-import { AuthService } from './auth.service';
+import { SignupService } from './signup.service';
 
-describe('AuthService', () => {
-  let service: AuthService;
+describe('SignupService', () => {
+  let service: SignupService;
 
   beforeEach(async () => {
     const databaseModule = await mockDatabaseModule();
     const databaseService = databaseModule.get<DatabaseService>(DatabaseService);
     await databaseService.onModuleInit();
 
-    const module = await mockAuthModule({ databaseService });
-    service = module.get<AuthService>(AuthService);
+    const module = await mockSignupModule({ databaseService });
+    service = module.get<SignupService>(SignupService);
   });
 
   it('should be defined', () => {

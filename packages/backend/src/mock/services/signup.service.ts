@@ -2,7 +2,7 @@ import { ConfirmJoinUserDTO, RequestJoinUserDTO, User } from '@my-task/common';
 import { BadRequestException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 
-const mockAuthService = async () => ({
+const mockSignupService = async () => ({
   uuidToEmail: new Map<string, RequestJoinUserDTO>(),
   emailToUuid: new Map<string, string>(),
   requestJoinUser(dto: RequestJoinUserDTO) {
@@ -21,7 +21,7 @@ const mockAuthService = async () => ({
   },
 });
 
-type MockAuthService = Awaited<ReturnType<typeof mockAuthService>>;
+type MockSignupService = Awaited<ReturnType<typeof mockSignupService>>;
 
-export { mockAuthService };
-export type { MockAuthService };
+export { mockSignupService };
+export type { MockSignupService };

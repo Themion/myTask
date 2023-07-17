@@ -1,31 +1,31 @@
 import { User } from '@my-task/common';
 import { v4 as uuidv4 } from 'uuid';
 import {
-  MockAuthService,
   MockEmailService,
   MockGroupService,
-  mockAuthModule,
-  mockAuthService,
+  MockSignupService,
   mockEmailService,
   mockGroupService,
+  mockSignupModule,
+  mockSignupService,
 } from '~/mock';
-import { AuthController } from './auth.controller';
+import { SignupController } from './signup.controller';
 
-describe('AuthController', () => {
-  let authService: MockAuthService;
+describe('SignupController', () => {
+  let signupService: MockSignupService;
   let emailService: MockEmailService;
   let groupService: MockGroupService;
-  let controller: AuthController;
+  let controller: SignupController;
 
   beforeEach(async () => {
-    [authService, emailService, groupService] = await Promise.all([
-      mockAuthService(),
+    [signupService, emailService, groupService] = await Promise.all([
+      mockSignupService(),
       mockEmailService(),
       mockGroupService(),
     ]);
-    const module = await mockAuthModule({ authService, emailService, groupService });
+    const module = await mockSignupModule({ signupService, emailService, groupService });
 
-    controller = module.get<AuthController>(AuthController);
+    controller = module.get<SignupController>(SignupController);
   });
 
   it('should be defined', () => {
@@ -51,7 +51,7 @@ describe('AuthController', () => {
       const userToAdd = { email: 'create@example.email' };
       const { email } = controller.requestJoinUser(userToAdd);
 
-      const uuid = authService.emailToUuid.get(email);
+      const uuid = signupService.emailToUuid.get(email);
       let user: User;
       expect((user = await controller.confirmJoinUser({ uuid }))).toBeDefined();
       expect(user.email).toEqual(userToAdd.email);
