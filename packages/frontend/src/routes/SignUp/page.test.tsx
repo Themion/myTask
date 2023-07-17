@@ -32,7 +32,7 @@ describe('SignUp', () => {
     );
   });
 
-  it('should have form for signup', () => {
+  it('should have form for sign up', () => {
     const $input = screen.getByLabelText('E-Mail');
     expect($input).toBeDefined();
     expect($input instanceof HTMLInputElement).toEqual(true);

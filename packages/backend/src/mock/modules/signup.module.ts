@@ -9,14 +9,14 @@ import { EmailService } from '~/modules/email/email.service';
 import { GroupService } from '~/modules/group/group.service';
 
 type Props = {
-  signupService?: MockSignUpService;
+  signUpService?: MockSignUpService;
   databaseService?: DatabaseService;
   emailService?: MockEmailService;
   groupService?: MockGroupService;
 };
 
 const mockSignUpModule = async ({
-  signupService,
+  signUpService,
   databaseService,
   emailService,
   groupService,
@@ -29,7 +29,7 @@ const mockSignUpModule = async ({
   if (groupService) providers.push(GroupService);
 
   // Controller의 Unit Test만 고려한 상태. integration test를 진행할 경우 값을 바꿔주어야 함
-  const useController = !!signupService && !!emailService;
+  const useController = !!signUpService && !!emailService;
 
   const moduleFactory = Test.createTestingModule({
     imports: [await mockConfigModule()],
@@ -38,7 +38,7 @@ const mockSignUpModule = async ({
   });
 
   if (emailService) moduleFactory.overrideProvider(EmailService).useValue(emailService);
-  if (signupService) moduleFactory.overrideProvider(SignUpService).useValue(signupService);
+  if (signUpService) moduleFactory.overrideProvider(SignUpService).useValue(signUpService);
   if (databaseService) moduleFactory.overrideProvider(DatabaseService).useValue(databaseService);
   if (groupService) moduleFactory.overrideProvider(GroupService).useValue(groupService);
 
