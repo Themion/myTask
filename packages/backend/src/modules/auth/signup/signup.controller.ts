@@ -4,7 +4,7 @@ import { EmailService } from '~/modules/email/email.service';
 import { GroupService } from '~/modules/group/group.service';
 import { SignupService } from './signup.service';
 
-@Controller('signup')
+@Controller()
 export class SignupController {
   constructor(
     private readonly signupService: SignupService,
