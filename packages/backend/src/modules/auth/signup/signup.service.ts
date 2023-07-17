@@ -1,4 +1,4 @@
-import { ConfirmJoinUserDTO, RequestJoinUserDTO, users } from '@my-task/common';
+import { ConfirmSignUpUserDTO, RequestSignUpUserDTO, users } from '@my-task/common';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { DatabaseService } from '~/modules/database/database.service';
@@ -6,7 +6,7 @@ import { DatabaseService } from '~/modules/database/database.service';
 @Injectable()
 export class SignUpService {
   private readonly db;
-  private readonly uuidToEmail = new Map<string, RequestJoinUserDTO>();
+  private readonly uuidToEmail = new Map<string, RequestSignUpUserDTO>();
   private readonly pendingEmail = new Set<string>();
 
   constructor(databaseService: DatabaseService) {
@@ -17,7 +17,7 @@ export class SignUpService {
     return this.db.select().from(users).execute();
   }
 
-  requestSignUpUser(dto: RequestJoinUserDTO) {
+  requestSignUpUser(dto: RequestSignUpUserDTO) {
     if (this.pendingEmail.has(dto.email)) throw new BadRequestException('Emali already exists!');
 
     const uuid = uuidv4();
@@ -27,11 +27,11 @@ export class SignUpService {
     return uuid;
   }
 
-  async confirmSignUpUser(dto: ConfirmJoinUserDTO) {
+  async confirmSignUpUser(dto: ConfirmSignUpUserDTO) {
     if (!this.uuidToEmail.has(dto.uuid))
       throw new BadRequestException('UUID cannot be found: Wrong DTO!');
 
-    const data = this.uuidToEmail.get(dto.uuid) as RequestJoinUserDTO;
+    const data = this.uuidToEmail.get(dto.uuid) as RequestSignUpUserDTO;
     this.uuidToEmail.delete(dto.uuid);
     this.pendingEmail.delete(data.email);
 
