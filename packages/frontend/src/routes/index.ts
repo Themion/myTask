@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import welcomeRouteObject from '~/routes/Welcome';
-import joinRouteObject from './Join';
 import rootRouteObject from './Root';
+import signUpRouteObject from './SignUp';
 
-const router = createBrowserRouter([rootRouteObject, joinRouteObject, welcomeRouteObject]);
+const router = createBrowserRouter([rootRouteObject, signUpRouteObject, welcomeRouteObject]);
 
 export default router;
