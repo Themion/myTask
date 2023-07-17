@@ -1,13 +1,29 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { RouterModule, Routes } from '@nestjs/core';
 import { envPaths } from '~/constants';
 import { validate } from '~/env';
 import { AppController } from '~/modules/app.controller';
 import { AppService } from '~/modules/app.service';
+import { SignUpModule } from '~/modules/auth/signup/signup.module';
 import { DatabaseModule } from '~/modules/database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { EmailModule } from './email/email.module';
 import { GroupModule } from './group/group.module';
+
+// sign up / sign in / sign out
+const router: Routes = [
+  {
+    path: 'auth',
+    module: AuthModule,
+    children: [
+      {
+        path: 'signup',
+        module: SignUpModule,
+      },
+    ],
+  },
+];
 
 @Module({
   imports: [
@@ -19,9 +35,11 @@ import { GroupModule } from './group/group.module';
       validate,
     }),
     DatabaseModule,
-    AuthModule,
     EmailModule,
     GroupModule,
+    AuthModule,
+    SignUpModule,
+    RouterModule.register(router),
   ],
   controllers: [AppController],
   providers: [AppService],
