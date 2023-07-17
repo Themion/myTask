@@ -3,7 +3,7 @@ import { FormEventHandler, useRef, useState } from 'react';
 import { requestSignUpUser } from '~/api';
 import './style.css';
 
-const Join = () => {
+const SignUp = () => {
   const [statusText, setStatusText] = useState('');
   const emailInputRef = useRef<HTMLInputElement>(null);
   const joinMutation = requestSignUpUser({
@@ -33,4 +33,4 @@ const Join = () => {
   );
 };
 
-export default Join;
+export default SignUp;

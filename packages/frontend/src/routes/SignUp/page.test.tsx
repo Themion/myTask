@@ -3,9 +3,9 @@ import { RenderResult, fireEvent, render, waitFor } from '@testing-library/react
 import { describe, expect, it } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
 import { server } from '~/mock';
-import Join from './page';
+import SignUp from './page';
 
-describe('Join', () => {
+describe('SignUp', () => {
   let screen: RenderResult;
   const testQueryClient = new QueryClient({
     defaultOptions: {
@@ -26,7 +26,7 @@ describe('Join', () => {
   beforeEach(() => {
     screen = render(
       <QueryClientProvider client={testQueryClient}>
-        <Join />
+        <SignUp />
       </QueryClientProvider>,
       {},
     );
