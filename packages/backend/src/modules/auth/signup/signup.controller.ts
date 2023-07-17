@@ -20,7 +20,7 @@ export class SignUpController {
 
     const uuid = this.signupService.requestSignUpUser(data);
     // E-Mail 송신은 동기적으로 진행할 필요 없음
-    this.emailService.sendJoinEmail(data.email, uuid);
+    this.emailService.sendSignUpEmail(data.email, uuid);
 
     return data;
   }
