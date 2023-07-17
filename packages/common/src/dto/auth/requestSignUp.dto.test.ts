@@ -2,9 +2,9 @@ import { expect } from 'chai';
 import { describe } from 'mocha';
 import { ZodIssueCode } from 'zod';
 import { JsonObject } from '../../types';
-import { RequestSignUpUserDTO, requestSignUpUserDTO } from './requestSignUpUser';
+import { RequestSignUpDTO, requestSignUpDTOSchema } from './requestSignUp.dto';
 
-describe('requestSignUpUserDTO', () => {
+describe('requestSignUpDTOSchema', () => {
   let dto: JsonObject;
 
   beforeEach(() => {
@@ -12,7 +12,7 @@ describe('requestSignUpUserDTO', () => {
   });
 
   it('should work', () => {
-    expect(() => requestSignUpUserDTO.parse(dto))
+    expect(() => requestSignUpDTOSchema.parse(dto))
       .not.throw()
       .equal(dto);
   });
@@ -20,27 +20,27 @@ describe('requestSignUpUserDTO', () => {
   describe('should throw error with', () => {
     it('no email field', () => {
       delete dto.email;
-      expect(() => requestSignUpUserDTO.parse(dto)).throw(ZodIssueCode.invalid_type);
+      expect(() => requestSignUpDTOSchema.parse(dto)).throw(ZodIssueCode.invalid_type);
     });
 
     it('invalid string', () => {
       dto.email = 'invalid.email';
-      expect(() => requestSignUpUserDTO.parse(dto)).throw(ZodIssueCode.invalid_string);
+      expect(() => requestSignUpDTOSchema.parse(dto)).throw(ZodIssueCode.invalid_string);
     });
 
     it('email with invalid domain', () => {
       dto.email = 'invalid@email.';
-      expect(() => requestSignUpUserDTO.parse(dto)).throw(ZodIssueCode.invalid_string);
+      expect(() => requestSignUpDTOSchema.parse(dto)).throw(ZodIssueCode.invalid_string);
     });
 
     it('email with invalid identifier', () => {
       dto.email = '@invalid.email';
-      expect(() => requestSignUpUserDTO.parse(dto)).throw(ZodIssueCode.invalid_string);
+      expect(() => requestSignUpDTOSchema.parse(dto)).throw(ZodIssueCode.invalid_string);
     });
   });
 });
 
-describe('RequestSignUpUserDTO', () => {
+describe('RequestSignUpDTO', () => {
   let dto: JsonObject;
 
   beforeEach(() => {
@@ -48,7 +48,7 @@ describe('RequestSignUpUserDTO', () => {
   });
 
   it('should work', () => {
-    const parsedDto: RequestSignUpUserDTO = requestSignUpUserDTO.parse(dto);
+    const parsedDto: RequestSignUpDTO = requestSignUpDTOSchema.parse(dto);
     expect(parsedDto).deep.equal(dto);
   });
 });

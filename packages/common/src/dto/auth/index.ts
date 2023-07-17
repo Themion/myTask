@@ -1,2 +1,2 @@
-export * from './confirmSignUpUser';
-export * from './requestSignUpUser';
+export * from './confirmSignUp.dto';
+export * from './requestSignUp.dto';

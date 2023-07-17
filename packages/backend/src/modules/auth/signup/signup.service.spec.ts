@@ -1,4 +1,4 @@
-import { RequestSignUpUserDTO, User } from '@my-task/common';
+import { RequestSignUpDTO, User } from '@my-task/common';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import { mockDatabaseModule, mockSignUpModule } from '~/mock';
@@ -29,7 +29,7 @@ describe('SignUpService', () => {
 
   describe('requestSignUpUser', () => {
     it('should work (validation will be in controller)', () => {
-      const userToAdd: RequestSignUpUserDTO = { email: 'create@example.email' };
+      const userToAdd: RequestSignUpDTO = { email: 'create@example.email' };
       const result = service.requestSignUpUser(userToAdd);
       const parsedResult = z.string().uuid().safeParse(result);
       expect(parsedResult.success).toEqual(true);
@@ -37,7 +37,7 @@ describe('SignUpService', () => {
 
     describe('should throw error when', () => {
       it('pass same parameter', () => {
-        const userToAdd: RequestSignUpUserDTO = { email: 'duplicate@example.email' };
+        const userToAdd: RequestSignUpDTO = { email: 'duplicate@example.email' };
         service.requestSignUpUser(userToAdd);
         expect(() => service.requestSignUpUser(userToAdd)).toThrow();
       });
@@ -46,7 +46,7 @@ describe('SignUpService', () => {
 
   describe('confirmSignUpUser (validation will be in controller)', () => {
     it('should work', async () => {
-      const userToAdd: RequestSignUpUserDTO = { email: 'create@example.email' };
+      const userToAdd: RequestSignUpDTO = { email: 'create@example.email' };
       const uuid = service.requestSignUpUser(userToAdd);
 
       let createdUser: User = { id: -1, email: '' };
@@ -61,7 +61,7 @@ describe('SignUpService', () => {
       });
 
       it('pass same parameter', async () => {
-        const userToAdd: RequestSignUpUserDTO = { email: 'create@example.email' };
+        const userToAdd: RequestSignUpDTO = { email: 'create@example.email' };
         const uuid = service.requestSignUpUser(userToAdd);
 
         await service.confirmSignUpUser({ uuid });
