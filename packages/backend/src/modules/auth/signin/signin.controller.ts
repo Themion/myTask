@@ -1,4 +1,4 @@
-import { requestSignUpDTOSchema } from '@my-task/common';
+import { confirmSignInDTOSchema, requestSignUpDTOSchema } from '@my-task/common';
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EmailService } from '~/modules/email/email.service';
@@ -37,5 +37,16 @@ export class SignInController {
     this.sendSignInEmail(data.email, uuid);
 
     return data;
+  }
+
+  @Post('ack')
+  async confirmSignIn(@Body() body: any) {
+    const result = confirmSignInDTOSchema.safeParse(body);
+    if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
+    const { data } = result;
+
+    const newUser = await this.signInService.confirmSignIn(data);
+
+    return newUser;
   }
 }

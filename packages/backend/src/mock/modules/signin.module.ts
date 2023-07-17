@@ -4,15 +4,19 @@ import mockConfigModule from '~/mock/modules/config.module';
 import { MockEmailService, MockSignInService } from '~/mock/services';
 import { SignInController } from '~/modules/auth/signin/signin.controller';
 import { SignInService } from '~/modules/auth/signin/signin.service';
+import { DatabaseService } from '~/modules/database/database.service';
 import { EmailService } from '~/modules/email/email.service';
 
 type Props = {
   signInService?: MockSignInService;
+  databaseService?: DatabaseService;
   emailService?: MockEmailService;
 };
 
-const mockSignInModule = async ({ signInService, emailService }: Props) => {
+const mockSignInModule = async ({ signInService, databaseService, emailService }: Props) => {
   const providers: Provider[] = [SignInService];
+
+  if (databaseService) providers.push(DatabaseService);
   if (emailService) providers.push(EmailService);
 
   const useController = !!signInService;
@@ -24,6 +28,7 @@ const mockSignInModule = async ({ signInService, emailService }: Props) => {
     controllers,
   });
 
+  if (databaseService) moduleFactory.overrideProvider(DatabaseService).useValue(databaseService);
   if (emailService) moduleFactory.overrideProvider(EmailService).useValue(emailService);
   if (signInService) moduleFactory.overrideProvider(SignInService).useValue(signInService);
 
