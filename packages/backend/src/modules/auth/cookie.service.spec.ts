@@ -1,24 +1,22 @@
-import { Response } from 'express';
-import { MockResponse, createResponse } from 'node-mocks-http';
 import {
   ACCESS_TOKEN,
   ACCESS_TOKEN_LIFE_SPAN,
   REFRESH_TOKEN,
   REFRESH_TOKEN_LIFE_SPAN,
 } from '~/constants';
-import { mockAuthModule } from '~/mock';
+import { MockResponse, mockAuthModule, mockResponse } from '~/mock';
 import { CookieService } from '~/modules/auth/cookie.service';
 
 describe('CookieService', () => {
   let service: CookieService;
   let email: string;
-  let response: MockResponse<Response>;
+  let response: MockResponse;
 
   beforeEach(async () => {
     const module = await mockAuthModule();
     service = module.get<CookieService>(CookieService);
 
-    response = createResponse();
+    response = mockResponse();
     email = 'test@example.com';
   });
 
