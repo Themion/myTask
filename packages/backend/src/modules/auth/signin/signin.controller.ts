@@ -1,16 +1,19 @@
 import { confirmSignInDTOSchema, requestSignUpDTOSchema } from '@my-task/common';
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post, Res } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Response } from 'express';
+import { CookieService } from '~/modules/auth/cookie.service';
 import { EmailService } from '~/modules/email/email.service';
 import { Env } from '~/types';
 import { SignInService } from './signin.service';
 
-@Controller('SignIn')
+@Controller()
 export class SignInController {
   private readonly FE_ORIGIN: string;
 
   constructor(
     private readonly signInService: SignInService,
+    private readonly cookieService: CookieService,
     private readonly emailService: EmailService,
     configService: ConfigService<Env>,
   ) {
@@ -40,13 +43,14 @@ export class SignInController {
   }
 
   @Post('ack')
-  async confirmSignIn(@Body() body: any) {
+  async confirmSignIn(@Body() body: any, @Res({ passthrough: true }) res: Response) {
     const result = confirmSignInDTOSchema.safeParse(body);
     if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
     const { data } = result;
 
-    const newUser = await this.signInService.confirmSignIn(data);
+    const signedUser = await this.signInService.confirmSignIn(data);
+    this.cookieService.setCookie(signedUser.email, res);
 
-    return newUser;
+    return signedUser;
   }
 }

@@ -6,7 +6,7 @@ import { GroupService } from '~/modules/group/group.service';
 import { Env } from '~/types';
 import { SignUpService } from './signup.service';
 
-@Controller('signup')
+@Controller()
 export class SignUpController {
   private readonly FE_ORIGIN: string;
 
