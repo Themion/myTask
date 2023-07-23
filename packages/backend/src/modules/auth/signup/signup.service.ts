@@ -17,7 +17,7 @@ export class SignUpService {
     return this.db.select().from(users).execute();
   }
 
-  requestSignUpUser(dto: RequestSignUpDTO) {
+  requestSignUp(dto: RequestSignUpDTO) {
     if (this.pendingEmail.has(dto.email)) throw new BadRequestException('Emali already exists!');
 
     const uuid = uuidv4();
@@ -27,7 +27,7 @@ export class SignUpService {
     return uuid;
   }
 
-  async confirmSignUpUser(dto: ConfirmSignUpDTO) {
+  async confirmSignUp(dto: ConfirmSignUpDTO) {
     if (!this.uuidToEmail.has(dto.uuid))
       throw new BadRequestException('UUID cannot be found: Wrong DTO!');
 
