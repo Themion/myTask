@@ -1,4 +1,5 @@
 import { RouteObject } from 'react-router-dom';
+import SignInConfirm from './confirm';
 import SignInRequest from './request';
 
 const signInRouteObject: RouteObject = {
@@ -7,6 +8,10 @@ const signInRouteObject: RouteObject = {
     {
       path: '',
       element: <SignInRequest />,
+    },
+    {
+      path: ':uuid',
+      element: <SignInConfirm />,
     },
   ],
 };
