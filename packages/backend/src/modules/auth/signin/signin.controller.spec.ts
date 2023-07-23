@@ -1,13 +1,13 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { MockSignInService, mockSignInModule, mockSignInService } from '~/mock';
 import { SignInController } from './signin.controller';
 
 describe('SignInController', () => {
+  let signInService: MockSignInService;
   let controller: SignInController;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [SignInController],
-    }).compile();
+    signInService = await mockSignInService();
+    const module = await mockSignInModule({ signInService });
 
     controller = module.get<SignInController>(SignInController);
   });
