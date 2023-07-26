@@ -6,12 +6,11 @@ import { GroupService } from './group.service';
 
 describe('GroupService', () => {
   let service: GroupService;
-  let databaseService: DatabaseService;
   let creator: User;
 
   beforeEach(async () => {
     const databaseModule = await mockDatabaseModule();
-    databaseService = databaseModule.get<DatabaseService>(DatabaseService);
+    const databaseService = databaseModule.get<DatabaseService>(DatabaseService);
     await databaseService.onModuleInit();
 
     const module = await mockGroupModule({ databaseService });

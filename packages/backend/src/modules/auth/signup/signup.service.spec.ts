@@ -7,6 +7,8 @@ import { SignUpService } from './signup.service';
 
 describe('SignUpService', () => {
   let service: SignUpService;
+  let userToAdd: RequestSignUpDTO;
+  let uuid: string;
 
   beforeEach(async () => {
     const databaseModule = await mockDatabaseModule();
@@ -17,19 +19,16 @@ describe('SignUpService', () => {
     service = module.get<SignUpService>(SignUpService);
   });
 
+  beforeEach(() => {
+    userToAdd = { email: 'create@example.email' };
+  });
+
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  describe('readAll', () => {
-    it('should work', async () => {
-      await expect(service.readAll()).resolves.not.toThrow();
-    });
-  });
-
   describe('requestSignUp', () => {
     it('should work (validation will be in controller)', () => {
-      const userToAdd: RequestSignUpDTO = { email: 'create@example.email' };
       const result = service.requestSignUp(userToAdd);
       const parsedResult = z.string().uuid().safeParse(result);
       expect(parsedResult.success).toEqual(true);
@@ -37,7 +36,7 @@ describe('SignUpService', () => {
 
     describe('should throw error when', () => {
       it('pass same parameter', () => {
-        const userToAdd: RequestSignUpDTO = { email: 'duplicate@example.email' };
+        userToAdd = { email: 'duplicate@example.email' };
         service.requestSignUp(userToAdd);
         expect(() => service.requestSignUp(userToAdd)).toThrow();
       });
@@ -45,10 +44,11 @@ describe('SignUpService', () => {
   });
 
   describe('confirmSignUp (validation will be in controller)', () => {
-    it('should work', async () => {
-      const userToAdd: RequestSignUpDTO = { email: 'create@example.email' };
-      const uuid = service.requestSignUp(userToAdd);
+    beforeEach(() => {
+      uuid = service.requestSignUp(userToAdd);
+    });
 
+    it('should work', async () => {
       let createdUser: User = { id: -1, email: '' };
       expect((createdUser = await service.confirmSignUp({ uuid }))).toBeDefined();
       expect(createdUser.email).toEqual(userToAdd.email);
@@ -61,9 +61,6 @@ describe('SignUpService', () => {
       });
 
       it('pass same parameter', async () => {
-        const userToAdd: RequestSignUpDTO = { email: 'create@example.email' };
-        const uuid = service.requestSignUp(userToAdd);
-
         await service.confirmSignUp({ uuid });
         await expect(async () => service.confirmSignUp({ uuid })).rejects.toThrow();
       });
