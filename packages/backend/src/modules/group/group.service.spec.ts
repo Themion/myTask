@@ -1,5 +1,4 @@
 import { User, users } from '@my-task/common';
-import { desc } from 'drizzle-orm';
 import { DatabaseError } from 'pg';
 import { mockDatabaseModule, mockGroupModule } from '~/mock';
 import { DatabaseService } from '~/modules/database/database.service';
@@ -18,7 +17,9 @@ describe('GroupService', () => {
     const module = await mockGroupModule({ databaseService });
     service = module.get<GroupService>(GroupService);
 
-    creator = (await databaseService.db.select().from(users).orderBy(desc(users.id)).limit(1))[0];
+    creator = (
+      await databaseService.db.insert(users).values({ email: 'test@example.com' }).returning()
+    )[0];
   });
 
   it('should be defined', () => {

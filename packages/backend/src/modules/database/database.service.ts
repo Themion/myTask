@@ -15,6 +15,14 @@ export class DatabaseService implements OnModuleInit {
 
   async onModuleInit() {
     const migrationsFolder = resolve(process.cwd(), 'drizzle');
+
+    await Promise.allSettled(
+      Object.values(schema).map((table) =>
+        // this._db.execute(sql`drop table if exists public.${table}`),
+        this._db.delete(table).returning(),
+      ),
+    );
+
     await migrate(this.db, { migrationsFolder });
   }
 
