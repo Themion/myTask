@@ -7,6 +7,7 @@ import { SignInService } from './signin.service';
 
 describe('SignInService', () => {
   let service: SignInService;
+  let userToAdd: RequestSignInDTO;
 
   beforeEach(async () => {
     const databaseModule = await mockDatabaseModule();
@@ -18,14 +19,16 @@ describe('SignInService', () => {
     service = module.get<SignInService>(SignInService);
   });
 
+  beforeEach(() => {
+    userToAdd = { email: 'create@example.email' };
+  });
+
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
   describe('requestSignIn', () => {
     it('should work (validation will be done in controller)', async () => {
-      const userToAdd: RequestSignInDTO = { email: 'create@example.email' };
-
       const result = await service.requestSignIn(userToAdd);
       const parsedResult = z.string().uuid().safeParse(result);
       expect(parsedResult.success).toEqual(true);
@@ -33,9 +36,10 @@ describe('SignInService', () => {
   });
 
   describe('confirmSignIn (validation will be in controller)', () => {
+    let uuid: string;
+
     it('should work', async () => {
-      const userToAdd: RequestSignInDTO = { email: 'create@example.email' };
-      const uuid = await service.requestSignIn(userToAdd);
+      uuid = await service.requestSignIn(userToAdd);
 
       let createdUser: RequestSignUpDTO = { email: '' };
       expect((createdUser = await service.confirmSignIn({ uuid }))).toBeDefined();
@@ -44,7 +48,7 @@ describe('SignInService', () => {
 
     describe('should throw error when', () => {
       it('non-existing uuid', async () => {
-        const uuid = uuidv4();
+        uuid = uuidv4();
         await expect(async () => await service.confirmSignIn({ uuid })).rejects.toThrow();
       });
     });

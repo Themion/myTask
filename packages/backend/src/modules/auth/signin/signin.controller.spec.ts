@@ -61,31 +61,31 @@ describe('SignInController', () => {
 
   describe('confirmSignIn', () => {
     let response: MockResponse;
+    let userToAdd: RequestSignUpDTO;
+    let uuid: string;
+    let user: RequestSignUpDTO;
 
     beforeEach(() => {
       response = mockResponse();
+      userToAdd = { email: 'create@example.email' };
     });
 
     it('should work', async () => {
-      const userToAdd = { email: 'create@example.email' };
       const { email } = await controller.requestSignIn(userToAdd);
 
-      const uuid = signInService.emailToUuid.get(email);
-      let user: RequestSignUpDTO;
+      uuid = signInService.emailToUuid.get(email) as string;
       expect((user = await controller.confirmSignIn({ uuid }, response))).toBeDefined();
       expect(user.email).toEqual(userToAdd.email);
     });
 
     describe('should throw error with', () => {
       it('wrong dto', async () => {
-        const wrongUUID = 'this is not uuid';
-        await expect(async () =>
-          controller.confirmSignIn({ uuid: wrongUUID }, response),
-        ).rejects.toThrow();
+        uuid = 'this is not uuid';
+        await expect(async () => controller.confirmSignIn({ uuid }, response)).rejects.toThrow();
       });
 
       it('non-existing uuid', async () => {
-        const uuid = uuidv4();
+        uuid = uuidv4();
         await expect(async () => controller.confirmSignIn({ uuid }, response)).rejects.toThrow();
       });
     });

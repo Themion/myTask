@@ -13,10 +13,6 @@ export class SignUpService {
     this.db = databaseService.db;
   }
 
-  readAll() {
-    return this.db.select().from(users).execute();
-  }
-
   requestSignUp(dto: RequestSignUpDTO) {
     if (this.pendingEmail.has(dto.email)) throw new BadRequestException('Emali already exists!');
 
