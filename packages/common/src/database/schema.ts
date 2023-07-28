@@ -1,6 +1,14 @@
 import { integer, pgTable, serial, varchar } from 'drizzle-orm/pg-core';
-import groups from './group.schema';
-import users from './user.schema';
+
+const users = pgTable('users', {
+  id: serial('id').primaryKey(),
+  email: varchar('email', { length: 320 }),
+});
+
+const groups = pgTable('groups', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 20 }),
+});
 
 const members = pgTable('members', {
   id: serial('id').primaryKey(),
@@ -13,4 +21,4 @@ const members = pgTable('members', {
   name: varchar('name', { length: 20 }).default('member'),
 });
 
-export default members;
+export { users, groups, members };
