@@ -50,7 +50,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@typescript-eslint/eslint-plugin", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:5.59.0"],\
             ["@typescript-eslint/parser", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:5.59.0"],\
-            ["drizzle-orm", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:0.27.0"],\
+            ["drizzle-orm", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:0.27.2"],\
             ["eslint", "npm:8.44.0"],\
             ["eslint-config-airbnb-base", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:15.0.0"],\
             ["eslint-config-airbnb-typescript", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:17.0.0"],\
@@ -1000,6 +1000,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@cspotcode/source-map-support", "npm:0.8.1"],\
             ["@jridgewell/trace-mapping", "npm:0.3.9"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@drizzle-team/studio", [\
+        ["npm:0.0.5", {\
+          "packageLocation": "./.yarn/cache/@drizzle-team-studio-npm-0.0.5-a0d290a151-0b8883f326.zip/node_modules/@drizzle-team/studio/",\
+          "packageDependencies": [\
+            ["@drizzle-team/studio", "npm:0.0.5"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -2104,8 +2113,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/eslint-plugin", "virtual:e96441f8d0c35e985c5ba196554d76a3c79a59df59d90231dbf951dcf460b16cfac56e994239cc949b1697a8447f744cad17f1769651344951e0398e16836eb5#npm:5.59.0"],\
             ["dotenv", "npm:16.3.1"],\
             ["dotenv-expand", "npm:10.0.0"],\
-            ["drizzle-kit", "npm:0.19.2"],\
-            ["drizzle-orm", "virtual:e96441f8d0c35e985c5ba196554d76a3c79a59df59d90231dbf951dcf460b16cfac56e994239cc949b1697a8447f744cad17f1769651344951e0398e16836eb5#npm:0.27.0"],\
+            ["drizzle-kit", "npm:0.19.12"],\
+            ["drizzle-orm", "virtual:e96441f8d0c35e985c5ba196554d76a3c79a59df59d90231dbf951dcf460b16cfac56e994239cc949b1697a8447f744cad17f1769651344951e0398e16836eb5#npm:0.27.2"],\
             ["eslint-plugin-import", "virtual:ec460f7b9669e9526be8d95ae865879fa75c18cc6dd56e9b411673f447efcb78b543355086075a52c7ac25d888e2171e528ed008b24aaf36bb94fbde779182d8#npm:2.27.5"],\
             ["jest", "virtual:e96441f8d0c35e985c5ba196554d76a3c79a59df59d90231dbf951dcf460b16cfac56e994239cc949b1697a8447f744cad17f1769651344951e0398e16836eb5#npm:29.5.0"],\
             ["node-mocks-http", "npm:1.12.2"],\
@@ -2137,7 +2146,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/uuid", "npm:9.0.2"],\
             ["@typescript-eslint/eslint-plugin", "virtual:ec460f7b9669e9526be8d95ae865879fa75c18cc6dd56e9b411673f447efcb78b543355086075a52c7ac25d888e2171e528ed008b24aaf36bb94fbde779182d8#npm:5.59.0"],\
             ["chai", "npm:4.3.7"],\
-            ["drizzle-orm", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:0.27.0"],\
+            ["drizzle-orm", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:0.27.2"],\
             ["eslint-plugin-import", "virtual:ec460f7b9669e9526be8d95ae865879fa75c18cc6dd56e9b411673f447efcb78b543355086075a52c7ac25d888e2171e528ed008b24aaf36bb94fbde779182d8#npm:2.27.5"],\
             ["mocha", "npm:10.2.0"],\
             ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"],\
@@ -5984,16 +5993,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["drizzle-kit", [\
-        ["npm:0.19.2", {\
-          "packageLocation": "./.yarn/cache/drizzle-kit-npm-0.19.2-9199daa5cf-a7cc7bafd5.zip/node_modules/drizzle-kit/",\
+        ["npm:0.19.12", {\
+          "packageLocation": "./.yarn/cache/drizzle-kit-npm-0.19.12-75eafc5db9-36cbcbd553.zip/node_modules/drizzle-kit/",\
           "packageDependencies": [\
-            ["drizzle-kit", "npm:0.19.2"],\
+            ["drizzle-kit", "npm:0.19.12"],\
+            ["@drizzle-team/studio", "npm:0.0.5"],\
             ["@esbuild-kit/esm-loader", "npm:2.5.5"],\
             ["camelcase", "npm:7.0.1"],\
             ["chalk", "npm:5.2.0"],\
             ["commander", "npm:9.5.0"],\
             ["esbuild", "npm:0.18.6"],\
-            ["esbuild-register", "virtual:9199daa5cf886ce7b09d3a1f649d141e5765989a38a7830aea84e314ac4e99ed70c777224989a61eb4ab12d9ec50b86d5e4e2236e0f99afc83956d490c50dc24#npm:3.4.2"],\
+            ["esbuild-register", "virtual:75eafc5db9b22530f65b430d5bab6f1444623ac2618d7be7507bb302f012bb355e1b62badef82fc9953e8ace92f58e939672fceea06d323881e6c4aec4ac5ffe#npm:3.4.2"],\
             ["glob", "npm:8.1.0"],\
             ["hanji", "npm:0.0.5"],\
             ["json-diff", "npm:0.9.0"],\
@@ -6004,17 +6014,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["drizzle-orm", [\
-        ["npm:0.27.0", {\
-          "packageLocation": "./.yarn/cache/drizzle-orm-npm-0.27.0-ae14dd01db-4d2f98993f.zip/node_modules/drizzle-orm/",\
+        ["npm:0.27.2", {\
+          "packageLocation": "./.yarn/cache/drizzle-orm-npm-0.27.2-5b1b3ec50a-a61d39bdd1.zip/node_modules/drizzle-orm/",\
           "packageDependencies": [\
-            ["drizzle-orm", "npm:0.27.0"]\
+            ["drizzle-orm", "npm:0.27.2"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:0.27.0", {\
-          "packageLocation": "./.yarn/__virtual__/drizzle-orm-virtual-e82f331850/0/cache/drizzle-orm-npm-0.27.0-ae14dd01db-4d2f98993f.zip/node_modules/drizzle-orm/",\
+        ["virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:0.27.2", {\
+          "packageLocation": "./.yarn/__virtual__/drizzle-orm-virtual-f0384cf2d6/0/cache/drizzle-orm-npm-0.27.2-5b1b3ec50a-a61d39bdd1.zip/node_modules/drizzle-orm/",\
           "packageDependencies": [\
-            ["drizzle-orm", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:0.27.0"],\
+            ["drizzle-orm", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:0.27.2"],\
             ["@aws-sdk/client-rds-data", null],\
             ["@cloudflare/workers-types", null],\
             ["@libsql/client", null],\
@@ -6084,10 +6094,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["virtual:e96441f8d0c35e985c5ba196554d76a3c79a59df59d90231dbf951dcf460b16cfac56e994239cc949b1697a8447f744cad17f1769651344951e0398e16836eb5#npm:0.27.0", {\
-          "packageLocation": "./.yarn/__virtual__/drizzle-orm-virtual-70b1f48c40/0/cache/drizzle-orm-npm-0.27.0-ae14dd01db-4d2f98993f.zip/node_modules/drizzle-orm/",\
+        ["virtual:e96441f8d0c35e985c5ba196554d76a3c79a59df59d90231dbf951dcf460b16cfac56e994239cc949b1697a8447f744cad17f1769651344951e0398e16836eb5#npm:0.27.2", {\
+          "packageLocation": "./.yarn/__virtual__/drizzle-orm-virtual-dc17031811/0/cache/drizzle-orm-npm-0.27.2-5b1b3ec50a-a61d39bdd1.zip/node_modules/drizzle-orm/",\
           "packageDependencies": [\
-            ["drizzle-orm", "virtual:e96441f8d0c35e985c5ba196554d76a3c79a59df59d90231dbf951dcf460b16cfac56e994239cc949b1697a8447f744cad17f1769651344951e0398e16836eb5#npm:0.27.0"],\
+            ["drizzle-orm", "virtual:e96441f8d0c35e985c5ba196554d76a3c79a59df59d90231dbf951dcf460b16cfac56e994239cc949b1697a8447f744cad17f1769651344951e0398e16836eb5#npm:0.27.2"],\
             ["@aws-sdk/client-rds-data", null],\
             ["@cloudflare/workers-types", null],\
             ["@libsql/client", null],\
@@ -6518,10 +6528,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:9199daa5cf886ce7b09d3a1f649d141e5765989a38a7830aea84e314ac4e99ed70c777224989a61eb4ab12d9ec50b86d5e4e2236e0f99afc83956d490c50dc24#npm:3.4.2", {\
-          "packageLocation": "./.yarn/__virtual__/esbuild-register-virtual-ecf2d419f7/0/cache/esbuild-register-npm-3.4.2-c873c16acc-f65d1ccb58.zip/node_modules/esbuild-register/",\
+        ["virtual:75eafc5db9b22530f65b430d5bab6f1444623ac2618d7be7507bb302f012bb355e1b62badef82fc9953e8ace92f58e939672fceea06d323881e6c4aec4ac5ffe#npm:3.4.2", {\
+          "packageLocation": "./.yarn/__virtual__/esbuild-register-virtual-a53b2a224a/0/cache/esbuild-register-npm-3.4.2-c873c16acc-f65d1ccb58.zip/node_modules/esbuild-register/",\
           "packageDependencies": [\
-            ["esbuild-register", "virtual:9199daa5cf886ce7b09d3a1f649d141e5765989a38a7830aea84e314ac4e99ed70c777224989a61eb4ab12d9ec50b86d5e4e2236e0f99afc83956d490c50dc24#npm:3.4.2"],\
+            ["esbuild-register", "virtual:75eafc5db9b22530f65b430d5bab6f1444623ac2618d7be7507bb302f012bb355e1b62badef82fc9953e8ace92f58e939672fceea06d323881e6c4aec4ac5ffe#npm:3.4.2"],\
             ["@types/esbuild", null],\
             ["debug", "virtual:352060d453a801a0fd16b073afb56a2607e33f96a5ff7faf9351853a737843ea6ad854442954d36ef1f89461751ed94f005ea67c746b39723d1da041a244f7d2#npm:4.3.4"],\
             ["esbuild", "npm:0.18.6"]\
@@ -10359,7 +10369,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["my-task", "workspace:."],\
             ["@typescript-eslint/eslint-plugin", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:5.59.0"],\
             ["@typescript-eslint/parser", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:5.59.0"],\
-            ["drizzle-orm", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:0.27.0"],\
+            ["drizzle-orm", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:0.27.2"],\
             ["eslint", "npm:8.44.0"],\
             ["eslint-config-airbnb-base", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:15.0.0"],\
             ["eslint-config-airbnb-typescript", "virtual:a16ae7f139ed3027b91dedc7271f0dba1d11ff76ae1acdf45c56d603088952facf7a0dd6438de36245f734e7f1860aee3e0a3834922f39b79cdbecb14afe37da#npm:17.0.0"],\

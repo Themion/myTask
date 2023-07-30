@@ -527,6 +527,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@drizzle-team/studio@npm:^0.0.5":
+  version: 0.0.5
+  resolution: "@drizzle-team/studio@npm:0.0.5"
+  checksum: 0b8883f326aebe6f9c8912fca33be6369568a5617fb1a0f4211add5f2f05c4db9450ffd265de29ac1a5891b592b99dc54893131ac43e3c72517c4978c02811fd
+  languageName: node
+  linkType: hard
+
 "@esbuild-kit/core-utils@npm:^3.0.0":
   version: 3.1.0
   resolution: "@esbuild-kit/core-utils@npm:3.1.0"
@@ -1499,8 +1506,8 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.59.0
     dotenv: ^16.3.1
     dotenv-expand: ^10.0.0
-    drizzle-kit: ^0.19.2
-    drizzle-orm: ^0.27.0
+    drizzle-kit: ^0.19.12
+    drizzle-orm: ^0.27.2
     eslint-plugin-import: ^2.27.5
     jest: 29.5.0
     node-mocks-http: ^1.12.2
@@ -1530,7 +1537,7 @@ __metadata:
     "@types/uuid": ^9.0.2
     "@typescript-eslint/eslint-plugin": ^5.59.0
     chai: ^4.3.7
-    drizzle-orm: ^0.27.0
+    drizzle-orm: ^0.27.2
     eslint-plugin-import: ^2.27.5
     mocha: ^10.2.0
     typescript: ^5.0.4
@@ -4376,10 +4383,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"drizzle-kit@npm:^0.19.2":
-  version: 0.19.2
-  resolution: "drizzle-kit@npm:0.19.2"
+"drizzle-kit@npm:^0.19.12":
+  version: 0.19.12
+  resolution: "drizzle-kit@npm:0.19.12"
   dependencies:
+    "@drizzle-team/studio": ^0.0.5
     "@esbuild-kit/esm-loader": ^2.5.5
     camelcase: ^7.0.1
     chalk: ^5.2.0
@@ -4393,13 +4401,13 @@ __metadata:
     zod: ^3.20.2
   bin:
     drizzle-kit: index.cjs
-  checksum: a7cc7bafd5c3330b8e94555d82f2ff809d63fdc33cde8a6e7d8843073f8cb69588c4f9900ec3fde7ebcb79d8b3aed566bbd862065f09367418653ca5c606c3bf
+  checksum: 36cbcbd5530a76c652fa1db7df82e644c15ac6681a42c7c578c2b7c6d51930f64360e93b467e50caad7ff84f4f244ee0971bc4583b2c7b52c0b7fad002a6c008
   languageName: node
   linkType: hard
 
-"drizzle-orm@npm:^0.27.0":
-  version: 0.27.0
-  resolution: "drizzle-orm@npm:0.27.0"
+"drizzle-orm@npm:^0.27.2":
+  version: 0.27.2
+  resolution: "drizzle-orm@npm:0.27.2"
   peerDependencies:
     "@aws-sdk/client-rds-data": ">=3"
     "@cloudflare/workers-types": ">=3"
@@ -4459,7 +4467,7 @@ __metadata:
       optional: true
     sqlite3:
       optional: true
-  checksum: 4d2f98993f1d7d26e05bcdb5266bf50e3718c6dca953be4e39195231dc0922ce31588f161057ab8a760912e8ae89fadc1eb8ef30cb315ca4327f09d62b52d562
+  checksum: a61d39bdd16c8038441829e9ecbf14b91738fab0ef2e89f6deb6b4a02c3ff56054f7898180b4a83eac014a2520994bdde75cf2be772ee8cb3c21ab6b1ed9b601
   languageName: node
   linkType: hard
 
@@ -8067,7 +8075,7 @@ __metadata:
   dependencies:
     "@typescript-eslint/eslint-plugin": ^5.59.0
     "@typescript-eslint/parser": ^5.59.0
-    drizzle-orm: ^0.27.0
+    drizzle-orm: ^0.27.2
     eslint: ^8.44.0
     eslint-config-airbnb-base: ^15.0.0
     eslint-config-airbnb-typescript: ^17.0.0
