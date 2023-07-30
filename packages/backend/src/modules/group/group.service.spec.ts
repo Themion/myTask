@@ -7,18 +7,24 @@ import { GroupService } from './group.service';
 describe('GroupService', () => {
   let service: GroupService;
   let creator: User;
+  let databaseService: DatabaseService;
 
   beforeEach(async () => {
     const databaseModule = await mockDatabaseModule();
-    const databaseService = databaseModule.get<DatabaseService>(DatabaseService);
+    databaseService = databaseModule.get<DatabaseService>(DatabaseService);
     await databaseService.onModuleInit();
 
     const module = await mockGroupModule({ databaseService });
     service = module.get<GroupService>(GroupService);
+  });
 
-    creator = (
-      await databaseService.db.insert(users).values({ email: 'test@example.com' }).returning()
-    )[0];
+  beforeEach(async () => {
+    const creatorList = await databaseService.db
+      .insert(users)
+      .values({ email: 'test@example.com' })
+      .onConflictDoNothing()
+      .returning();
+    if (creatorList.length > 0) creator = creatorList[0];
   });
 
   it('should be defined', () => {

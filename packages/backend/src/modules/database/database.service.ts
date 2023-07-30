@@ -1,4 +1,4 @@
-import { schema } from '@my-task/common';
+import { relation, schema } from '@my-task/common';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
@@ -10,7 +10,12 @@ export class DatabaseService implements OnModuleInit {
   private readonly _db;
 
   constructor(databaseProvider: DatabaseProvider) {
-    this._db = drizzle(databaseProvider.pool, { schema });
+    this._db = drizzle(databaseProvider.pool, {
+      schema: {
+        ...schema,
+        ...relation,
+      },
+    });
   }
 
   async onModuleInit() {
