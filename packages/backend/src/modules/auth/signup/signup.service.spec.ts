@@ -1,4 +1,4 @@
-import { RequestSignUpDTO, User } from '@my-task/common';
+import { RequestSignUpDTO, User, users } from '@my-task/common';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import { mockDatabaseModule, mockSignUpModule } from '~/mock';
@@ -9,10 +9,11 @@ describe('SignUpService', () => {
   let service: SignUpService;
   let userToAdd: RequestSignUpDTO;
   let uuid: string;
+  let databaseService: DatabaseService;
 
   beforeEach(async () => {
     const databaseModule = await mockDatabaseModule();
-    const databaseService = databaseModule.get<DatabaseService>(DatabaseService);
+    databaseService = databaseModule.get<DatabaseService>(DatabaseService);
     await databaseService.onModuleInit();
 
     const module = await mockSignUpModule({ databaseService });
@@ -28,24 +29,29 @@ describe('SignUpService', () => {
   });
 
   describe('requestSignUp', () => {
-    it('should work (validation will be in controller)', () => {
-      const result = service.requestSignUp(userToAdd);
+    it('should work (validation will be in controller)', async () => {
+      const result = await service.requestSignUp(userToAdd);
       const parsedResult = z.string().uuid().safeParse(result);
       expect(parsedResult.success).toEqual(true);
     });
 
     describe('should throw error when', () => {
-      it('pass same parameter', () => {
+      it('pass same parameter', async () => {
         userToAdd = { email: 'duplicate@example.email' };
-        service.requestSignUp(userToAdd);
-        expect(() => service.requestSignUp(userToAdd)).toThrow();
+        await service.requestSignUp(userToAdd);
+        await expect(async () => service.requestSignUp(userToAdd)).rejects.toThrow();
+      });
+
+      it('use existing email', async () => {
+        await databaseService.db.insert(users).values({ email: userToAdd.email });
+        await expect(async () => service.requestSignUp(userToAdd)).rejects.toThrow();
       });
     });
   });
 
   describe('confirmSignUp (validation will be in controller)', () => {
-    beforeEach(() => {
-      uuid = service.requestSignUp(userToAdd);
+    beforeEach(async () => {
+      uuid = await service.requestSignUp(userToAdd);
     });
 
     it('should work', async () => {
@@ -56,7 +62,7 @@ describe('SignUpService', () => {
 
     describe('should throw error when', () => {
       it('non-existing uuid', async () => {
-        const uuid = uuidv4();
+        uuid = uuidv4();
         await expect(async () => service.confirmSignUp({ uuid })).rejects.toThrow();
       });
 
