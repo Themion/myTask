@@ -1,4 +1,3 @@
-import { User } from '@my-task/common';
 import { v4 as uuidv4 } from 'uuid';
 import {
   MockEmailService,
@@ -17,6 +16,8 @@ describe('SignUpController', () => {
   let groupService: MockGroupService;
   let controller: SignUpController;
 
+  let userToAdd: any;
+
   beforeEach(async () => {
     [signUpService, emailService, groupService] = await Promise.all([
       mockSignUpService(),
@@ -27,45 +28,53 @@ describe('SignUpController', () => {
 
     controller = module.get<SignUpController>(SignUpController);
   });
+  beforeEach(async () => {
+    userToAdd = { email: 'create@example.email' };
+  });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
   describe('requestSignUp', () => {
-    it('should work', () => {
+    it('should work', async () => {
       const userToAdd = { email: 'create@example.email' };
-      expect(() => controller.requestSignUp(userToAdd)).not.toThrow();
+      await expect(controller.requestSignUp(userToAdd)).resolves.not.toThrow();
     });
 
     describe('should throw error with', () => {
-      it('non-object', () => {
+      it('non-object', async () => {
         const data = 'create@example.email';
-        expect(() => controller.requestSignUp(data)).toThrow();
+        await expect(controller.requestSignUp(data)).rejects.toThrow();
       });
     });
   });
 
   describe('confirmSignUp', () => {
-    it('should work', async () => {
-      const userToAdd = { email: 'create@example.email' };
-      const { email } = controller.requestSignUp(userToAdd);
+    let email: string;
+    let uuid: string;
 
-      const uuid = signUpService.emailToUuid.get(email);
-      let user: User;
-      expect((user = await controller.confirmSignUp({ uuid }))).toBeDefined();
+    beforeEach(async () => {
+      email = (await controller.requestSignUp(userToAdd)).email;
+    });
+
+    it('should work', async () => {
+      uuid = signUpService.emailToUuid.get(email) as string;
+
+      const user = await controller.confirmSignUp({ uuid });
+      expect(user).toBeDefined();
       expect(user.email).toEqual(userToAdd.email);
       expect((await groupService.findGroupByMember(user)).length).toBeGreaterThan(0);
     });
 
     describe('should throw error with', () => {
       it('wrong dto', async () => {
-        const wrongUUID = 'this is not uuid';
-        await expect(async () => controller.confirmSignUp({ uuid: wrongUUID })).rejects.toThrow();
+        uuid = 'this is not uuid';
+        await expect(async () => controller.confirmSignUp({ uuid })).rejects.toThrow();
       });
 
       it('non-existing uuid', async () => {
-        const uuid = uuidv4();
+        uuid = uuidv4();
         await expect(async () => controller.confirmSignUp({ uuid })).rejects.toThrow();
       });
     });

@@ -1,5 +1,6 @@
 import { ConfirmSignUpDTO, RequestSignUpDTO, users } from '@my-task/common';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { eq, sql } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
 import { DatabaseService } from '~/modules/database/database.service';
 
@@ -13,8 +14,14 @@ export class SignUpService {
     this.db = databaseService.db;
   }
 
-  requestSignUp(dto: RequestSignUpDTO) {
+  async requestSignUp(dto: RequestSignUpDTO) {
     if (this.pendingEmail.has(dto.email)) throw new BadRequestException('Emali already exists!');
+
+    const [{ count }] = await this.db
+      .select({ count: sql<number>`count(email)` })
+      .from(users)
+      .where(eq(users.email, dto.email));
+    if (Number(count) !== 0) throw new BadRequestException('Email is already used!');
 
     const uuid = uuidv4();
 
