@@ -2,6 +2,7 @@ import { RequestSignUpDTO, User, users } from '@my-task/common';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import { mockDatabaseModule, mockSignUpModule } from '~/mock';
+import { CacheService } from '~/modules/cache/cache.service';
 import { DatabaseService } from '~/modules/database/database.service';
 import { SignUpService } from './signup.service';
 
@@ -10,6 +11,7 @@ describe('SignUpService', () => {
   let userToAdd: RequestSignUpDTO;
   let uuid: string;
   let databaseService: DatabaseService;
+  let cacheService: CacheService;
 
   beforeEach(async () => {
     const databaseModule = await mockDatabaseModule();
@@ -17,7 +19,13 @@ describe('SignUpService', () => {
     await databaseService.onModuleInit();
 
     const module = await mockSignUpModule({ databaseService });
+    cacheService = module.get<CacheService>(CacheService);
+    await cacheService.onModuleInit();
     service = module.get<SignUpService>(SignUpService);
+  });
+
+  afterEach(async () => {
+    await cacheService.onModuleDestroy();
   });
 
   beforeEach(() => {
@@ -39,7 +47,7 @@ describe('SignUpService', () => {
       it('pass same parameter', async () => {
         userToAdd = { email: 'duplicate@example.email' };
         await service.requestSignUp(userToAdd);
-        await expect(async () => service.requestSignUp(userToAdd)).rejects.toThrow();
+        await expect(async () => await service.requestSignUp(userToAdd)).rejects.toThrow();
       });
 
       it('use existing email', async () => {

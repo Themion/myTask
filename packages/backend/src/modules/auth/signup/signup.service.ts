@@ -2,20 +2,23 @@ import { ConfirmSignUpDTO, RequestSignUpDTO, users } from '@my-task/common';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { eq, sql } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
+import { CacheService } from '~/modules/cache/cache.service';
 import { DatabaseService } from '~/modules/database/database.service';
 
 @Injectable()
 export class SignUpService {
   private readonly db;
-  private readonly uuidToEmail = new Map<string, RequestSignUpDTO>();
-  private readonly pendingEmail = new Set<string>();
+  private readonly pendingEmail;
+  private readonly uuidToEmail;
 
-  constructor(databaseService: DatabaseService) {
+  constructor(cacheService: CacheService, databaseService: DatabaseService) {
     this.db = databaseService.db;
+    this.pendingEmail = cacheService.toSet('PendingEmail');
+    this.uuidToEmail = cacheService.toHash('uuidToEmail');
   }
 
   async requestSignUp(dto: RequestSignUpDTO) {
-    if (this.pendingEmail.has(dto.email)) throw new BadRequestException('Emali already exists!');
+    const { email } = dto;
 
     const [{ count }] = await this.db
       .select({ count: sql<number>`count(email)` })
@@ -23,22 +26,24 @@ export class SignUpService {
       .where(eq(users.email, dto.email));
     if (Number(count) !== 0) throw new BadRequestException('Email is already used!');
 
+    if (await this.pendingEmail.has(email)) throw new BadRequestException('Emali already exists!');
+
     const uuid = uuidv4();
 
-    this.uuidToEmail.set(uuid, dto);
-    this.pendingEmail.add(dto.email);
+    await Promise.all([this.pendingEmail.set(email), this.uuidToEmail.set(uuid, email)]);
+
     return uuid;
   }
 
   async confirmSignUp(dto: ConfirmSignUpDTO) {
-    if (!this.uuidToEmail.has(dto.uuid))
-      throw new BadRequestException('UUID cannot be found: Wrong DTO!');
+    const { uuid } = dto;
 
-    const data = this.uuidToEmail.get(dto.uuid) as RequestSignUpDTO;
-    this.uuidToEmail.delete(dto.uuid);
-    this.pendingEmail.delete(data.email);
+    const email = await this.uuidToEmail.get(uuid);
+    if (!email) throw new BadRequestException('UUID cannot be found: Wrong DTO!');
 
-    const insertedUsers = await this.db.insert(users).values(data).returning();
+    await Promise.all([this.uuidToEmail.del(uuid), this.pendingEmail.del(email)]);
+
+    const insertedUsers = await this.db.insert(users).values({ email }).returning();
     if (insertedUsers.length !== 1) throw new InternalServerErrorException('DB insertion failed!');
     else return insertedUsers[0];
   }
