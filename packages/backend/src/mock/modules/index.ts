@@ -1,3 +1,4 @@
+import mockCacheModule from '~/mock/modules/cache.module';
 import mockAuthModule from './auth.module';
 import mockConfigModule from './config.module';
 import mockDatabaseModule from './database.module';
@@ -8,6 +9,7 @@ import mockSignUpModule from './signup.module';
 
 export {
   mockAuthModule,
+  mockCacheModule,
   mockConfigModule,
   mockDatabaseModule,
   mockEmailModule,

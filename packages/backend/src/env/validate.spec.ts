@@ -13,6 +13,10 @@ describe('env validation', () => {
       DB_PASSWORD: '',
       DB_DB: '',
 
+      REDIS_PORT: '6379',
+      REDIS_USER: '',
+      REDIS_PASS: '',
+
       BE_PORT: '3000',
 
       EMAIL_HOST: 'smtp.gmail.com',

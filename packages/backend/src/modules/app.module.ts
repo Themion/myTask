@@ -3,12 +3,13 @@ import { ConfigModule } from '@nestjs/config';
 import { RouterModule, Routes } from '@nestjs/core';
 import { envPaths } from '~/constants';
 import { validate } from '~/env';
-import { AppController } from '~/modules/app.controller';
-import { AppService } from '~/modules/app.service';
-import { SignInModule } from '~/modules/auth/signin/signin.module';
-import { SignUpModule } from '~/modules/auth/signup/signup.module';
-import { DatabaseModule } from '~/modules/database/database.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { SignInModule } from './auth/signin/signin.module';
+import { SignUpModule } from './auth/signup/signup.module';
+import { CacheModule } from './cache/cache.module';
+import { DatabaseModule } from './database/database.module';
 import { EmailModule } from './email/email.module';
 import { GroupModule } from './group/group.module';
 
@@ -46,6 +47,7 @@ const router: Routes = [
     SignUpModule,
     SignInModule,
     RouterModule.register(router),
+    CacheModule,
   ],
   controllers: [AppController],
   providers: [AppService],
