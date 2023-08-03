@@ -10,6 +10,10 @@ const envSchema = z
     DB_PASSWORD: z.string(),
     DB_DB: z.string(),
 
+    REDIS_PORT: USER_PORT_RULE,
+    REDIS_USER: z.string(),
+    REDIS_PASS: z.string(),
+
     BE_PORT: USER_PORT_RULE,
 
     EMAIL_HOST: z.string(),
@@ -47,6 +51,14 @@ const envSchema = z
       HOST: env.HOST,
       BE_PORT: env.BE_PORT,
       FE_PORT: env.FE_PORT,
+    },
+    REDIS: {
+      socket: {
+        host: env.HOST,
+        port: env.REDIS_PORT,
+      },
+      username: env.REDIS_USER,
+      password: env.REDIS_PASS,
     },
     NODE_ENV: process.env.NODE_ENV,
   }));
