@@ -48,6 +48,7 @@ const envSchema = z
       BE_PORT: env.BE_PORT,
       FE_PORT: env.FE_PORT,
     },
+    NODE_ENV: process.env.NODE_ENV,
   }));
 
 // 잘못된 환경 변수가 들어올 경우 반드시 Exception을 띄워야 함
