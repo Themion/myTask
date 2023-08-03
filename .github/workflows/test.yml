@@ -35,6 +35,15 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      cache:
+        image: redis:7.0.12
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js
@@ -66,6 +75,10 @@ jobs:
           EMAIL_PASS: ${{secrets.EMAIL_PASS}}
           EMAIL_SENDER: ${{secrets.EMAIL_SENDER}}
           EMAIL_TEST_RECEIVER: ${{secrets.EMAIL_TEST_RECEIVER}}
+
+          REDIS_PORT: 6379
+          REDIS_USER: default
+          REDIS_PASS: ''
 
           BE_PORT: ${{ vars.BE_PORT }}
           FE_PORT: ${{ vars.FE_PORT }}

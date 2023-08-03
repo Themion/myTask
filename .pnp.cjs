@@ -20,6 +20,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/backend"\
       },\
       {\
+        "name": "@my-task/cache",\
+        "reference": "workspace:packages/cache"\
+      },\
+      {\
         "name": "@my-task/common",\
         "reference": "workspace:packages/common"\
       },\
@@ -36,6 +40,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "ignorePatternData": "(^(?:\\\\.yarn\\\\/sdks(?:\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?:(?:(?!(?:^|\\\\/)\\\\.{1,2}(?:\\\\/|$)).)*?)|$))$)",\
     "fallbackExclusionList": [\
       ["@my-task/backend", ["workspace:packages/backend"]],\
+      ["@my-task/cache", ["workspace:packages/cache"]],\
       ["@my-task/common", ["workspace:packages/common"]],\
       ["@my-task/database", ["workspace:packages/database"]],\
       ["@my-task/frontend", ["workspace:packages/frontend"]],\
@@ -2131,6 +2136,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"],\
             ["uuid", "npm:9.0.0"],\
             ["zod", "npm:3.21.4"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
+      ["@my-task/cache", [\
+        ["workspace:packages/cache", {\
+          "packageLocation": "./packages/cache/",\
+          "packageDependencies": [\
+            ["@my-task/cache", "workspace:packages/cache"]\
           ],\
           "linkType": "SOFT"\
         }]\

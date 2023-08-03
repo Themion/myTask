@@ -1,0 +1,10 @@
+{
+  "name": "@my-task/cache",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "./build.sh",
+    "start": "yarn build && ./start.sh"
+  }
+}
