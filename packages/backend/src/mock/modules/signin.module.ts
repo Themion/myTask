@@ -5,6 +5,7 @@ import { MockCookieService, MockEmailService, MockSignInService } from '~/mock/s
 import { CookieService } from '~/modules/auth/cookie.service';
 import { SignInController } from '~/modules/auth/signin/signin.controller';
 import { SignInService } from '~/modules/auth/signin/signin.service';
+import { CacheService } from '~/modules/cache/cache.service';
 import { DatabaseService } from '~/modules/database/database.service';
 import { EmailService } from '~/modules/email/email.service';
 
@@ -21,7 +22,7 @@ const mockSignInModule = async ({
   cookieService,
   emailService,
 }: Props) => {
-  const providers: Provider[] = [SignInService];
+  const providers: Provider[] = [SignInService, CacheService];
 
   if (databaseService) providers.push(DatabaseService);
   if (cookieService) providers.push(CookieService);

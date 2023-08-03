@@ -2,19 +2,22 @@ import { ConfirmSignInDTO, RequestSignInDTO, users } from '@my-task/common';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { eq, sql } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
+import { CacheService } from '~/modules/cache/cache.service';
 import { DatabaseService } from '~/modules/database/database.service';
 
 @Injectable()
 export class SignInService {
   private readonly db;
-  private readonly uuidToEmail = new Map<string, RequestSignInDTO>();
-  private readonly emailToUUID = new Map<string, string>();
+  private readonly uuidToEmail;
 
-  constructor(databaseService: DatabaseService) {
+  constructor(cacheService: CacheService, databaseService: DatabaseService) {
     this.db = databaseService.db;
+    this.uuidToEmail = cacheService.toHash('uuidToEmail');
   }
 
   async requestSignIn(dto: RequestSignInDTO) {
+    const { email } = dto;
+
     const [{ count }] = await this.db
       .select({ count: sql<number>`count(email)` })
       .from(users)
@@ -23,20 +26,19 @@ export class SignInService {
 
     const uuid = uuidv4();
 
-    this.uuidToEmail.set(uuid, dto);
-    this.emailToUUID.set(dto.email, uuid);
+    await this.uuidToEmail.set(uuid, email);
 
     return uuid;
   }
 
   async confirmSignIn(dto: ConfirmSignInDTO) {
-    if (!this.uuidToEmail.has(dto.uuid))
-      throw new BadRequestException('UUID cannot be found: Wrong DTO!');
+    const { uuid } = dto;
+    const email = await this.uuidToEmail.get(uuid);
 
-    const data = this.uuidToEmail.get(dto.uuid) as RequestSignInDTO;
-    this.uuidToEmail.delete(dto.uuid);
-    this.emailToUUID.delete(data.email);
+    if (!email) throw new BadRequestException('UUID cannot be found: Wrong DTO!');
 
-    return data;
+    await this.uuidToEmail.del(uuid);
+
+    return { email };
   }
 }
