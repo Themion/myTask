@@ -1527,6 +1527,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@my-task/cache@workspace:packages/cache":
+  version: 0.0.0-use.local
+  resolution: "@my-task/cache@workspace:packages/cache"
+  languageName: unknown
+  linkType: soft
+
 "@my-task/common@workspace:^, @my-task/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@my-task/common@workspace:packages/common"
