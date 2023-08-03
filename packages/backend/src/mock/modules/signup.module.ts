@@ -4,6 +4,7 @@ import mockConfigModule from '~/mock/modules/config.module';
 import { MockEmailService, MockGroupService, MockSignUpService } from '~/mock/services';
 import { SignUpController } from '~/modules/auth/signup/signup.controller';
 import { SignUpService } from '~/modules/auth/signup/signup.service';
+import { CacheService } from '~/modules/cache/cache.service';
 import { DatabaseService } from '~/modules/database/database.service';
 import { EmailService } from '~/modules/email/email.service';
 import { GroupService } from '~/modules/group/group.service';
@@ -21,7 +22,7 @@ const mockSignUpModule = async ({
   emailService,
   groupService,
 }: Props) => {
-  const providers: Provider[] = [SignUpService];
+  const providers: Provider[] = [SignUpService, CacheService];
   const controllers = [SignUpController];
 
   if (databaseService) providers.push(DatabaseService);
@@ -37,9 +38,9 @@ const mockSignUpModule = async ({
     controllers: useController ? controllers : [],
   });
 
-  if (emailService) moduleFactory.overrideProvider(EmailService).useValue(emailService);
   if (signUpService) moduleFactory.overrideProvider(SignUpService).useValue(signUpService);
   if (databaseService) moduleFactory.overrideProvider(DatabaseService).useValue(databaseService);
+  if (emailService) moduleFactory.overrideProvider(EmailService).useValue(emailService);
   if (groupService) moduleFactory.overrideProvider(GroupService).useValue(groupService);
 
   return moduleFactory.compile();
