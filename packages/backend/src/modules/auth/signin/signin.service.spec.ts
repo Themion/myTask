@@ -2,6 +2,7 @@ import { RequestSignInDTO, RequestSignUpDTO, users } from '@my-task/common';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import { mockDatabaseModule, mockSignInModule } from '~/mock';
+import { CacheService } from '~/modules/cache/cache.service';
 import { DatabaseService } from '~/modules/database/database.service';
 import { SignInService } from './signin.service';
 
@@ -9,16 +10,21 @@ describe('SignInService', () => {
   let service: SignInService;
   let userToAdd: RequestSignInDTO;
   let databaseService: DatabaseService;
+  let cacheService: CacheService;
 
   beforeEach(async () => {
     const databaseModule = await mockDatabaseModule();
     databaseService = databaseModule.get<DatabaseService>(DatabaseService);
-    await databaseService.onModuleInit();
 
     const module = await mockSignInModule({ databaseService });
+    cacheService = module.get<CacheService>(CacheService);
+
+    await Promise.all([databaseService.onModuleInit(), cacheService.onModuleInit()]);
 
     service = module.get<SignInService>(SignInService);
   });
+
+  afterEach(async () => cacheService.onModuleDestroy());
 
   beforeEach(async () => {
     userToAdd = { email: 'create@example.email' };
@@ -41,9 +47,11 @@ describe('SignInService', () => {
       expect(parsedResult.success).toEqual(true);
     });
 
-    it('should throw error when', async () => {
-      userToAdd.email = 'invalid@email.com';
-      await expect(async () => service.requestSignIn(userToAdd)).rejects.toThrow();
+    describe('should throw error when', () => {
+      it('invalid email', async () => {
+        userToAdd.email = 'invalid@email.com';
+        await expect(async () => await service.requestSignIn(userToAdd)).rejects.toThrow();
+      });
     });
   });
 

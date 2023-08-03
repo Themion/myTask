@@ -7,16 +7,19 @@ const mockSignInService = async () => ({
   emailToUuid: new Map<string, string>(),
   async requestSignIn(dto: RequestSignInDTO) {
     const uuid = uuidv4();
+
     this.uuidToEmail.set(uuid, dto);
     this.emailToUuid.set(dto.email, uuid);
+
     return uuid;
   },
   async confirmSignIn(dto: ConfirmSignInDTO) {
-    if (!this.uuidToEmail.has(dto.uuid))
-      throw new BadRequestException('UUID cannot be found: Wrong DTO!');
-    const data = this.uuidToEmail.get(dto.uuid) as RequestSignUpDTO;
+    const { uuid } = dto;
 
-    return data;
+    if (!this.uuidToEmail.has(uuid))
+      throw new BadRequestException('UUID cannot be found: Wrong DTO!');
+
+    return this.uuidToEmail.get(uuid) as RequestSignUpDTO;
   },
 });
 
