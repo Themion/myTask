@@ -9,7 +9,7 @@
     "serve": "vite serve",
     "start": "yarn run build && yarn run serve",
     "start:dev": "vite",
-    "test": "NODE_ENV=development vitest run",
+    "test": "NODE_ENV=testing vitest run",
     "test:watch": "vitest --watch",
     "test:cov": "yarn test --coverage"
   },

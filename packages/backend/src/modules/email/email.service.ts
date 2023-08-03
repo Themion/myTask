@@ -10,8 +10,8 @@ export class EmailService implements OnModuleDestroy {
   private readonly transport;
   private readonly sender;
 
-  constructor(private readonly configService: ConfigService<Env>) {
-    const { CONFIG, SENDER } = this.configService.getOrThrow<Env['EMAIL']>('EMAIL');
+  constructor(configService: ConfigService<Env>) {
+    const { CONFIG, SENDER } = configService.getOrThrow<Env['EMAIL']>('EMAIL');
 
     // https://velog.io/@mimi0905/Nodemailer%EB%A1%9C-%EB%A9%94%EC%9D%BC-%EB%B3%B4%EB%82%B4%EA%B8%B0-with-%EC%B2%A8%EB%B6%80%ED%8C%8C%EC%9D%BC
     this.transport = createTransport({
