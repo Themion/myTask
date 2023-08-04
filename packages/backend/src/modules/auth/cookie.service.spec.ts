@@ -7,26 +7,33 @@ import {
 } from '~/constants';
 import { mockAuthModule } from '~/mock';
 import { CookieService } from '~/modules/auth/cookie.service';
+import { CacheService } from '~/modules/cache/cache.service';
 import { CookieSettings } from '~/types';
 
 describe('CookieService', () => {
   let service: CookieService;
   let email: string;
+  let cacheService: CacheService;
 
   beforeEach(async () => {
     const module = await mockAuthModule();
     service = module.get<CookieService>(CookieService);
+    cacheService = module.get<CacheService>(CacheService);
+
+    await cacheService.onModuleInit();
 
     email = 'test@example.com';
   });
+
+  afterEach(async () => cacheService.onModuleDestroy());
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
   describe('setCookie', () => {
-    it('should work (validation will be in controller)', () => {
-      expect(() => service.setCookie(email)).not.toThrow();
+    it('should work (validation will be in controller)', async () => {
+      await expect(service.setCookie(email)).resolves.not.toThrow();
     });
 
     describe('should create token', () => {
@@ -40,9 +47,9 @@ describe('CookieService', () => {
         return JSON.parse(decodedPayload);
       };
 
-      beforeEach(() => {
+      beforeEach(async () => {
         before = new Date().getTime();
-        cookieSettings = service.setCookie(email);
+        cookieSettings = await service.setCookie(email);
         after = new Date().getTime();
       });
 

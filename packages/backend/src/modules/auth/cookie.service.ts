@@ -8,11 +8,16 @@ import {
   REFRESH_TOKEN,
   REFRESH_TOKEN_LIFE_SPAN,
 } from '~/constants';
+import { CacheService } from '~/modules/cache/cache.service';
 import { CookieSettings } from '~/types';
 
 @Injectable()
 export class CookieService {
-  constructor(private readonly jwtService: JwtService) {}
+  private readonly RT2Email;
+
+  constructor(private readonly jwtService: JwtService, cacheService: CacheService) {
+    this.RT2Email = cacheService.toHash('RT2Email');
+  }
 
   private getExpirationDate(lifeSpan: number) {
     return new Date(new Date().getTime() + lifeSpan);
@@ -25,11 +30,13 @@ export class CookieService {
     };
   }
 
-  setCookie(email: string): CookieSettings {
+  async setCookie(email: string): Promise<CookieSettings> {
     const payload = { email };
 
     const accessToken = this.jwtService.sign(payload, { expiresIn: ACCESS_TOKEN_LIFE_SPAN });
     const refreshToken = uuidv4();
+
+    await this.RT2Email.set(refreshToken, email);
 
     return {
       [ACCESS_TOKEN]: {
