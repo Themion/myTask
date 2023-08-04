@@ -83,6 +83,9 @@ jobs:
           BE_PORT: ${{ vars.BE_PORT }}
           FE_PORT: ${{ vars.FE_PORT }}
 
+          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+
   frontend:
     runs-on: ubuntu-latest
     steps:

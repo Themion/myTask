@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RouterModule, Routes } from '@nestjs/core';
+import { JwtModule } from '@nestjs/jwt';
 import { envPaths } from '~/constants';
 import { validate } from '~/env';
+import { Env } from '~/types';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -39,6 +41,14 @@ const router: Routes = [
       envFilePath: envPaths,
       expandVariables: true,
       validate,
+    }),
+    JwtModule.registerAsync({
+      global: true,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService<Env>) => ({
+        ...configService.getOrThrow<Env['JWT']>('JWT'),
+      }),
     }),
     DatabaseModule,
     EmailModule,

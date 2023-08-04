@@ -14,13 +14,15 @@ const envSchema = z
     REDIS_USER: z.string(),
     REDIS_PASS: z.string(),
 
+    JWT_PUBLIC_KEY: z.string(),
+    JWT_PRIVATE_KEY: z.string(),
+
     BE_PORT: USER_PORT_RULE,
 
     EMAIL_HOST: z.string(),
     EMAIL_PORT: PORT_RULE,
     EMAIL_USER: z.string(),
     EMAIL_PASS: z.string(),
-
     EMAIL_SENDER: z.string().email(),
 
     FE_PORT: USER_PORT_RULE,
@@ -51,6 +53,10 @@ const envSchema = z
       HOST: env.HOST,
       BE_PORT: env.BE_PORT,
       FE_PORT: env.FE_PORT,
+    },
+    JWT: {
+      publicKey: env.JWT_PUBLIC_KEY,
+      privateKey: env.JWT_PRIVATE_KEY,
     },
     REDIS: {
       socket: {

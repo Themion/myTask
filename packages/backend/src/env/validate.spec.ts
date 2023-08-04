@@ -17,6 +17,9 @@ describe('env validation', () => {
       REDIS_USER: '',
       REDIS_PASS: '',
 
+      JWT_PUBLIC_KEY: '',
+      JWT_PRIVATE_KEY: '',
+
       BE_PORT: '3000',
 
       EMAIL_HOST: 'smtp.gmail.com',
