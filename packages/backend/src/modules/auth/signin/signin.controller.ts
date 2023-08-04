@@ -49,7 +49,10 @@ export class SignInController {
     const { data } = result;
 
     const signedUser = await this.signInService.confirmSignIn(data);
-    this.cookieService.setCookie(signedUser.email, res);
+
+    const cookieSettings = this.cookieService.setCookie(signedUser.email);
+    for (const [key, { val, options }] of Object.entries(cookieSettings))
+      res.cookie(key, val, options);
 
     return signedUser;
   }

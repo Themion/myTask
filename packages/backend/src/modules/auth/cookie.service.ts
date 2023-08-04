@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CookieOptions, Response } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { CookieOptions } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import {
   ACCESS_TOKEN,
@@ -7,16 +8,11 @@ import {
   REFRESH_TOKEN,
   REFRESH_TOKEN_LIFE_SPAN,
 } from '~/constants';
+import { CookieSettings } from '~/types';
 
 @Injectable()
 export class CookieService {
-  private readonly accessTokenToEmail: Map<string, string>;
-  private readonly refreshTokenToAccessToken: Map<string, string>;
-
-  constructor() {
-    this.accessTokenToEmail = new Map();
-    this.refreshTokenToAccessToken = new Map();
-  }
+  constructor(private readonly jwtService: JwtService) {}
 
   private getExpirationDate(lifeSpan: number) {
     return new Date(new Date().getTime() + lifeSpan);
@@ -29,14 +25,21 @@ export class CookieService {
     };
   }
 
-  setCookie(email: string, res: Response) {
-    const accessToken = uuidv4();
+  setCookie(email: string): CookieSettings {
+    const payload = { email };
+
+    const accessToken = this.jwtService.sign(payload, { expiresIn: ACCESS_TOKEN_LIFE_SPAN });
     const refreshToken = uuidv4();
 
-    this.accessTokenToEmail.set(accessToken, email);
-    this.refreshTokenToAccessToken.set(refreshToken, accessToken);
-
-    res.cookie(ACCESS_TOKEN, accessToken, this.tokenOption(ACCESS_TOKEN_LIFE_SPAN));
-    res.cookie(REFRESH_TOKEN, refreshToken, this.tokenOption(REFRESH_TOKEN_LIFE_SPAN));
+    return {
+      [ACCESS_TOKEN]: {
+        val: `Bearer ${accessToken}`,
+        options: this.tokenOption(ACCESS_TOKEN_LIFE_SPAN),
+      },
+      [REFRESH_TOKEN]: {
+        val: refreshToken,
+        options: this.tokenOption(REFRESH_TOKEN_LIFE_SPAN),
+      },
+    };
   }
 }
