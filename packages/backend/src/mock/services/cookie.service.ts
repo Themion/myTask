@@ -1,4 +1,4 @@
-import { CookieOptions, Response } from 'express';
+import { CookieOptions } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import {
   ACCESS_TOKEN,
@@ -6,6 +6,7 @@ import {
   REFRESH_TOKEN,
   REFRESH_TOKEN_LIFE_SPAN,
 } from '~/constants';
+import { CookieSettings } from '~/types';
 
 const mockCookieService = () => ({
   getExpirationDate(lifeSpan: number) {
@@ -17,12 +18,21 @@ const mockCookieService = () => ({
       httpOnly: true,
     };
   },
-  setCookie(_: string, res: Response) {
-    const accessToken = uuidv4();
+  setCookie(email: string): CookieSettings {
+    const payload = Buffer.from(JSON.stringify({ email })).toString('base64');
+    const accessToken = `a.${payload}.a`;
     const refreshToken = uuidv4();
 
-    res.cookie(ACCESS_TOKEN, accessToken, this.tokenOption(ACCESS_TOKEN_LIFE_SPAN));
-    res.cookie(REFRESH_TOKEN, refreshToken, this.tokenOption(REFRESH_TOKEN_LIFE_SPAN));
+    return {
+      [ACCESS_TOKEN]: {
+        val: `Bearer ${accessToken}`,
+        options: this.tokenOption(ACCESS_TOKEN_LIFE_SPAN),
+      },
+      [REFRESH_TOKEN]: {
+        val: refreshToken,
+        options: this.tokenOption(REFRESH_TOKEN_LIFE_SPAN),
+      },
+    };
   },
 });
 

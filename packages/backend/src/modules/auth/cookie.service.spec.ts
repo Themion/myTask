@@ -1,22 +1,22 @@
+import { z } from 'zod';
 import {
   ACCESS_TOKEN,
   ACCESS_TOKEN_LIFE_SPAN,
   REFRESH_TOKEN,
   REFRESH_TOKEN_LIFE_SPAN,
 } from '~/constants';
-import { MockResponse, mockAuthModule, mockResponse } from '~/mock';
+import { mockAuthModule } from '~/mock';
 import { CookieService } from '~/modules/auth/cookie.service';
+import { CookieSettings } from '~/types';
 
 describe('CookieService', () => {
   let service: CookieService;
   let email: string;
-  let response: MockResponse;
 
   beforeEach(async () => {
     const module = await mockAuthModule();
     service = module.get<CookieService>(CookieService);
 
-    response = mockResponse();
     email = 'test@example.com';
   });
 
@@ -26,41 +26,62 @@ describe('CookieService', () => {
 
   describe('setCookie', () => {
     it('should work (validation will be in controller)', () => {
-      expect(() => service.setCookie(email, response)).not.toThrow();
+      expect(() => service.setCookie(email)).not.toThrow();
     });
 
     describe('should create token', () => {
       let before: number;
       let after: number;
+      let cookieSettings: CookieSettings;
+
+      const getJwtPayload = (jwt: string) => {
+        const payloadAsBase64 = jwt.split('.')[1];
+        const decodedPayload = Buffer.from(payloadAsBase64, 'base64').toString('utf-8');
+        return JSON.parse(decodedPayload);
+      };
 
       beforeEach(() => {
         before = new Date().getTime();
-        service.setCookie(email, response);
+        cookieSettings = service.setCookie(email);
         after = new Date().getTime();
       });
 
       it('access token', () => {
-        const accessToken = response.cookies[ACCESS_TOKEN];
-        const lifeSpan = ACCESS_TOKEN_LIFE_SPAN;
+        const accessToken = cookieSettings[ACCESS_TOKEN];
+        const { val, options } = accessToken;
+        const payload = getJwtPayload(val);
+        const { httpOnly, maxAge } = options;
 
         expect(accessToken).toBeDefined();
-        expect(accessToken.options.httpOnly).toEqual(true);
+
+        expect(payload).toBeDefined();
+        expect(payload).toHaveProperty('email');
+        expect(payload.email).toEqual(email);
+
+        expect(httpOnly).toEqual(true);
 
         expect(after - before).toBeLessThan(1000);
-        expect(accessToken.options.maxAge - before).toBeGreaterThanOrEqual(lifeSpan);
-        expect(accessToken.options.maxAge - after).toBeLessThanOrEqual(lifeSpan);
+        expect(maxAge).toBeDefined();
+        expect((maxAge as number) - before).toBeGreaterThanOrEqual(ACCESS_TOKEN_LIFE_SPAN);
+        expect((maxAge as number) - after).toBeLessThanOrEqual(ACCESS_TOKEN_LIFE_SPAN);
       });
 
       it('refresh token', () => {
-        const refreshToken = response.cookies[REFRESH_TOKEN];
-        const lifeSpan = REFRESH_TOKEN_LIFE_SPAN;
+        const refreshToken = cookieSettings[REFRESH_TOKEN];
+        const { val, options } = refreshToken;
+        const { httpOnly, maxAge } = options;
 
         expect(refreshToken).toBeDefined();
-        expect(refreshToken.options.httpOnly).toEqual(true);
+
+        expect(val).toBeDefined();
+        expect(z.string().uuid().safeParse(val).success).toEqual(true);
+
+        expect(httpOnly).toEqual(true);
 
         expect(after - before).toBeLessThan(1000);
-        expect(refreshToken.options.maxAge - before).toBeGreaterThanOrEqual(lifeSpan);
-        expect(refreshToken.options.maxAge - after).toBeLessThanOrEqual(lifeSpan);
+        expect(maxAge).toBeDefined();
+        expect((maxAge as number) - before).toBeGreaterThanOrEqual(REFRESH_TOKEN_LIFE_SPAN);
+        expect((maxAge as number) - after).toBeLessThanOrEqual(REFRESH_TOKEN_LIFE_SPAN);
       });
     });
   });

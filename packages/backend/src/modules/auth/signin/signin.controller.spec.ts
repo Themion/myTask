@@ -6,13 +6,11 @@ import {
   MockResponse,
   MockSignInService,
   mockCookieService,
-  mockDatabaseModule,
   mockEmailService,
   mockResponse,
   mockSignInModule,
   mockSignInService,
 } from '~/mock';
-import { DatabaseService } from '~/modules/database/database.service';
 import { SignInController } from './signin.controller';
 
 describe('SignInController', () => {
@@ -22,10 +20,6 @@ describe('SignInController', () => {
   let controller: SignInController;
 
   beforeEach(async () => {
-    const databaseModule = await mockDatabaseModule();
-    const databaseService = databaseModule.get<DatabaseService>(DatabaseService);
-    await databaseService.onModuleInit();
-
     [signInService, emailService, cookieService] = await Promise.all([
       mockSignInService(),
       mockEmailService(),
@@ -34,7 +28,6 @@ describe('SignInController', () => {
     const module = await mockSignInModule({
       signInService,
       emailService,
-      databaseService,
       cookieService,
     });
 

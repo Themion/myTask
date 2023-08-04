@@ -1,2 +1,3 @@
+import CookieSettings from './cookieSettings';
 import Env from './env';
-export { Env };
+export type { CookieSettings, Env };
