@@ -16,7 +16,7 @@ describe('CookieService', () => {
   let cacheService: CacheService;
 
   beforeEach(async () => {
-    const module = await mockAuthModule();
+    const module = await mockAuthModule({});
     service = module.get<CookieService>(CookieService);
     cacheService = module.get<CacheService>(CacheService);
 

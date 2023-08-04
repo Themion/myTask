@@ -8,6 +8,7 @@
   "collectCoverageFrom": [
     "!<rootDir>/**/*.module.ts",
     "!<rootDir>/**/index.ts",
+    "!<rootDir>/**/mock/**/*",
     "!<rootDir>/**/migrations/*",
     "!<rootDir>/main.ts"
   ],
