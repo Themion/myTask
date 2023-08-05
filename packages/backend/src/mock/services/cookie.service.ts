@@ -1,3 +1,4 @@
+import { dateAfter } from '@my-task/common';
 import { CookieOptions } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -10,7 +11,7 @@ import { CookieSettings } from '~/types';
 
 const mockCookieService = () => ({
   getExpirationDate(lifeSpan: number) {
-    return new Date(new Date().getTime() + lifeSpan);
+    return dateAfter(lifeSpan);
   },
   tokenOption(lifeSpan: number): CookieOptions {
     return {

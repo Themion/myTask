@@ -1,3 +1,4 @@
+import { dateAfter } from '@my-task/common';
 import { ConfigService } from '@nestjs/config';
 import { createClient } from 'redis';
 import { mockCacheModule } from '~/mock';
@@ -79,7 +80,7 @@ describe('CacheService', () => {
 
         it('should expire value', async () => {
           const delayTime = 1000;
-          const expiresAt = new Date(new Date().getTime() + delayTime);
+          const expiresAt = dateAfter(delayTime);
 
           await set.set(value, expiresAt);
           expect(await redisClient.sIsMember(tableName, value)).toEqual(true);
@@ -200,7 +201,7 @@ describe('CacheService', () => {
 
       it('should expire value', async () => {
         const delayTime = 1000;
-        const expiresAt = new Date(new Date().getTime() + delayTime);
+        const expiresAt = dateAfter(delayTime);
 
         const field1 = 'field1';
         const field2 = 'field2';
