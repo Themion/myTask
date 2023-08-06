@@ -1,4 +1,4 @@
-import { dateAfter } from '@my-task/common';
+import { SECOND, dateAfter } from '@my-task/common';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CookieOptions } from 'express';
@@ -24,7 +24,7 @@ export class CookieService {
     return dateAfter(lifeSpan);
   }
 
-  private tokenOption(lifeSpan: number): CookieOptions {
+  private tokenOption(lifeSpan: number): CookieOptions & { maxAge: number } {
     return {
       maxAge: this.getExpirationDate(lifeSpan).getTime(),
       httpOnly: true,
@@ -34,10 +34,13 @@ export class CookieService {
   async setCookie(email: string): Promise<CookieSettings> {
     const payload = { email };
 
-    const accessToken = this.jwtService.sign(payload, { expiresIn: ACCESS_TOKEN_LIFE_SPAN });
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: ACCESS_TOKEN_LIFE_SPAN / SECOND,
+    });
     const refreshToken = uuidv4();
+    const refreshTokenOption = this.tokenOption(REFRESH_TOKEN_LIFE_SPAN);
 
-    await this.RT2Email.set(refreshToken, email);
+    await this.RT2Email.set(refreshToken, email, new Date(refreshTokenOption.maxAge));
 
     return {
       [ACCESS_TOKEN]: {
