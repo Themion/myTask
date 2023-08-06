@@ -1,5 +1,6 @@
 import { RequestSignUpDTO } from '@my-task/common';
 import { v4 as uuidv4 } from 'uuid';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '~/constants';
 import {
   MockCookieService,
   MockEmailService,
@@ -69,6 +70,9 @@ describe('SignInController', () => {
       uuid = signInService.emailToUuid.get(email) as string;
       expect((user = await controller.confirmSignIn({ uuid }, response))).toBeDefined();
       expect(user.email).toEqual(userToAdd.email);
+
+      expect(response.cookies[ACCESS_TOKEN]).toBeDefined();
+      expect(response.cookies[REFRESH_TOKEN]).toBeDefined();
     });
 
     describe('should throw error with', () => {
