@@ -37,8 +37,6 @@ describe('CookieService', () => {
     });
 
     describe('should create token', () => {
-      let before: number;
-      let after: number;
       let cookieSettings: CookieSettings;
 
       const getJwtPayload = (jwt: string) => {
@@ -48,9 +46,7 @@ describe('CookieService', () => {
       };
 
       beforeEach(async () => {
-        before = new Date().getTime();
         cookieSettings = await service.setCookie(email);
-        after = new Date().getTime();
       });
 
       it('access token', () => {
@@ -67,10 +63,8 @@ describe('CookieService', () => {
 
         expect(httpOnly).toEqual(true);
 
-        expect(after - before).toBeLessThan(1000);
         expect(maxAge).toBeDefined();
-        expect((maxAge as number) - before).toBeGreaterThanOrEqual(ACCESS_TOKEN_LIFE_SPAN);
-        expect((maxAge as number) - after).toBeLessThanOrEqual(ACCESS_TOKEN_LIFE_SPAN);
+        expect(maxAge as number).toEqual(ACCESS_TOKEN_LIFE_SPAN);
       });
 
       it('refresh token', () => {
@@ -85,10 +79,8 @@ describe('CookieService', () => {
 
         expect(httpOnly).toEqual(true);
 
-        expect(after - before).toBeLessThan(1000);
         expect(maxAge).toBeDefined();
-        expect((maxAge as number) - before).toBeGreaterThanOrEqual(REFRESH_TOKEN_LIFE_SPAN);
-        expect((maxAge as number) - after).toBeLessThanOrEqual(REFRESH_TOKEN_LIFE_SPAN);
+        expect(maxAge as number).toEqual(REFRESH_TOKEN_LIFE_SPAN);
       });
     });
   });
