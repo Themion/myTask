@@ -2,7 +2,7 @@ import { ConfirmSignInDTO, RequestSignInDTO, dateAfter, users } from '@my-task/c
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { eq, sql } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
-import { SIGN_IN_LIFE_SPAN } from '~/constants';
+import { CACHE_TABLE_NAME, SIGN_IN_LIFE_SPAN } from '~/constants';
 import { CacheService } from '~/modules/cache/cache.service';
 import { DatabaseService } from '~/modules/database/database.service';
 
@@ -13,7 +13,7 @@ export class SignInService {
 
   constructor(cacheService: CacheService, databaseService: DatabaseService) {
     this.db = databaseService.db;
-    this.uuidToEmail = cacheService.toHash('uuidToEmail');
+    this.uuidToEmail = cacheService.toHash(CACHE_TABLE_NAME.signInTable);
   }
 
   async requestSignIn(dto: RequestSignInDTO) {

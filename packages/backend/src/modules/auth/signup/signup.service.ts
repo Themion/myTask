@@ -2,7 +2,7 @@ import { ConfirmSignUpDTO, RequestSignUpDTO, dateAfter, users } from '@my-task/c
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { eq, sql } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
-import { SIGN_UP_LIFE_SPAN } from '~/constants';
+import { CACHE_TABLE_NAME, SIGN_UP_LIFE_SPAN } from '~/constants';
 import { CacheService } from '~/modules/cache/cache.service';
 import { DatabaseService } from '~/modules/database/database.service';
 
@@ -14,8 +14,8 @@ export class SignUpService {
 
   constructor(cacheService: CacheService, databaseService: DatabaseService) {
     this.db = databaseService.db;
-    this.pendingEmail = cacheService.toSet('PendingEmail');
-    this.uuidToEmail = cacheService.toHash('uuidToEmail');
+    this.pendingEmail = cacheService.toSet(CACHE_TABLE_NAME.pendingEmail);
+    this.uuidToEmail = cacheService.toHash(CACHE_TABLE_NAME.signUpTable);
   }
 
   async requestSignUp(dto: RequestSignUpDTO) {

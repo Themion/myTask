@@ -1,4 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { CACHE_TABLE_NAME } from '~/constants';
 import { CookieService } from '~/modules/auth/cookie.service';
 import { CacheService } from '~/modules/cache/cache.service';
 
@@ -7,7 +8,7 @@ export class AuthService {
   private readonly RT2Email;
 
   constructor(private readonly cookieService: CookieService, cacheService: CacheService) {
-    this.RT2Email = cacheService.toHash('RT2Email');
+    this.RT2Email = cacheService.toHash(CACHE_TABLE_NAME.RT2Email);
   }
 
   async refresh(refreshToken: string) {

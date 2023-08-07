@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   ACCESS_TOKEN,
   ACCESS_TOKEN_LIFE_SPAN,
+  CACHE_TABLE_NAME,
   REFRESH_TOKEN,
   REFRESH_TOKEN_LIFE_SPAN,
 } from '~/constants';
@@ -17,7 +18,7 @@ export class CookieService {
   private readonly RT2Email;
 
   constructor(private readonly jwtService: JwtService, cacheService: CacheService) {
-    this.RT2Email = cacheService.toHash('RT2Email');
+    this.RT2Email = cacheService.toHash(CACHE_TABLE_NAME.RT2Email);
   }
 
   private getExpirationDate(lifeSpan: number) {
