@@ -1,2 +1,3 @@
+import dateAfter from './dateAfter';
 import mergeObjects from './mergeObjects';
-export { mergeObjects };
+export { dateAfter, mergeObjects };

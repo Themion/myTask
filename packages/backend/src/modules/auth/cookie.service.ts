@@ -1,3 +1,4 @@
+import { dateAfter } from '@my-task/common';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CookieOptions } from 'express';
@@ -20,7 +21,7 @@ export class CookieService {
   }
 
   private getExpirationDate(lifeSpan: number) {
-    return new Date(new Date().getTime() + lifeSpan);
+    return dateAfter(lifeSpan);
   }
 
   private tokenOption(lifeSpan: number): CookieOptions {
