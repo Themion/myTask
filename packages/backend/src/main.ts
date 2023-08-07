@@ -1,6 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import * as cookieParser from 'cookie-parser';
 import { AppModule } from '~/modules/app.module';
 import { Env } from '~/types';
 
@@ -10,7 +11,7 @@ async function bootstrap() {
 
   const corsOptions = { origin: `http://${HOST}:${FE_PORT}` };
   app.enableCors(corsOptions);
-
+  app.use(cookieParser());
   await app.listen(BE_PORT);
 }
 
