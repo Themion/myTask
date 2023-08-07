@@ -17,4 +17,8 @@ export class AuthService {
     await this.RT2Email.del(refreshToken);
     return this.cookieService.setCookie(email);
   }
+
+  removeRefreshToken(refreshToken: string) {
+    return this.RT2Email.del(refreshToken);
+  }
 }

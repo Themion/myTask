@@ -7,6 +7,10 @@ const mockAuthService = async () => ({
     const email = 'test@email.com';
     return this.cookieService.setCookie(email);
   },
+
+  async removeRefreshToken(_: string) {
+    return 1;
+  },
 });
 
 type MockAuthService = Awaited<ReturnType<typeof mockAuthService>>;
