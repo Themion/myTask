@@ -45,12 +45,12 @@ export class CookieService {
 
     return {
       [ACCESS_TOKEN]: {
-        val: `Bearer ${accessToken}`,
+        val: accessToken,
         options: this.tokenOption(ACCESS_TOKEN_LIFE_SPAN),
       },
       [REFRESH_TOKEN]: {
         val: refreshToken,
-        options: this.tokenOption(REFRESH_TOKEN_LIFE_SPAN),
+        options: refreshTokenOption,
       },
     };
   }
