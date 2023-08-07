@@ -1,2 +1,3 @@
 import MutationOptions from './MutationOptions';
-export type { MutationOptions };
+import QueryOptions from './QueryOptions';
+export type { MutationOptions, QueryOptions };
