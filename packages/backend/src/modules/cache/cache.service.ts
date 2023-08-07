@@ -7,10 +7,12 @@ import { Env } from '~/types';
 export class CacheService implements OnModuleInit, OnModuleDestroy {
   private readonly redisClient;
   private readonly NODE_ENV;
+  private readonly timeoutIdArr: NodeJS.Timeout[];
 
   constructor(configService: ConfigService<Env>) {
     const redis = configService.getOrThrow<Env['REDIS']>('REDIS');
     this.redisClient = createClient(redis);
+    this.timeoutIdArr = [];
 
     this.NODE_ENV = configService.getOrThrow<Env['NODE_ENV']>('NODE_ENV');
   }
@@ -22,6 +24,7 @@ export class CacheService implements OnModuleInit, OnModuleDestroy {
   }
 
   onModuleDestroy() {
+    this.timeoutIdArr.forEach((id) => clearTimeout(id));
     return this.redisClient.disconnect();
   }
 
@@ -31,7 +34,8 @@ export class CacheService implements OnModuleInit, OnModuleDestroy {
         const result = this.redisClient.sAdd(tableName, value);
         if (expiresAt) {
           const ETA = expiresAt.getTime() - new Date().getTime();
-          setTimeout(() => this.redisClient.sRem(tableName, value), ETA);
+          const timeout = setTimeout(() => this.redisClient.sRem(tableName, value), ETA);
+          this.timeoutIdArr.push(timeout);
         }
         return result;
       },
@@ -53,7 +57,8 @@ export class CacheService implements OnModuleInit, OnModuleDestroy {
         const result = this.redisClient.hSet(tableName, field, value);
         if (expiresAt) {
           const ETA = expiresAt.getTime() - new Date().getTime();
-          setTimeout(() => this.redisClient.hDel(tableName, field), ETA);
+          const timeout = setTimeout(() => this.redisClient.hDel(tableName, field), ETA);
+          this.timeoutIdArr.push(timeout);
         }
         return result;
       },

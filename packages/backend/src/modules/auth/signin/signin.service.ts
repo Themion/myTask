@@ -1,7 +1,8 @@
-import { ConfirmSignInDTO, RequestSignInDTO, users } from '@my-task/common';
+import { ConfirmSignInDTO, RequestSignInDTO, dateAfter, users } from '@my-task/common';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { eq, sql } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
+import { SIGN_IN_LIFE_SPAN } from '~/constants';
 import { CacheService } from '~/modules/cache/cache.service';
 import { DatabaseService } from '~/modules/database/database.service';
 
@@ -25,8 +26,9 @@ export class SignInService {
     if (Number(count) === 0) throw new BadRequestException('You need to sign up first!');
 
     const uuid = uuidv4();
+    const signInExpiration = dateAfter(SIGN_IN_LIFE_SPAN);
 
-    await this.uuidToEmail.set(uuid, email);
+    await this.uuidToEmail.set(uuid, email, signInExpiration);
 
     return uuid;
   }

@@ -1,7 +1,8 @@
-import { ConfirmSignUpDTO, RequestSignUpDTO, users } from '@my-task/common';
+import { ConfirmSignUpDTO, RequestSignUpDTO, dateAfter, users } from '@my-task/common';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { eq, sql } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
+import { SIGN_UP_LIFE_SPAN } from '~/constants';
 import { CacheService } from '~/modules/cache/cache.service';
 import { DatabaseService } from '~/modules/database/database.service';
 
@@ -29,8 +30,12 @@ export class SignUpService {
     if (await this.pendingEmail.has(email)) throw new BadRequestException('Emali already exists!');
 
     const uuid = uuidv4();
+    const signUpExpiration = dateAfter(SIGN_UP_LIFE_SPAN);
 
-    await Promise.all([this.pendingEmail.set(email), this.uuidToEmail.set(uuid, email)]);
+    await Promise.all([
+      this.pendingEmail.set(email, signUpExpiration),
+      this.uuidToEmail.set(uuid, email, signUpExpiration),
+    ]);
 
     return uuid;
   }
