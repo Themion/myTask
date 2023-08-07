@@ -1,31 +1,53 @@
+import { RequestAuthDTO } from '@my-task/common';
 import { ResponseCookie } from 'node-mocks-http';
 import { v4 as uuidv4 } from 'uuid';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '~/constants';
 import {
+  MockAuthService,
+  MockCookieService,
+  MockEmailService,
+  MockGroupService,
   MockRequest,
   MockResponse,
   mockAuthModule,
   mockAuthService,
+  mockCookieService,
+  mockEmailService,
+  mockGroupService,
   mockRequest,
   mockResponse,
 } from '~/mock';
 import { AuthController } from './auth.controller';
 
 describe('AuthController', () => {
+  let authService: MockAuthService;
+  let cookieService: MockCookieService;
+  let emailService: MockEmailService;
+  let groupService: MockGroupService;
   let controller: AuthController;
 
+  let email: string;
+  let userToAdd: RequestAuthDTO;
+  let refreshToken: string;
   let request: MockRequest;
   let response: MockResponse;
-  let refreshToken: string;
 
   beforeEach(async () => {
-    const authService = await mockAuthService();
-    const module = await mockAuthModule({ authService });
+    [authService, cookieService, emailService, groupService] = await Promise.all([
+      mockAuthService(),
+      mockCookieService(),
+      mockEmailService(),
+      mockGroupService(),
+    ]);
+
+    const module = await mockAuthModule({ authService, cookieService, emailService, groupService });
 
     controller = module.get<AuthController>(AuthController);
   });
 
   beforeEach(() => {
+    email = 'create@example.email';
+    userToAdd = { email };
     refreshToken = uuidv4();
 
     request = mockRequest();
@@ -34,6 +56,47 @@ describe('AuthController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+  });
+
+  describe('request', () => {
+    it('should work', async () => {
+      await expect(controller.request(userToAdd)).resolves.not.toThrow();
+    });
+
+    describe('should throw error with', () => {
+      it('non-object', async () => {
+        const data = 'create@example.email';
+        await expect(controller.request(data)).rejects.toThrow();
+      });
+    });
+  });
+
+  describe('confirm', () => {
+    let uuid: string;
+
+    beforeEach(async () => {
+      email = (await controller.request(userToAdd)).email;
+    });
+
+    it('should work', async () => {
+      uuid = authService.emailToUuid.get(email) as string;
+
+      const user = await controller.confirm({ uuid }, response);
+      expect(user).toBeDefined();
+      expect(user.email).toEqual(userToAdd.email);
+    });
+
+    describe('should throw error with', () => {
+      it('wrong dto', async () => {
+        uuid = 'this is not uuid';
+        await expect(async () => controller.confirm({ uuid }, response)).rejects.toThrow();
+      });
+
+      it('non-existing uuid', async () => {
+        uuid = uuidv4();
+        await expect(async () => controller.confirm({ uuid }, response)).rejects.toThrow();
+      });
+    });
   });
 
   describe('refresh', () => {
