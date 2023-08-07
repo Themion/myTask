@@ -1,7 +1,4 @@
-const SECOND = 1000;
-const MINUTE = 60 * SECOND;
-const HOUR = 60 * MINUTE;
-const DAY = 24 * HOUR;
+import { DAY, MINUTE } from '@my-task/common';
 
 const ACCESS_TOKEN_LIFE_SPAN = 15 * MINUTE;
 const REFRESH_TOKEN_LIFE_SPAN = 14 * DAY;
