@@ -20,7 +20,7 @@ import { CookieService } from '~/modules/auth/cookie.service';
 import { EmailService } from '~/modules/email/email.service';
 import { CookieSettings, Env } from '~/types';
 
-@Controller()
+@Controller('auth')
 export class AuthController {
   private readonly FE_ORIGIN: string;
 
