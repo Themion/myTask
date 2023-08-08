@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RenderResult, render, waitFor } from '@testing-library/react';
 import { RouteObject, RouterProvider, createMemoryRouter } from 'react-router-dom';
+import { RecoilRoot } from 'recoil';
 import { describe, expect, it } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
 import { server } from '~/mock';
@@ -35,7 +36,9 @@ describe('Auth - Confirm', () => {
     });
     return render(
       <QueryClientProvider client={testQueryClient}>
-        <RouterProvider router={router} />
+        <RecoilRoot>
+          <RouterProvider router={router} />
+        </RecoilRoot>
       </QueryClientProvider>,
     );
   };
