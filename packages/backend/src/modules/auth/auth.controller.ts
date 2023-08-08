@@ -38,7 +38,7 @@ export class AuthController {
     return this.emailService.sendEmail(
       receiver,
       '[MyTask] Please verify your E-Mail!',
-      `Click <a href="${this.FE_ORIGIN}/signin/${uuid}">HERE</a> to verify your E-Mail!`,
+      `Click <a href="${this.FE_ORIGIN}/auth/${uuid}">HERE</a> to verify your E-Mail!`,
     );
   }
 
