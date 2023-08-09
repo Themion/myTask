@@ -1,4 +1,5 @@
 import { MINUTE } from '@my-task/common';
+import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { refreshAuth } from '~/api';
@@ -15,7 +16,11 @@ const App = () => {
     enabled: refresh,
   });
 
-  if (result.error || !result.data?.refreshed) setRefresh(false);
+  useEffect(() => {
+    if (result.isLoading) return;
+    else if (result.error) setRefresh(false);
+    else if (result.data) setRefresh(result.data.refreshed || false);
+  }, [result.isLoading]);
 
   return <RouterProvider router={router} />;
 };
