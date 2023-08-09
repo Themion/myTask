@@ -5,6 +5,7 @@ import _fetch from '../core';
 
 const requestAuth = (options: MutationOptions<RequestAuthDTO, RequestAuthDTO>) =>
   useMutation({
+    mutationKey: ['requestAuth'],
     mutationFn: (body) => _fetch('/auth/request', { method: 'POST', body }),
     ...options,
   });
