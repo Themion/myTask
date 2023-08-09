@@ -5,6 +5,7 @@ import _fetch from '../core';
 
 const confirmAuth = (options: MutationOptions<{ email: string }, ConfirmAuthDTO>) =>
   useMutation({
+    mutationKey: ['confirmAuth'],
     mutationFn: (body) => _fetch('/auth/confirm', { method: 'POST', body }),
     ...options,
   });
