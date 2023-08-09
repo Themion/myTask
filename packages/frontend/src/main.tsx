@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
-import { refreshToken } from '~/api';
+import { refreshAuth } from '~/api';
 import '~/index.css';
 import router from '~/routes';
 
@@ -11,7 +11,7 @@ const App = () => {
   const [refresh, setRefresh] = useState(true);
 
   if (refresh) {
-    const result = refreshToken({
+    const result = refreshAuth({
       refetchInterval: 10 * MINUTE,
       refetchIntervalInBackground: true,
     });
