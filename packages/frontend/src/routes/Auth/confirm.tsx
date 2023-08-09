@@ -1,16 +1,23 @@
 import { useEffect, useState } from 'react';
 import { redirect, useParams } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import { z } from 'zod';
 import { confirmAuth } from '~/api';
+import { shouldRefreshAtom } from '~/recoil/atoms';
 
 const AuthConfirm = () => {
   const { uuid } = useParams();
   const [email, setEmail] = useState<string | undefined>(undefined);
+  // TODO: error를 state가 아닌 다른 방식으로 사용할 수 없을까?
   const [error, setError] = useState<any>();
   const [countdown, setCountdown] = useState<number>(3);
+  const setRefresh = useSetRecoilState(shouldRefreshAtom);
 
   const joinConfirm = confirmAuth({
-    onSuccess: (data) => setEmail(data.email),
+    onSuccess: (data) => {
+      setEmail(data.email);
+      setRefresh(true);
+    },
     onError: (err) => setError(err),
   });
 
@@ -21,7 +28,7 @@ const AuthConfirm = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [email]);
+  }, [email, countdown]);
 
   if (error) throw error;
   if (countdown === 0) redirect('/');
