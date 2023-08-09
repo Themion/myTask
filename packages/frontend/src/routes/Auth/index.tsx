@@ -1,7 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import AuthConfirm from './confirm';
-import AuthRequest from './request';
 import ErrorPage from './error';
+import AuthRequest from './request';
 
 const authRouteObject: RouteObject = {
   path: 'auth',
