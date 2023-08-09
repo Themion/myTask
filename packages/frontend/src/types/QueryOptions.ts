@@ -7,6 +7,6 @@ type BackendError = {
 };
 
 type QueryOptions<Output extends JsonObject> = Parameters<
-  typeof useQuery<unknown, BackendError, Output>
+  typeof useQuery<unknown, BackendError, Output, string[]>
 >[2];
 export default QueryOptions;

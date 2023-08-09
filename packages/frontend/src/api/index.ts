@@ -5,6 +5,7 @@ import refreshToken from './refreshToken';
 import requestSignIn from './requestSignIn';
 import requestSignUp from './requestSignUp';
 
+export * from './auth';
 export {
   confirmSignIn,
   confirmSignUp,
