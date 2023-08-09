@@ -1,7 +1,7 @@
 import { JsonObject, mergeObjects } from '@my-task/common';
 import { BE_ORIGIN, DEFAULT_FETCH_OPTIONS } from '~/constants';
 
-type RequestOption<BodyType extends JsonObject> = JsonObject & {
+type RequestOption<BodyType extends JsonObject> = Partial<Pick<JsonObject, keyof RequestInit>> & {
   body?: BodyType;
 };
 
