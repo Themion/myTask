@@ -20,7 +20,7 @@ import { CookieService } from '~/modules/auth/cookie.service';
 import { EmailService } from '~/modules/email/email.service';
 import { CookieSettings, Env } from '~/types';
 
-@Controller()
+@Controller('auth')
 export class AuthController {
   private readonly FE_ORIGIN: string;
 
@@ -38,7 +38,7 @@ export class AuthController {
     return this.emailService.sendEmail(
       receiver,
       '[MyTask] Please verify your E-Mail!',
-      `Click <a href="${this.FE_ORIGIN}/signin/${uuid}">HERE</a> to verify your E-Mail!`,
+      `Click <a href="${this.FE_ORIGIN}/auth/${uuid}">HERE</a> to verify your E-Mail!`,
     );
   }
 

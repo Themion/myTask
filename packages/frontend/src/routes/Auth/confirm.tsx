@@ -1,27 +1,23 @@
-import { User } from '@my-task/common';
 import { useEffect, useState } from 'react';
 import { redirect, useParams } from 'react-router-dom';
 import { z } from 'zod';
-import { confirmSignIn } from '~/api';
+import { confirmAuth } from '~/api';
 
-const SignInConfirm = () => {
+const AuthConfirm = () => {
   const { uuid } = useParams();
-  const [email, setEmail] = useState<string>();
+  const [email, setEmail] = useState<string | undefined>(undefined);
   const [error, setError] = useState<any>();
   const [countdown, setCountdown] = useState<number>(3);
 
-  const joinConfirm = confirmSignIn({
-    onSuccess: (data: User) => {
-      console.log(data); // striceMode를 사용하므로 디버깅을 위함
-      setEmail(data.email as string);
-    },
+  const joinConfirm = confirmAuth({
+    onSuccess: (data) => setEmail(data.email),
     onError: (err) => setError(err),
   });
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (email === undefined) return;
-      setCountdown((countdown) => countdown - 1);
+      if (countdown > 0) setCountdown((countdown) => countdown - 1);
     }, 1000);
 
     return () => clearInterval(interval);
@@ -49,4 +45,4 @@ const SignInConfirm = () => {
   );
 };
 
-export default SignInConfirm;
+export default AuthConfirm;

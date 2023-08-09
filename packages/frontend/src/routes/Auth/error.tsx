@@ -5,8 +5,7 @@ const ErrorPage = () => {
   const err = useRouteError() as any;
 
   const message = (() => {
-    if (!err) return 'Path Error : You need encoded email to join via this page!';
-    else if (err.errorMessage !== undefined) return err.errorMessage as string;
+    if (err.errorMessage !== undefined) return err.errorMessage as string;
 
     switch (err.constructor) {
       case ZodError:

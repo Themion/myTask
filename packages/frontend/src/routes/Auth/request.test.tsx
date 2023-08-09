@@ -3,9 +3,9 @@ import { RenderResult, fireEvent, render, waitFor } from '@testing-library/react
 import { describe, expect, it } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
 import { server } from '~/mock';
-import SignUp from './page';
+import AuthRequest from './request';
 
-describe('SignUp', () => {
+describe('Auth - Request', () => {
   let screen: RenderResult;
   const testQueryClient = new QueryClient({
     defaultOptions: {
@@ -26,20 +26,20 @@ describe('SignUp', () => {
   beforeEach(() => {
     screen = render(
       <QueryClientProvider client={testQueryClient}>
-        <SignUp />
+        <AuthRequest />
       </QueryClientProvider>,
       {},
     );
   });
 
-  it('should have form for sign up', () => {
+  it('should have form for sign in', () => {
     const $input = screen.getByLabelText('E-Mail');
     expect($input).toBeDefined();
     expect($input instanceof HTMLInputElement).toEqual(true);
     expect($input.getAttribute('type')).toEqual('email');
     expect($input).toBeInTheDocument();
 
-    const $button = screen.getByText('Sign Up');
+    const $button = screen.getByText('Sign In');
     expect($button).toBeDefined();
     expect($button instanceof HTMLButtonElement).toEqual(true);
     expect($button.getAttribute('type')).toEqual('submit');
@@ -49,19 +49,19 @@ describe('SignUp', () => {
   describe('onSubmit', () => {
     it('should be able to fire event', async () => {
       const $input = screen.getByLabelText('E-Mail') as HTMLInputElement;
-      const $button = screen.getByText('Sign Up') as HTMLButtonElement;
+      const $button = screen.getByText('Sign In') as HTMLButtonElement;
       const email = 'test@example.com';
 
       fireEvent.change($input, { target: { value: email } });
       fireEvent.click($button);
 
       await waitFor(() => expect(testQueryClient.isMutating()).toEqual(0));
-      expect(() => screen.getByText(`User(${email}) has successfully joined!`)).not.toThrow();
+      expect(() => screen.getByText(`Authentication E-Mail is sent to (${email})!`)).not.toThrow();
     });
 
     it('should not fire event with invalid email', async () => {
       const $input = screen.getByLabelText('E-Mail') as HTMLInputElement;
-      const $button = screen.getByText('Sign Up') as HTMLButtonElement;
+      const $button = screen.getByText('Sign In') as HTMLButtonElement;
 
       fireEvent.change($input, { target: { value: 'test@.com' } });
       fireEvent.click($button);

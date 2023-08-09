@@ -1,14 +1,13 @@
-import { RequestSignUpDTO } from '@my-task/common';
+import { RequestAuthDTO } from '@my-task/common';
 import { FormEventHandler, useRef, useState } from 'react';
-import { requestSignUp } from '~/api';
-import './style.css';
+import { requestAuth } from '~/api';
 
-const SignUp = () => {
+const AuthRequest = () => {
   const [statusText, setStatusText] = useState('');
   const emailInputRef = useRef<HTMLInputElement>(null);
-  const joinMutation = requestSignUp({
-    onSuccess: (data: RequestSignUpDTO) =>
-      setStatusText(`User(${data.email}) has successfully joined!`),
+  const mutation = requestAuth({
+    onSuccess: (data: RequestAuthDTO) =>
+      setStatusText(`Authentication E-Mail is sent to (${data.email})!`),
     onError: (err) => setStatusText(err.errorMessage),
   });
 
@@ -16,7 +15,7 @@ const SignUp = () => {
     e.preventDefault();
     if (!emailInputRef.current) return;
 
-    joinMutation.mutate({
+    mutation.mutate({
       email: emailInputRef.current.value,
     });
   };
@@ -28,9 +27,9 @@ const SignUp = () => {
         <input id="email" type="email" ref={emailInputRef} />
       </div>
       {statusText && <div>{statusText}</div>}
-      <button type="submit">Sign Up</button>
+      <button type="submit">Sign In</button>
     </form>
   );
 };
 
-export default SignUp;
+export default AuthRequest;

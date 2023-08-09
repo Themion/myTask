@@ -6,10 +6,7 @@ import { BE_ORIGIN } from '~/constants';
 import { server } from '~/mock';
 import welcomeRouteObject from '.';
 
-describe('App', () => {
-  it('no test suite', () => {
-    expect(1).toEqual(1);
-  });
+describe('Auth - Error', () => {
   let screen: RenderResult;
   const testQueryClient = new QueryClient({
     defaultOptions: {
@@ -19,7 +16,7 @@ describe('App', () => {
     },
     logger: {
       log: () => {},
-      warn: console.warn,
+      warn: () => {},
       error: () => {},
     },
   });
@@ -41,23 +38,21 @@ describe('App', () => {
       </QueryClientProvider>,
     );
 
-  describe('Welcome', () => {
-    describe('should work', () => {
-      beforeEach(() => {
-        screen = renderWithRouter('/welcome/993ae2a1-2554-404c-8a86-660b5ee7fedd');
-      });
+  describe('should throw error when', () => {
+    it('invalid string', async () => {
+      screen = renderWithRouter('/auth/@@@');
+      await waitFor(() => expect(testQueryClient.isMutating()).toEqual(0));
 
-      it('when loading', async () => {
-        const text = screen.getByText('Loading...');
-        expect(text).toBeDefined();
-      });
+      const text = screen.getByText('Parse Error : Given string cannot be parsed to UUID!');
+      expect(text).toBeDefined();
+    });
 
-      it('when success', async () => {
-        await waitFor(() => expect(testQueryClient.isMutating()).toEqual(0));
+    it('invalid uuid', async () => {
+      screen = renderWithRouter('/auth/6aa6ee8e-a4f8-49f6-817f-1c9342aae29e');
+      await waitFor(() => expect(testQueryClient.isMutating()).toEqual(0));
 
-        const text = screen.getByText('Welcome, success@example.com!');
-        expect(text).toBeDefined();
-      });
+      const text = screen.getByText('UUID cannot be found: Wrong DTO!');
+      expect(text).toBeDefined();
     });
   });
 });

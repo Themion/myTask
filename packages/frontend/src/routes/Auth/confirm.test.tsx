@@ -4,13 +4,9 @@ import { RouteObject, RouterProvider, createMemoryRouter } from 'react-router-do
 import { describe, expect, it } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
 import { server } from '~/mock';
-import signInRouteObject from '.';
+import authRouteObject from '.';
 
-describe('App', () => {
-  it('no test suite', () => {
-    expect(1).toEqual(1);
-  });
-
+describe('Auth - Confirm', () => {
   let screen: RenderResult;
   let router: ReturnType<typeof createMemoryRouter>;
   const testQueryClient = new QueryClient({
@@ -34,7 +30,7 @@ describe('App', () => {
 
   const renderWithRouter = (path: string) => {
     const rootRouteObject: RouteObject = { path: '', element: <div>redirected!</div> };
-    router = createMemoryRouter([rootRouteObject, signInRouteObject], {
+    router = createMemoryRouter([rootRouteObject, authRouteObject], {
       initialEntries: [path],
     });
     return render(
@@ -44,23 +40,21 @@ describe('App', () => {
     );
   };
 
-  describe('Welcome', () => {
-    describe('should work', () => {
-      beforeEach(() => {
-        screen = renderWithRouter('/signin/993ae2a1-2554-404c-8a86-660b5ee7fedd');
-      });
+  describe('should work', () => {
+    beforeEach(() => {
+      screen = renderWithRouter('/auth/993ae2a1-2554-404c-8a86-660b5ee7fedd');
+    });
 
-      it('when loading', async () => {
-        const text = screen.getByText('Loading...');
-        expect(text).toBeDefined();
-      });
+    it('when loading', async () => {
+      const text = screen.getByText('Loading...');
+      expect(text).toBeDefined();
+    });
 
-      it('when success', async () => {
-        await waitFor(() => expect(testQueryClient.isMutating()).toEqual(0));
+    it('when success', async () => {
+      await waitFor(() => expect(testQueryClient.isMutating()).toEqual(0));
 
-        const text = screen.getByText('Welcome, success@example.com!');
-        expect(text).toBeDefined();
-      });
+      const text = screen.getByText('Welcome, success@example.com!');
+      expect(text).toBeDefined();
     });
   });
 });

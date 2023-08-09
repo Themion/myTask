@@ -5,8 +5,6 @@ import mockDatabaseModule from './database.module';
 import mockEmailModule from './email.module';
 import mockGroupModule from './group.module';
 import mockJwtModule from './jwt.module';
-import mockSignInModule from './signin.module';
-import mockSignUpModule from './signup.module';
 
 export {
   mockAuthModule,
@@ -16,6 +14,4 @@ export {
   mockEmailModule,
   mockGroupModule,
   mockJwtModule,
-  mockSignInModule,
-  mockSignUpModule,
 };
