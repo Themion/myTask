@@ -16,6 +16,7 @@ import { DatabaseService } from '~/modules/database/database.service';
 export class AuthService {
   private readonly db;
   private readonly uuidToEmail;
+  private readonly emailToUUID;
   private readonly RT2Email;
 
   constructor(
@@ -25,6 +26,7 @@ export class AuthService {
   ) {
     this.db = databaseService.db;
     this.uuidToEmail = cacheService.toHash(CACHE_TABLE_NAME.uuidToEmail);
+    this.emailToUUID = cacheService.toHash(CACHE_TABLE_NAME.emailToUUID);
     this.RT2Email = cacheService.toHash(CACHE_TABLE_NAME.RT2Email);
   }
 
@@ -48,10 +50,16 @@ export class AuthService {
   async request(dto: RequestAuthDTO) {
     const { email } = dto;
 
+    const cachedUUID = await this.emailToUUID.get(email);
+    if (cachedUUID) this.uuidToEmail.del(cachedUUID);
+
     const uuid = uuidv4();
     const signInExpiration = dateAfter(SIGN_IN_LIFE_SPAN);
 
-    await this.uuidToEmail.set(uuid, email, signInExpiration);
+    await Promise.all([
+      this.uuidToEmail.set(uuid, email, signInExpiration),
+      this.emailToUUID.set(email, uuid, signInExpiration),
+    ]);
 
     return uuid;
   }
@@ -62,8 +70,11 @@ export class AuthService {
 
     if (!email) throw new BadRequestException('UUID cannot be found: Wrong DTO!');
 
-    await this.uuidToEmail.del(uuid);
-    await this.createUserIfNotExist(email);
+    await Promise.all([
+      this.createUserIfNotExist(email),
+      this.emailToUUID.del(email),
+      this.uuidToEmail.del(uuid),
+    ]);
 
     return { email };
   }

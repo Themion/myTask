@@ -67,9 +67,15 @@ describe('AuthService', () => {
         await expect(async () => service.confirm({ uuid })).rejects.toThrow();
       });
 
-      it('pass same parameter', async () => {
+      it('pass duplicated uuid', async () => {
         await service.confirm({ uuid });
         await expect(async () => service.confirm({ uuid })).rejects.toThrow();
+      });
+
+      it('pass outdated uuid', async () => {
+        const newUUID = await service.request(userToAdd);
+        await expect(async () => service.confirm({ uuid })).rejects.toThrow();
+        await expect(service.confirm({ uuid: newUUID })).resolves.not.toThrow();
       });
     });
   });
