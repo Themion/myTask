@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import NUMERIC_STRING_RULE from './numericString';
+import { NUMERIC_STRING_RULE } from '../utils';
 
 const PORT_MIN = 0;
 const PORT_MAX = 65535;
