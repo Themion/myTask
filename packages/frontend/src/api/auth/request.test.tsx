@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider, UseMutationResult } from '@tanstack/r
 import { RenderHookResult, renderHook, waitFor } from '@testing-library/react';
 import { describe, expectTypeOf } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
-import { server } from '~/mock';
+import { server, validEmail } from '~/mock';
 import requestAuth from './request';
 
 describe('requestAuth', () => {
@@ -40,7 +40,7 @@ describe('requestAuth', () => {
   });
 
   it('should work', async () => {
-    const dto: RequestAuthDTO = { email: 'test@email.com' };
+    const dto: RequestAuthDTO = { email: validEmail };
     renderedHook.result.current.mutate(dto);
     await waitFor(() => expect(renderedHook.result.current.isSuccess).toEqual(true));
 

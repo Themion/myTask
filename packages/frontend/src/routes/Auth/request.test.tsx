@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RenderResult, fireEvent, render, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
-import { server } from '~/mock';
+import { server, validEmail } from '~/mock';
 import AuthRequest from './request';
 
 describe('Auth - Request', () => {
@@ -50,13 +50,14 @@ describe('Auth - Request', () => {
     it('should be able to fire event', async () => {
       const $input = screen.getByLabelText('E-Mail') as HTMLInputElement;
       const $button = screen.getByText('Sign In') as HTMLButtonElement;
-      const email = 'test@example.com';
 
-      fireEvent.change($input, { target: { value: email } });
+      fireEvent.change($input, { target: { value: validEmail } });
       fireEvent.click($button);
 
       await waitFor(() => expect(testQueryClient.isMutating()).toEqual(0));
-      expect(() => screen.getByText(`Authentication E-Mail is sent to (${email})!`)).not.toThrow();
+      expect(() =>
+        screen.getByText(`Authentication E-Mail is sent to (${validEmail})!`),
+      ).not.toThrow();
     });
 
     it('should not fire event with invalid email', async () => {

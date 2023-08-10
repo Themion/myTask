@@ -3,7 +3,7 @@ import { RenderResult, render, waitFor } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
-import { server } from '~/mock';
+import { invalidUUID, server } from '~/mock';
 import welcomeRouteObject from '.';
 
 describe('Auth - Error', () => {
@@ -48,7 +48,7 @@ describe('Auth - Error', () => {
     });
 
     it('invalid uuid', async () => {
-      screen = renderWithRouter('/auth/6aa6ee8e-a4f8-49f6-817f-1c9342aae29e');
+      screen = renderWithRouter(`/auth/${invalidUUID}`);
       await waitFor(() => expect(testQueryClient.isMutating()).toEqual(0));
 
       const text = screen.getByText('UUID cannot be found: Wrong DTO!');

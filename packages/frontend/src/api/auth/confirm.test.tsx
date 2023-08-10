@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider, UseMutationResult } from '@tanstack/r
 import { RenderHookResult, renderHook, waitFor } from '@testing-library/react';
 import { describe } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
-import { server } from '~/mock';
+import { invalidUUID, server, validEmail, validUUID } from '~/mock';
 import confirmAuth from './confirm';
 
 describe('confirmAuth', () => {
@@ -40,18 +40,18 @@ describe('confirmAuth', () => {
   });
 
   it('should work', async () => {
-    const dto: ConfirmAuthDTO = { uuid: '993ae2a1-2554-404c-8a86-660b5ee7fedd' };
+    const dto: ConfirmAuthDTO = { uuid: validUUID };
     renderedHook.result.current.mutate(dto);
     await waitFor(() => expect(renderedHook.result.current.isSuccess).toEqual(true));
 
     const data = renderedHook.result.current.data;
     expect(data).toHaveProperty('email');
-    expect(data.email).toEqual('success@example.com');
+    expect(data.email).toEqual(validEmail);
   });
 
   describe('should fail with', () => {
     it('invalid email', async () => {
-      const dto: ConfirmAuthDTO = { uuid: '6aa6ee8e-a4f8-49f6-817f-1c9342aae29e' };
+      const dto: ConfirmAuthDTO = { uuid: invalidUUID };
       renderedHook.result.current.mutate(dto);
       await waitFor(() => expect(renderedHook.result.current.isError).toEqual(true));
     });
