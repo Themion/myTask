@@ -16,6 +16,7 @@ import {
   mockGroupService,
   mockRequest,
   mockResponse,
+  validEmail,
 } from '~/mock';
 import { AuthController } from './auth.controller';
 
@@ -46,7 +47,7 @@ describe('AuthController', () => {
   });
 
   beforeEach(() => {
-    email = 'create@example.email';
+    email = validEmail;
     userToAdd = { email };
     refreshToken = uuidv4();
 
@@ -65,7 +66,7 @@ describe('AuthController', () => {
 
     describe('should throw error with', () => {
       it('non-object', async () => {
-        const data = 'create@example.email';
+        const data = email;
         await expect(controller.request(data)).rejects.toThrow();
       });
     });

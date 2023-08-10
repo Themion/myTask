@@ -5,7 +5,7 @@ import {
   REFRESH_TOKEN,
   REFRESH_TOKEN_LIFE_SPAN,
 } from '~/constants';
-import { mockAuthModule } from '~/mock';
+import { mockAuthModule, validEmail } from '~/mock';
 import { CookieService } from '~/modules/auth/cookie.service';
 import { CacheService } from '~/modules/cache/cache.service';
 import { CookieSettings } from '~/types';
@@ -22,7 +22,7 @@ describe('CookieService', () => {
 
     await cacheService.onModuleInit();
 
-    email = 'test@example.com';
+    email = validEmail;
   });
 
   afterEach(async () => cacheService.onModuleDestroy());
