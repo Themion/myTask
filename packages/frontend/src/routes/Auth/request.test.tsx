@@ -1,19 +1,13 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { RenderResult, fireEvent, render, waitFor } from '@testing-library/react';
+import { QueryClient } from '@tanstack/react-query';
+import { RenderResult, fireEvent, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
-import { server, validEmail } from '~/mock';
+import { render, server, validEmail } from '~/mock';
 import AuthRequest from './request';
 
 describe('Auth - Request', () => {
   let screen: RenderResult;
-  const testQueryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-  });
+  let client: QueryClient;
 
   beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
   // https://stackoverflow.com/questions/76046546/fetch-error-typeerror-err-invalid-url-invalid-url-for-requests-made-in-test
@@ -21,16 +15,13 @@ describe('Auth - Request', () => {
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
-  afterEach(() => testQueryClient.clear());
-
   beforeEach(() => {
-    screen = render(
-      <QueryClientProvider client={testQueryClient}>
-        <AuthRequest />
-      </QueryClientProvider>,
-      {},
-    );
+    const renderResult = render(<AuthRequest />);
+    screen = renderResult.screen;
+    client = renderResult.client;
   });
+
+  afterEach(() => client.clear());
 
   it('should have form for sign in', () => {
     const $input = screen.getByLabelText('E-Mail');
@@ -54,7 +45,7 @@ describe('Auth - Request', () => {
       fireEvent.change($input, { target: { value: validEmail } });
       fireEvent.click($button);
 
-      await waitFor(() => expect(testQueryClient.isMutating()).toEqual(0));
+      await waitFor(() => expect(client.isMutating()).toEqual(0));
       expect(() =>
         screen.getByText(`Authentication E-Mail is sent to (${validEmail})!`),
       ).not.toThrow();
@@ -66,7 +57,7 @@ describe('Auth - Request', () => {
 
       fireEvent.change($input, { target: { value: 'test@.com' } });
       fireEvent.click($button);
-      expect(testQueryClient.isMutating()).toEqual(0);
+      expect(client.isMutating()).toEqual(0);
     });
   });
 });
