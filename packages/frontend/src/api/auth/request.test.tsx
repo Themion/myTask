@@ -1,29 +1,14 @@
 import { RequestAuthDTO, User } from '@my-task/common';
-import { QueryClient, QueryClientProvider, UseMutationResult } from '@tanstack/react-query';
+import { QueryClient, UseMutationResult } from '@tanstack/react-query';
 import { RenderHookResult, renderHook, waitFor } from '@testing-library/react';
 import { describe, expectTypeOf } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
-import { server, validEmail } from '~/mock';
+import { render, server, validEmail } from '~/mock';
 import requestAuth from './request';
 
 describe('requestAuth', () => {
   let renderedHook: RenderHookResult<UseMutationResult<any, any, RequestAuthDTO, any>, unknown>;
-
-  const testQueryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-    logger: {
-      log: console.log,
-      warn: console.warn,
-      error: () => {},
-    },
-  });
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={testQueryClient}>{children}</QueryClientProvider>
-  );
+  let client: QueryClient;
 
   beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
   // https://stackoverflow.com/questions/76046546/fetch-error-typeerror-err-invalid-url-invalid-url-for-requests-made-in-test
@@ -32,12 +17,16 @@ describe('requestAuth', () => {
   afterAll(() => server.close());
 
   beforeEach(() => {
-    renderedHook = renderHook(() => requestAuth({}), { wrapper });
+    renderedHook = renderHook(() => requestAuth({}), {
+      wrapper: ({ children }) => {
+        const renderResult = render(children);
+        client = renderResult.client;
+        return renderResult.element;
+      },
+    });
   });
 
-  afterEach(() => {
-    testQueryClient.clear();
-  });
+  afterEach(() => client.clear());
 
   it('should work', async () => {
     const dto: RequestAuthDTO = { email: validEmail };
