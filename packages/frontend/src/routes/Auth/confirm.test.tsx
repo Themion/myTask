@@ -4,7 +4,7 @@ import { RouteObject, RouterProvider, createMemoryRouter } from 'react-router-do
 import { RecoilRoot } from 'recoil';
 import { describe, expect, it } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
-import { server } from '~/mock';
+import { server, validEmail, validUUID } from '~/mock';
 import authRouteObject from '.';
 
 describe('Auth - Confirm', () => {
@@ -45,7 +45,7 @@ describe('Auth - Confirm', () => {
 
   describe('should work', () => {
     beforeEach(() => {
-      screen = renderWithRouter('/auth/993ae2a1-2554-404c-8a86-660b5ee7fedd');
+      screen = renderWithRouter(`/auth/${validUUID}`);
     });
 
     it('when loading', async () => {
@@ -56,7 +56,7 @@ describe('Auth - Confirm', () => {
     it('when success', async () => {
       await waitFor(() => expect(testQueryClient.isMutating()).toEqual(0));
 
-      const text = screen.getByText('Welcome, success@example.com!');
+      const text = screen.getByText(`Welcome, ${validEmail}!`);
       expect(text).toBeDefined();
     });
   });
