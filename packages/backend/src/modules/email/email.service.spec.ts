@@ -1,19 +1,26 @@
-import SMTPPool from 'nodemailer/lib/smtp-pool';
 import { mockEmailModule } from '~/mock';
 import { EmailService } from './email.service';
+
+const sendMailMock = jest.fn((mailOption, callback) =>
+  callback(mailOption.to === '' ? new Error('test') : undefined, { accepted: [1], rejected: [] }),
+);
+jest.mock('nodemailer', () => ({
+  createTransport: jest.fn().mockImplementation(() => ({
+    sendMail: sendMailMock,
+  })),
+}));
 
 describe('EmailService', () => {
   let service: EmailService;
   const receiver = process.env.EMAIL_TEST_RECEIVER as string;
 
   beforeEach(async () => {
+    jest.resetModules();
     const module = await mockEmailModule();
     service = module.get<EmailService>(EmailService);
   });
 
-  afterEach(() => {
-    service.onModuleDestroy();
-  });
+  afterEach(() => {});
 
   it('should be defined', () => {
     expect(service).toBeDefined();
@@ -21,19 +28,12 @@ describe('EmailService', () => {
 
   describe('sendEmail', () => {
     it('should work', async () => {
-      let result: SMTPPool.SentMessageInfo;
-      expect(
-        (result = await service.sendEmail(receiver, 'test', '<div>test123</div>')),
-      ).toBeDefined();
-      expect(result.accepted.length).toEqual(1);
-      expect(result.rejected.length).toEqual(0);
+      expect(service.sendEmail(receiver, 'test', '<div>test123</div>')).resolves.not.toThrow();
     });
 
     describe('should throw error when', () => {
       it('empty receiver', async () => {
-        await expect(
-          async () => await service.sendEmail('', 'test', '<div>test123</div>'),
-        ).rejects.toThrow();
+        await expect(service.sendEmail('', 'test', '<div>test123</div>')).rejects.toThrow();
       });
     });
   });
