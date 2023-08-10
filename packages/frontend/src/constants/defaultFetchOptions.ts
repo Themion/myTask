@@ -1,7 +1,7 @@
-import { JsonObject } from '@my-task/common';
+import { FetchOptions } from '~/types';
 import HttpMethod from './HttpMethod';
 
-const DEFAULT_FETCH_OPTIONS: Partial<Pick<JsonObject, keyof RequestInit>> = {
+const DEFAULT_FETCH_OPTIONS: FetchOptions = {
   method: HttpMethod.GET,
   headers: { 'Content-Type': 'application/json' },
   credentials: 'include',

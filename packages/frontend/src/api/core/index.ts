@@ -1,19 +1,14 @@
 import { JsonObject, mergeObjects } from '@my-task/common';
-import { BE_ORIGIN, DEFAULT_FETCH_OPTIONS, HttpMethod } from '~/constants';
+import { BE_ORIGIN, DEFAULT_FETCH_OPTIONS } from '~/constants';
+import { FetchOptions } from '~/types';
 
-type RequestOption<BodyType extends JsonObject> = Partial<Pick<JsonObject, keyof RequestInit>> & {
-  body?: BodyType;
-  method?: (typeof HttpMethod)[keyof typeof HttpMethod];
-};
-
-type BodyObject = { body: string } | {};
-
-const getBody = <Input extends JsonObject>({ body }: RequestOption<Input>): BodyObject =>
-  body ? { body: JSON.stringify(body) } : {};
+const getBody = <Input extends JsonObject>({ body }: FetchOptions<Input>) => ({
+  body: body ? JSON.stringify(body) : null,
+});
 
 const _fetch = async <Output = any, Input extends JsonObject = JsonObject>(
   path: string,
-  option: RequestOption<Input> = {},
+  option: FetchOptions<Input> = {},
 ) => {
   const url = new URL(path, BE_ORIGIN);
 
