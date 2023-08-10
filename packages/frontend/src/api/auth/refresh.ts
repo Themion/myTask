@@ -6,7 +6,7 @@ import _fetch from '../core';
 const refreshAuth = (option: QueryOptions<RefreshedDTO>) =>
   useQuery({
     queryKey: ['refreshAuth'],
-    queryFn: () => _fetch('/auth', { method: 'GET' }),
+    queryFn: () => _fetch('/auth'),
     ...option,
   });
 
