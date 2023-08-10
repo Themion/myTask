@@ -1,20 +1,11 @@
 import { confirmAuthDTOSchema, requestAuthDTOSchema } from '@my-task/common';
 import { rest } from 'msw';
-import { BE_ORIGIN } from '~/constants';
+import mockDir from './mockDir';
 
-const mockDir = (path: string) => `${BE_ORIGIN}${path}`;
+const mockAuthDir = (path: string) => mockDir(`/auth${path}`);
 
-export const handlers = [
-  rest.get(mockDir(''), (_, res, ctx) => res(ctx.status(200), ctx.json({ foo: 'bar' }))),
-  rest.post(mockDir(''), async (req, res, ctx) => {
-    const body = await req.json();
-    return res(ctx.status(200), ctx.json(body));
-  }),
-  rest.get(`${BE_ORIGIN}/error`, (_, res, ctx) =>
-    res(ctx.status(400), ctx.json({ errorMessage: 'Error thrown for unknown reason.' })),
-  ),
-
-  rest.post(mockDir('/auth/request'), async (req, res, ctx) => {
+const authHandlers = [
+  rest.post(mockAuthDir('/request'), async (req, res, ctx) => {
     const body = await req.json();
 
     ctx.delay();
@@ -27,7 +18,7 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(data));
   }),
 
-  rest.post(mockDir('/auth/confirm'), async (req, res, ctx) => {
+  rest.post(mockAuthDir('/confirm'), async (req, res, ctx) => {
     const body = await req.json();
 
     ctx.delay();
@@ -45,3 +36,5 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(success));
   }),
 ];
+
+export default authHandlers;
