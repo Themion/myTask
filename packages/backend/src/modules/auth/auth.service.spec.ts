@@ -1,8 +1,8 @@
 import { RequestAuthDTO } from '@my-task/common';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '~/constants';
-import { mockAuthModule, mockDatabaseModule } from '~/mock';
+import { ACCESS_TOKEN, CACHE_TABLE_NAME, REFRESH_TOKEN } from '~/constants';
+import { mockAuthModule, mockDatabaseModule, validEmail } from '~/mock';
 import { AuthService } from '~/modules/auth/auth.service';
 import { CacheService } from '~/modules/cache/cache.service';
 import { DatabaseService } from '~/modules/database/database.service';
@@ -28,13 +28,13 @@ describe('AuthService', () => {
     cacheService = module.get<CacheService>(CacheService);
 
     await cacheService.onModuleInit();
-    RT2Email = cacheService.toHash('RT2Email');
+    RT2Email = cacheService.toHash(CACHE_TABLE_NAME.RT2Email);
   });
 
   afterEach(async () => cacheService.onModuleDestroy());
 
   beforeEach(() => {
-    email = 'create@example.email';
+    email = validEmail;
     userToAdd = { email };
   });
 

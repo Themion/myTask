@@ -1,6 +1,6 @@
 import { User, users } from '@my-task/common';
 import { DatabaseError } from 'pg';
-import { mockDatabaseModule, mockGroupModule } from '~/mock';
+import { mockDatabaseModule, mockGroupModule, validEmail } from '~/mock';
 import { DatabaseService } from '~/modules/database/database.service';
 import { GroupService } from './group.service';
 
@@ -21,7 +21,7 @@ describe('GroupService', () => {
   beforeEach(async () => {
     const creatorList = await databaseService.db
       .insert(users)
-      .values({ email: 'test@example.com' })
+      .values({ email: validEmail })
       .onConflictDoNothing()
       .returning();
     if (creatorList.length > 0) creator = creatorList[0];
