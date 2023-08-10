@@ -29,11 +29,6 @@ describe('_fetch', () => {
       expect(async () => _fetch(path)).rejects.toThrow();
     });
 
-    it('invalid method', () => {
-      const path = '/';
-      expect(async () => _fetch(path, { method: 'WRONG_METHOD' })).rejects.toThrow();
-    });
-
     it('error thrown in server', () => {
       const path = '/error';
       expect(async () => _fetch(path)).rejects.toThrow();

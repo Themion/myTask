@@ -1,8 +1,9 @@
 import { JsonObject, mergeObjects } from '@my-task/common';
-import { BE_ORIGIN, DEFAULT_FETCH_OPTIONS } from '~/constants';
+import { BE_ORIGIN, DEFAULT_FETCH_OPTIONS, HttpMethod } from '~/constants';
 
 type RequestOption<BodyType extends JsonObject> = Partial<Pick<JsonObject, keyof RequestInit>> & {
   body?: BodyType;
+  method?: (typeof HttpMethod)[keyof typeof HttpMethod];
 };
 
 type BodyObject = { body: string } | {};
