@@ -4,7 +4,7 @@ import NUMERIC_STRING_RULE from './numericString';
 
 describe('numericString', () => {
   describe('should work with', () => {
-    it('numeric tring', () => {
+    it('numeric string', () => {
       const before = '300';
       const after = NUMERIC_STRING_RULE.parse(before);
       expect(after).equal(parseInt(before));
