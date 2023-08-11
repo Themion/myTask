@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { refreshAuth } from '~/api';
+import { Header } from '~/components';
 import { shouldRefreshAtom } from '~/recoil/atoms';
 import router from '~/routes';
 
@@ -21,7 +22,12 @@ const App = () => {
     else if (result.data) setRefresh(result.data.refreshed || false);
   }, [result.isLoading]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <Header />
+      <RouterProvider router={router} />
+    </>
+  );
 };
 
 export default App;
