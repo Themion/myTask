@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { refreshAuth } from '~/api';
-import '~/index.css';
 import { shouldRefreshAtom } from '~/recoil/atoms';
 import router from '~/routes';
 
