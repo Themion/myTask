@@ -1,7 +1,8 @@
 import { z } from 'zod';
+import { UUID_RULE } from '../../utils';
 
 const confirmAuthDTOSchema = z.object({
-  uuid: z.string().uuid(),
+  uuid: UUID_RULE,
 });
 
 type ConfirmAuthDTO = ReturnType<typeof confirmAuthDTOSchema.parse>;

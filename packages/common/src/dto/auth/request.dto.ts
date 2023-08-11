@@ -1,7 +1,8 @@
 import { z } from 'zod';
+import { EMAIL_RULE } from '../../utils';
 
 const requestAuthDTOSchema = z.object({
-  email: z.string().email().max(320),
+  email: EMAIL_RULE,
 });
 
 type RequestAuthDTO = ReturnType<typeof requestAuthDTOSchema.parse>;

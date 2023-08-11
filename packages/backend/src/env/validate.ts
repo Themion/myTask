@@ -1,4 +1,4 @@
-import { HOST_RULE, PORT_RULE, USER_PORT_RULE } from '@my-task/common';
+import { EMAIL_RULE, HOST_RULE, PORT_RULE, STRING_RULE, USER_PORT_RULE } from '@my-task/common';
 import { ZodIssueCode, z } from 'zod';
 
 const envSchema = z
@@ -6,24 +6,24 @@ const envSchema = z
     HOST: HOST_RULE,
 
     DB_PORT: USER_PORT_RULE,
-    DB_USER: z.string(),
-    DB_PASSWORD: z.string(),
-    DB_DB: z.string(),
+    DB_USER: STRING_RULE,
+    DB_PASSWORD: STRING_RULE,
+    DB_DB: STRING_RULE,
 
     REDIS_PORT: USER_PORT_RULE,
-    REDIS_USER: z.string(),
-    REDIS_PASS: z.string(),
+    REDIS_USER: STRING_RULE,
+    REDIS_PASS: STRING_RULE,
 
-    JWT_PUBLIC_KEY: z.string(),
-    JWT_PRIVATE_KEY: z.string(),
+    JWT_PUBLIC_KEY: STRING_RULE,
+    JWT_PRIVATE_KEY: STRING_RULE,
 
     BE_PORT: USER_PORT_RULE,
 
-    EMAIL_HOST: z.string(),
+    EMAIL_HOST: STRING_RULE,
     EMAIL_PORT: PORT_RULE,
-    EMAIL_USER: z.string(),
-    EMAIL_PASS: z.string(),
-    EMAIL_SENDER: z.string().email(),
+    EMAIL_USER: STRING_RULE,
+    EMAIL_PASS: STRING_RULE,
+    EMAIL_SENDER: EMAIL_RULE,
 
     FE_PORT: USER_PORT_RULE,
   })

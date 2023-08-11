@@ -9,23 +9,23 @@ describe('env validation', () => {
       HOST: 'localhost',
 
       DB_PORT: '5432',
-      DB_USER: '',
-      DB_PASSWORD: '',
-      DB_DB: '',
+      DB_USER: 'a',
+      DB_PASSWORD: 'a',
+      DB_DB: 'a',
 
       REDIS_PORT: '6379',
-      REDIS_USER: '',
-      REDIS_PASS: '',
+      REDIS_USER: 'aa',
+      REDIS_PASS: 'a',
 
-      JWT_PUBLIC_KEY: '',
-      JWT_PRIVATE_KEY: '',
+      JWT_PUBLIC_KEY: 'a',
+      JWT_PRIVATE_KEY: 'a',
 
       BE_PORT: '3000',
 
       EMAIL_HOST: 'smtp.gmail.com',
       EMAIL_PORT: '587',
-      EMAIL_USER: '',
-      EMAIL_PASS: '',
+      EMAIL_USER: 'a',
+      EMAIL_PASS: 'a',
       EMAIL_SENDER: 'test@example.com',
 
       FE_PORT: '5173',

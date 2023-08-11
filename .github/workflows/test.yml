@@ -78,7 +78,7 @@ jobs:
 
           REDIS_PORT: 6379
           REDIS_USER: default
-          REDIS_PASS: ''
+          REDIS_PASS: 'redis_pass'
 
           BE_PORT: ${{ vars.BE_PORT }}
           FE_PORT: ${{ vars.FE_PORT }}

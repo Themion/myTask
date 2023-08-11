@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { UUID_RULE } from '@my-task/common';
 import {
   ACCESS_TOKEN,
   ACCESS_TOKEN_LIFE_SPAN,
@@ -75,7 +75,7 @@ describe('CookieService', () => {
         expect(refreshToken).toBeDefined();
 
         expect(val).toBeDefined();
-        expect(z.string().uuid().safeParse(val).success).toEqual(true);
+        expect(UUID_RULE.safeParse(val).success).toEqual(true);
 
         expect(httpOnly).toEqual(true);
 
