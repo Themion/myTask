@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+
+  border-bottom: 1px solid gray;
+  margin-bottom: 1rem;
+
+  padding: 10px;
+
+  &__logo {
+    margin-right: 1rem;
+  }
+
+  &__nav {
+    &--ul {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      list-style-type: none;
+
+      li {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  &__user {
+    margin-left: auto;
+  }
+}
