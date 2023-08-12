@@ -1,11 +1,11 @@
 import HeaderLogo from './Logo';
 import HeaderNav from './Nav';
 import HeaderUser from './User';
-import './styles.scss';
+import styles from './styles.module.scss';
 
 const Header = () => {
   return (
-    <header className="header">
+    <header className={styles.header}>
       <HeaderLogo />
       <HeaderNav />
       <HeaderUser />
