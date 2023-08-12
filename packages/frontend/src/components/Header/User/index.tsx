@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { shouldRefreshAtom } from '~/recoil/atoms';
 
 const HeaderUser = () => {
-  const parentRef = useRef<HTMLSpanElement>(null);
+  const parentRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const refreshed = useRecoilValue(shouldRefreshAtom);
 
@@ -31,14 +31,12 @@ const HeaderUser = () => {
   });
 
   return (
-    <>
-      <span className="header__user" ref={parentRef} onClick={onMenuClick}>
-        user menu
-      </span>
+    <div className="header__user" ref={parentRef}>
+      <span onClick={onMenuClick}>user menu</span>
       <dialog className="header__user--dialog" ref={dialogRef}>
         {refreshed ? 'sign out' : 'sign in'}
       </dialog>
-    </>
+    </div>
   );
 };
 
