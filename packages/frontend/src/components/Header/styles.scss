@@ -19,6 +19,26 @@
 
       li {
         margin-right: 5px;
+
+        &:has(> div.header__nav--dropdown.hidden)::after {
+          content: '▼';
+        }
+
+        &:has(> div.header__nav--dropdown)::after {
+          content: '△';
+        }
+      }
+    }
+
+    &--dropdown {
+      background-color: white;
+      position: absolute;
+      margin-top: 1em;
+      padding: 1em;
+      border: 1px solid black;
+
+      &.hidden {
+        display: none;
       }
     }
   }
