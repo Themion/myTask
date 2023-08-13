@@ -1,7 +1,7 @@
 import { MouseEventHandler, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { removeAuth } from '~/api';
-import Modal from '~/components/Modal';
+import { Modal } from '~/components';
 import { shouldRefreshAtom } from '~/recoil/atoms';
 import AuthRequest from '~/routes/Auth/request';
 

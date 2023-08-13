@@ -1,2 +1,3 @@
-import Header from './Header';
-export { Header };
+import Dropdown from './Dropdown';
+import Modal from './Modal';
+export { Dropdown, Modal };
