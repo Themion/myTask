@@ -36,6 +36,12 @@ const authHandlers = [
 
     return res(ctx.status(200), ctx.json(success));
   }),
+
+  rest.delete(mockAuthDir(''), async (_, res, ctx) => {
+    ctx.delay();
+    // cannot mock cookie from react query
+    return res(ctx.status(200), ctx.json({ refreshed: false }));
+  }),
 ];
 
 export default authHandlers;
