@@ -19,7 +19,7 @@ const Dropdown = (props: Props) => {
     e.preventDefault();
 
     const wrapper = wrapperRef.current;
-    if (wrapper && !wrapper.contains(e.target as Node)) setDisplay(true);
+    if (wrapper && !wrapper.contains(e.target as Node)) setDisplay(false);
   });
 
   const dropdownClassList = [styles.dropdown, ...(props.dropdownClassList ?? [])];

@@ -1,5 +1,5 @@
 import { RenderResult, fireEvent, render } from '@testing-library/react';
-import { describe } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import Dropdown from '.';
 
 describe('Dropdown', () => {
