@@ -19,8 +19,6 @@ const Modal = (props: Props, ref: ForwardedRef<HTMLDialogElement>) => {
   };
 
   const onOutsideClick: MouseEventHandler = (e) => {
-    e.preventDefault();
-
     const modal = getModal();
     if (!modal) return;
 
