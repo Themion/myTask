@@ -25,5 +25,18 @@
 
   &__user {
     margin-left: auto;
+
+    &--dropdown {
+      background-color: white;
+      position: absolute;
+      right: 0;
+      margin: 1em 1em 0 0;
+      padding: 1em;
+      border: 1px solid black;
+
+      &.hidden {
+        display: none;
+      }
+    }
   }
 }
