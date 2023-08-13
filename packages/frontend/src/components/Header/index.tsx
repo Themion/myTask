@@ -1,3 +1,4 @@
+import HeaderUser from '~/components/Header/User';
 import './styles.scss';
 
 const Header = () => {
@@ -11,7 +12,7 @@ const Header = () => {
           <li>menu 3</li>
         </ul>
       </nav>
-      <span className="header__user">user menu</span>
+      <HeaderUser />
     </header>
   );
 };
