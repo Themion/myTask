@@ -16,8 +16,6 @@ const Dropdown = (props: Props) => {
   const clonedButton = cloneElement(button, { onClick: () => setDisplay((hidden) => !hidden) });
 
   globalThis.addEventListener('click', (e) => {
-    e.preventDefault();
-
     const wrapper = wrapperRef.current;
     if (wrapper && !wrapper.contains(e.target as Node)) setDisplay(false);
   });
