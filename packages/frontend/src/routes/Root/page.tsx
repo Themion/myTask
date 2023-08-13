@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { getConnectionTest } from '~/api';
 import reactLogo from '~/assets/react.svg';
 import viteLogo from '~/assets/vite.svg';
-import './style.css';
 
 function Root() {
   const [count, setCount] = useState(0);
