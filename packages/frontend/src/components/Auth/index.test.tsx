@@ -3,9 +3,9 @@ import { RenderResult, fireEvent, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
 import { render, server, validEmail } from '~/mock';
-import AuthRequest from './request';
+import AuthComponents from '.';
 
-describe('Auth - Request', () => {
+describe('AuthComponents', () => {
   let screen: RenderResult;
   let client: QueryClient;
 
@@ -16,7 +16,7 @@ describe('Auth - Request', () => {
   afterAll(() => server.close());
 
   beforeEach(() => {
-    const renderResult = render(<AuthRequest />);
+    const renderResult = render(<AuthComponents />);
     screen = renderResult.screen;
     client = renderResult.client;
   });
