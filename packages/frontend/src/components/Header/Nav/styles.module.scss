@@ -1,0 +1,19 @@
+.nav {
+  ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style-type: none;
+
+    li {
+      margin-right: 5px;
+    }
+  }
+
+  @import '~/scss/dropdown.module.scss';
+
+  .dropdown {
+    margin-top: 1em;
+    padding: 1em;
+  }
+}

@@ -1,0 +1,11 @@
+.user {
+  margin-left: auto;
+
+  @import '~/scss/dropdown.module.scss';
+
+  .dropdown {
+    right: 0;
+    margin: 1em 1em 0 0;
+    padding: 1em;
+  }
+}
