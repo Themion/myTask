@@ -1,4 +1,5 @@
 import { MouseEventHandler, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { removeAuth } from '~/api';
 import { AuthComponent, Modal } from '~/components';
@@ -6,11 +7,15 @@ import { shouldRefreshAtom } from '~/recoil/atoms';
 
 const AuthMenu = () => {
   const modalRef = useRef<HTMLDialogElement>(null);
+  const navigate = useNavigate();
   const [refreshed, setRefreshed] = useRecoilState(shouldRefreshAtom);
 
   const signOutMutation = removeAuth({
     onError: (err) => console.log(err),
-    onSettled: () => setRefreshed(false),
+    onSettled: () => {
+      setRefreshed(false);
+      navigate(0);
+    },
   });
 
   const onSignInClick: MouseEventHandler = () => {

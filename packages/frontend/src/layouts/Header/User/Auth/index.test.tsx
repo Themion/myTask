@@ -1,6 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import { RenderResult, fireEvent } from '@testing-library/react';
 import { useEffect, useState } from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { describe, expect, it, vi } from 'vitest';
 import { BE_ORIGIN } from '~/constants';
@@ -28,16 +29,18 @@ describe('AuthMenu', () => {
       const RecoilSetter = () => {
         const setRefreshed = useSetRecoilState(shouldRefreshAtom);
         const [value, setValue] = useState(false);
+
         useEffect(() => setRefreshed(value), [value]);
         const onClick = () => setValue((val) => !val);
+
         return <div onClick={onClick}>{recoilText}</div>;
       };
 
       const renderResult = render(
-        <>
+        <MemoryRouter>
           <RecoilSetter />
           <AuthMenu />
-        </>,
+        </MemoryRouter>,
       );
       screen = renderResult.screen;
       client = renderResult.client;
@@ -46,15 +49,16 @@ describe('AuthMenu', () => {
     });
     afterEach(() => client.clear());
 
+    it('should render', () => {
+      expect(screen).toBeDefined();
+    });
+
     describe('when signed out', () => {
       let showModalFunc: ReturnType<typeof vi.fn>;
-      let closeFunc: ReturnType<typeof vi.fn>;
 
       beforeEach(() => {
         showModalFunc = vi.fn();
-        closeFunc = vi.fn();
         HTMLDialogElement.prototype.showModal = showModalFunc;
-        HTMLDialogElement.prototype.close = closeFunc;
 
         menuItem = screen.queryByText('sign in');
       });
