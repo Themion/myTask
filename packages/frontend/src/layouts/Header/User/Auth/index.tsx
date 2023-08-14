@@ -1,9 +1,8 @@
 import { MouseEventHandler, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { removeAuth } from '~/api';
-import { Modal } from '~/components';
+import { AuthComponent, Modal } from '~/components';
 import { shouldRefreshAtom } from '~/recoil/atoms';
-import AuthRequest from '~/routes/Auth/request';
 
 const AuthMenu = () => {
   const modalRef = useRef<HTMLDialogElement>(null);
@@ -31,7 +30,7 @@ const AuthMenu = () => {
     <>
       <span onClick={onSignInClick}>sign in</span>
       <Modal title="Test Title" ref={modalRef}>
-        <AuthRequest />
+        <AuthComponent />
       </Modal>
     </>
   );
