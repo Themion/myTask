@@ -1,5 +1,10 @@
 import { Group, User } from '@my-task/common';
 
+type PageInfo = {
+  offset: number;
+  limit: number;
+};
+
 const mockGroupService = async () => ({
   groups: new Map<string, Group[]>(),
 
@@ -17,8 +22,17 @@ const mockGroupService = async () => ({
     return group;
   },
 
-  async findGroupByMember(email: string) {
-    return this.groups.get(email) ?? [];
+  async findGroupByEmail(email: string, options: Partial<PageInfo> = {}) {
+    const { offset, limit } = {
+      offset: 1,
+      limit: 10,
+      ...options,
+    } as PageInfo;
+
+    const start = (offset - 1) * limit;
+
+    const arr = this.groups.get(email) ?? [];
+    return arr.slice(start, start + limit);
   },
 });
 
@@ -26,3 +40,4 @@ type MockGroupService = Awaited<ReturnType<typeof mockGroupService>>;
 
 export { mockGroupService };
 export type { MockGroupService };
+

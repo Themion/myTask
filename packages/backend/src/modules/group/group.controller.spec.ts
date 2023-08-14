@@ -14,6 +14,10 @@ describe('GroupController', () => {
     controller = module.get<GroupController>(GroupController);
   });
 
+  beforeEach(() => {
+    email = validEmail;
+  });
+
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
@@ -21,7 +25,6 @@ describe('GroupController', () => {
   describe('createGroup', () => {
     beforeEach(() => {
       name = 'name123';
-      email = validEmail;
     });
 
     it('should work', async () => {
@@ -33,6 +36,30 @@ describe('GroupController', () => {
     describe('should throw error when', () => {
       it('invalid body', async () => {
         await expect(async () => controller.createGroup({}, email)).rejects.toThrow();
+      });
+    });
+  });
+
+  describe('findGroup', () => {
+    beforeEach(async () => {
+      await Promise.allSettled(
+        Array(3)
+          .fill(0)
+          .map((_, i) => controller.createGroup({ name: `test${i}` }, email)),
+      );
+    });
+
+    describe('should work', () => {
+      it('without page info', async () => {
+        const result = await controller.findGroup(email);
+        expect(result).toBeDefined();
+        expect(result.length).toEqual(3);
+      });
+
+      it('with page', async () => {
+        const result = await controller.findGroup(email, 2);
+        expect(result).toBeDefined();
+        expect(result.length).toEqual(0);
       });
     });
   });
