@@ -13,6 +13,8 @@ const App = () => {
     refetchInterval: 10 * MINUTE,
     refetchIntervalInBackground: true,
     enabled: refresh,
+    cacheTime: 0,
+    retryOnMount: false,
   });
 
   useEffect(() => {
