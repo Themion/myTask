@@ -1,4 +1,4 @@
-import Dropdown from '~/components/Dropdown';
+import { Dropdown } from '~/components';
 import styles from './styles.module.scss';
 
 const HeaderNav = () => {

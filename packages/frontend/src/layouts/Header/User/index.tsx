@@ -1,4 +1,4 @@
-import Dropdown from '~/components/Dropdown';
+import { Dropdown } from '~/components';
 import AuthMenu from './Auth';
 import styles from './styles.module.scss';
 
