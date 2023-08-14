@@ -1,17 +1,17 @@
 import { Group, User } from '@my-task/common';
 
 const mockGroupService = async () => ({
-  groups: new Map<number, Group[]>(),
+  groups: new Map<string, Group[]>(),
+
   async createGroup(creator: User, name: string) {
-    const group: Group = {
-      id: Math.floor(Math.random() * 10),
-      name,
-    };
-    this.groups.set(creator.id, (this.groups.get(creator.id) || []).concat([group]));
+    const id = Math.floor(Math.random() * 10);
+    const group: Group = { id, name };
+    this.groups.set(creator.email, (this.groups.get(creator.email) || []).concat([group]));
     return group;
   },
-  async findGroupByMember(member: User) {
-    return this.groups.get(member.id) ?? [];
+
+  async findGroupByMember(email: string) {
+    return this.groups.get(email) ?? [];
   },
 });
 
