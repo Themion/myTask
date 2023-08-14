@@ -44,9 +44,9 @@ describe('GroupService', () => {
     describe('should throw error when', () => {
       it('cannot find creator from DB', async () => {
         creator.id = -1;
-        await expect(
-          async () => await service.createGroup(creator, 'invalid test'),
-        ).rejects.toThrowError(DatabaseError);
+        await expect(service.createGroup(creator, 'invalid test')).rejects.toThrowError(
+          DatabaseError,
+        );
       });
     });
   });
@@ -62,16 +62,51 @@ describe('GroupService', () => {
 
     describe('should throw error when', () => {
       it('cannot find creator from DB', async () => {
-        await expect(
-          async () => await service.createGroupByEmail(invalidEmail, 'invalid test'),
-        ).rejects.toThrowError(HttpException);
+        await expect(service.createGroupByEmail(invalidEmail, 'invalid test')).rejects.toThrowError(
+          HttpException,
+        );
       });
     });
   });
 
   describe('findGroupByEmail', () => {
-    it('should work', async () => {
-      await expect(service.findGroupByEmail(creator.email)).resolves.not.toThrow();
+    describe('should work with', () => {
+      beforeEach(async () => {
+        // Promise.all causes 'open handles' problem
+        await service.createGroup(creator, 'test1');
+        await service.createGroup(creator, 'test2');
+        await service.createGroup(creator, 'test3');
+      });
+
+      it('no page info', async () => {
+        const result = await service.findGroupByEmail(creator.email);
+        expect(result).toBeDefined();
+        expect(result.length).toEqual(3);
+      });
+
+      it('invalid email', async () => {
+        const result = await service.findGroupByEmail(invalidEmail);
+        expect(result).toBeDefined();
+        expect(result.length).toEqual(0);
+      });
+
+      it('with offset, without limit', async () => {
+        const result = await service.findGroupByEmail(creator.email, { offset: 2 });
+        expect(result).toBeDefined();
+        expect(result.length).toEqual(0);
+      });
+
+      it('without offset, with limit', async () => {
+        const result = await service.findGroupByEmail(creator.email, { limit: 2 });
+        expect(result).toBeDefined();
+        expect(result.length).toEqual(2);
+      });
+
+      it('without offset and limit', async () => {
+        const result = await service.findGroupByEmail(creator.email, { offset: 2, limit: 2 });
+        expect(result).toBeDefined();
+        expect(result.length).toEqual(1);
+      });
     });
   });
 });
