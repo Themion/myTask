@@ -1,5 +1,6 @@
 import { rest } from 'msw';
 import authHandlers from './auth';
+import groupHandlers from './group';
 import mockDir from './mockDir';
 
 export const handlers = [
@@ -13,4 +14,5 @@ export const handlers = [
   ),
 
   ...authHandlers,
+  ...groupHandlers,
 ];
