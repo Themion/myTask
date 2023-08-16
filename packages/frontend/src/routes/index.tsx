@@ -1,6 +1,7 @@
 import { Outlet, createBrowserRouter } from 'react-router-dom';
 import { Header } from '~/layouts';
 import authRouteObject from './Auth';
+import groupRouteObject from './Group';
 import rootRouteObject from './Root';
 
 const router = createBrowserRouter([
@@ -12,7 +13,7 @@ const router = createBrowserRouter([
         <Outlet />
       </>
     ),
-    children: [rootRouteObject, authRouteObject],
+    children: [rootRouteObject, authRouteObject, groupRouteObject],
   },
 ]);
 
