@@ -1,4 +1,4 @@
-import { User, groups, members, users } from '@my-task/common';
+import { GroupListDTO, User, groups, members, users } from '@my-task/common';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { DatabaseService } from '~/modules/database/database.service';
@@ -45,15 +45,15 @@ export class GroupService {
     });
   }
 
-  async findGroupByEmail(email: string, options: Partial<PageInfo> = {}) {
+  async findGroupByEmail(email: string, options: Partial<PageInfo> = {}): Promise<GroupListDTO> {
     const { offset, limit } = {
       offset: 1,
       limit: 10,
       ...options,
     } as PageInfo;
 
-    const result = await this.db
-      .select()
+    const group = await this.db
+      .select({ id: groups.id, name: groups.name })
       .from(groups)
       .innerJoin(members, eq(groups.id, members.groupId))
       .innerJoin(users, eq(members.userId, users.id))
@@ -62,6 +62,6 @@ export class GroupService {
       .offset((offset - 1) * limit)
       .execute();
 
-    return result;
+    return { group };
   }
 }

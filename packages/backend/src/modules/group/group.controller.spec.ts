@@ -53,13 +53,15 @@ describe('GroupController', () => {
       it('without page info', async () => {
         const result = await controller.findGroup(email);
         expect(result).toBeDefined();
-        expect(result.length).toEqual(3);
+        expect(result).toHaveProperty('group');
+        expect(result.group.length).toEqual(3);
       });
 
       it('with page', async () => {
         const result = await controller.findGroup(email, 2);
         expect(result).toBeDefined();
-        expect(result.length).toEqual(0);
+        expect(result).toHaveProperty('group');
+        expect(result.group.length).toEqual(0);
       });
     });
   });

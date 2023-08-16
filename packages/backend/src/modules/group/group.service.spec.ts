@@ -81,31 +81,28 @@ describe('GroupService', () => {
       it('no page info', async () => {
         const result = await service.findGroupByEmail(creator.email);
         expect(result).toBeDefined();
-        expect(result.length).toEqual(3);
+        expect(result).toHaveProperty('group');
+        expect(result.group.length).toEqual(3);
       });
 
       it('invalid email', async () => {
-        const result = await service.findGroupByEmail(invalidEmail);
-        expect(result).toBeDefined();
-        expect(result.length).toEqual(0);
+        const { group } = await service.findGroupByEmail(invalidEmail);
+        expect(group.length).toEqual(0);
       });
 
       it('with offset, without limit', async () => {
-        const result = await service.findGroupByEmail(creator.email, { offset: 2 });
-        expect(result).toBeDefined();
-        expect(result.length).toEqual(0);
+        const { group } = await service.findGroupByEmail(creator.email, { offset: 2 });
+        expect(group.length).toEqual(0);
       });
 
       it('without offset, with limit', async () => {
-        const result = await service.findGroupByEmail(creator.email, { limit: 2 });
-        expect(result).toBeDefined();
-        expect(result.length).toEqual(2);
+        const { group } = await service.findGroupByEmail(creator.email, { limit: 2 });
+        expect(group.length).toEqual(2);
       });
 
       it('without offset and limit', async () => {
-        const result = await service.findGroupByEmail(creator.email, { offset: 2, limit: 2 });
-        expect(result).toBeDefined();
-        expect(result.length).toEqual(1);
+        const { group } = await service.findGroupByEmail(creator.email, { offset: 2, limit: 2 });
+        expect(group.length).toEqual(1);
       });
     });
   });

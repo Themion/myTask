@@ -32,7 +32,8 @@ const mockGroupService = async () => ({
     const start = (offset - 1) * limit;
 
     const arr = this.groups.get(email) ?? [];
-    return arr.slice(start, start + limit);
+    const group = arr.slice(start, start + limit);
+    return { group };
   },
 });
 
@@ -40,4 +41,3 @@ type MockGroupService = Awaited<ReturnType<typeof mockGroupService>>;
 
 export { mockGroupService };
 export type { MockGroupService };
-
