@@ -12,12 +12,13 @@ const groupHandlers = [
     const page = parseInt(params.get('page') ?? '1');
     const limit = parseInt(params.get('limit') ?? '10');
 
-    const group: GroupListDTO['group'] = new Array(13)
+    const groupArr: GroupListDTO['group'] = new Array(13)
       .fill(0)
-      .map((_, i) => ({ id: i, name: `name${i}` }))
-      .slice((page - 1) * limit, page * limit);
+      .map((_, i) => ({ id: i, name: `name${i}` }));
 
-    return res(ctx.status(200), ctx.json({ group }));
+    const group = [...groupArr].slice((page - 1) * limit, page * limit);
+
+    return res(ctx.status(200), ctx.json({ group, count: groupArr.length }));
   }),
 ];
 

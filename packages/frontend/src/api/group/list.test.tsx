@@ -34,6 +34,8 @@ describe('fetchGroupList', () => {
     expect(data).toBeDefined();
     expectTypeOf(data as any).toHaveProperty('group');
     expect(data?.group.length).toEqual(10);
+    expectTypeOf(data as any).toHaveProperty('count');
+    expect(data?.count).toEqual(13);
   });
 
   it('should work with page query', async () => {
@@ -47,8 +49,9 @@ describe('fetchGroupList', () => {
 
     await waitFor(() => expect(renderedHook.result.current.isLoading).toEqual(false));
 
-    const { group } = renderedHook.result.current.data as GroupListDTO;
+    const { group, count } = renderedHook.result.current.data as GroupListDTO;
     expect(group).toBeDefined();
     expect(group.length).toEqual(3);
+    expect(count).toEqual(13);
   });
 });
