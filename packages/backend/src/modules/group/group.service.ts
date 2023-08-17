@@ -15,7 +15,7 @@ export class GroupService {
     this.db = databaseService.db;
   }
 
-  async createGroup(creator: User, name: string) {
+  async createGroup(creator: User, name: string = 'My First Group') {
     return this.db.transaction(async (tx) => {
       const createdGroups = await tx.insert(groups).values({ name }).returning();
       if (createdGroups.length !== 1)
@@ -33,7 +33,7 @@ export class GroupService {
     });
   }
 
-  async createGroupByEmail(email: string, name: string = 'My First Group') {
+  async createGroupByEmail(email: string, name: string) {
     return this.db.transaction(async (tx) => {
       const creator = await tx.query.users.findFirst({
         where: (users, { eq }) => eq(users.email, email),
