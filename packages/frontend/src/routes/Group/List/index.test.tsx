@@ -67,4 +67,10 @@ describe('GroupList', () => {
     expect(prevButton.disabled).toEqual(false);
     expect(nextButton.disabled).toEqual(true);
   });
+
+  it('should have group create button', () => {
+    renderWithQuery({});
+    const addButton = screen.queryByText('+');
+    expect(addButton).not.toBeNull();
+  });
 });
