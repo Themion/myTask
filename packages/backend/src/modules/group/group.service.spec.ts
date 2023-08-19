@@ -1,6 +1,7 @@
 import { User, users } from '@my-task/common';
+import { HttpException } from '@nestjs/common';
 import { DatabaseError } from 'pg';
-import { mockDatabaseModule, mockGroupModule, validEmail } from '~/mock';
+import { invalidEmail, mockDatabaseModule, mockGroupModule, validEmail } from '~/mock';
 import { DatabaseService } from '~/modules/database/database.service';
 import { GroupService } from './group.service';
 
@@ -46,6 +47,24 @@ describe('GroupService', () => {
         await expect(
           async () => await service.createGroup(creator, 'invalid test'),
         ).rejects.toThrowError(DatabaseError);
+      });
+    });
+  });
+
+  describe('createGroupByEmail', () => {
+    it('should work', async () => {
+      const name = 'Test123';
+
+      const createdGroups = await service.createGroupByEmail(creator.email, name);
+      expect(createdGroups).toBeDefined();
+      expect(createdGroups.name).toEqual(name);
+    });
+
+    describe('should throw error when', () => {
+      it('cannot find creator from DB', async () => {
+        await expect(
+          async () => await service.createGroupByEmail(invalidEmail, 'invalid test'),
+        ).rejects.toThrowError(HttpException);
       });
     });
   });
