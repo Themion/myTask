@@ -1,6 +1,12 @@
-import { User, groups, members } from '@my-task/common';
+import { User, groups, members, users } from '@my-task/common';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { eq } from 'drizzle-orm';
 import { DatabaseService } from '~/modules/database/database.service';
+
+type PageInfo = {
+  offset: number;
+  limit: number;
+};
 
 @Injectable()
 export class GroupService {
@@ -39,21 +45,23 @@ export class GroupService {
     });
   }
 
-  async findGroupByEmail(email: string) {
-    const result = await this.db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.email, email),
-      columns: {},
-      with: {
-        members: {
-          columns: {},
-          with: {
-            groups: true,
-          },
-        },
-      },
-    });
+  async findGroupByEmail(email: string, options: Partial<PageInfo> = {}) {
+    const { offset, limit } = {
+      offset: 1,
+      limit: 10,
+      ...options,
+    } as PageInfo;
 
-    if (!result) return [];
-    return result.members.map((userGroup) => userGroup.groups);
+    const result = await this.db
+      .select()
+      .from(groups)
+      .innerJoin(members, eq(groups.id, members.groupId))
+      .innerJoin(users, eq(members.userId, users.id))
+      .where(eq(users.email, email))
+      .limit(limit)
+      .offset((offset - 1) * limit)
+      .execute();
+
+    return result;
   }
 }
