@@ -24,7 +24,7 @@ export class GroupService {
 
       const createdCreators = await tx
         .insert(members)
-        .values({ groupId: createdGroup.id, userId: creator.id })
+        .values({ groupId: createdGroup.id, userId: creator.id, isManager: true })
         .returning();
       if (createdCreators.length !== 1)
         throw new InternalServerErrorException('DB insertion failed when inserting member!');
