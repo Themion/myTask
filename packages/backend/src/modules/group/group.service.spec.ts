@@ -50,9 +50,9 @@ describe('GroupService', () => {
     });
   });
 
-  describe('findGroupByMember', () => {
+  describe('findGroupByEmail', () => {
     it('should work', async () => {
-      await expect(service.findGroupByMember(creator)).resolves.not.toThrow();
+      await expect(service.findGroupByEmail(creator.email)).resolves.not.toThrow();
     });
   });
 });

@@ -1,6 +1,5 @@
 import { User, groups, members } from '@my-task/common';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { eq, getTableColumns } from 'drizzle-orm';
 import { DatabaseService } from '~/modules/database/database.service';
 
 @Injectable()
@@ -28,12 +27,21 @@ export class GroupService {
     });
   }
 
-  async findGroupByMember(member: User) {
-    return this.db
-      .select(getTableColumns(groups))
-      .from(groups)
-      .innerJoin(members, eq(groups.id, members.groupId))
-      .where(eq(members.userId, member.id))
-      .execute();
+  async findGroupByEmail(email: string) {
+    const result = await this.db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.email, email),
+      columns: {},
+      with: {
+        members: {
+          columns: {},
+          with: {
+            groups: true,
+          },
+        },
+      },
+    });
+    if (!result) return null;
+
+    return result.members.map((userGroup) => userGroup.groups);
   }
 }
