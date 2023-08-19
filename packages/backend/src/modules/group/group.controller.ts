@@ -1,5 +1,5 @@
 import { createGroupDTOSchema } from '@my-task/common';
-import { BadRequestException, Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { Email } from '~/decorators';
 import { JwtGuard } from '~/guard';
 import { GroupService } from './group.service';
@@ -16,5 +16,11 @@ export class GroupController {
     const { data } = result;
 
     return this.groupService.createGroupByEmail(email, data.name);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get()
+  findGroup(@Email() email: string, @Query('page') offset: number = 1) {
+    return this.groupService.findGroupByEmail(email, { offset });
   }
 }
