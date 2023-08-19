@@ -10,6 +10,13 @@ const mockGroupService = async () => ({
     return group;
   },
 
+  async createGroupByEmail(email: string, name: string) {
+    const id = Math.floor(Math.random() * 10);
+    const group: Group = { id, name };
+    this.groups.set(email, (this.groups.get(email) || []).concat([group]));
+    return group;
+  },
+
   async findGroupByMember(email: string) {
     return this.groups.get(email) ?? [];
   },
