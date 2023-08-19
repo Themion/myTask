@@ -20,6 +20,19 @@ const groupHandlers = [
 
     return res(ctx.status(200), ctx.json({ group, count: groupArr.length }));
   }),
+
+  rest.post(mockGroupDir(''), async (req, res, ctx) => {
+    ctx.delay();
+
+    const body = await req.json();
+    if (!body.name)
+      return res(ctx.status(400), ctx.json({ errorMessage: 'Wrong DTO: try again!' }));
+
+    const id = Math.floor(Math.random() * 10);
+    const { name } = body;
+
+    return res(ctx.status(200), ctx.json({ id, name }));
+  }),
 ];
 
 export default groupHandlers;
