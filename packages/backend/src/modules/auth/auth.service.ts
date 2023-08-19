@@ -11,6 +11,7 @@ import { CACHE_TABLE_NAME, SIGN_IN_LIFE_SPAN } from '~/constants';
 import { CookieService } from '~/modules/auth/cookie.service';
 import { CacheService } from '~/modules/cache/cache.service';
 import { DatabaseService } from '~/modules/database/database.service';
+import { GroupService } from '~/modules/group/group.service';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +22,7 @@ export class AuthService {
 
   constructor(
     private readonly cookieService: CookieService,
+    private readonly groupService: GroupService,
     cacheService: CacheService,
     databaseService: DatabaseService,
   ) {
@@ -42,6 +44,7 @@ export class AuthService {
       const insertedUsers = await this.db.insert(users).values({ email }).returning();
       if (insertedUsers.length !== 1)
         throw new InternalServerErrorException('DB insertion failed!');
+      await this.groupService.createGroup(insertedUsers[0]);
     }
 
     return count === 0;
