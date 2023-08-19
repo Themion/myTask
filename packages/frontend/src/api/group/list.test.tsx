@@ -16,25 +16,39 @@ describe('fetchGroupList', () => {
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
-  beforeEach(() => {
-    renderedHook = renderHook(() => fetchGroupList({}), {
+  afterEach(() => client.clear());
+
+  // cookie에 따라 다르게 동작함
+  it('should work', async () => {
+    renderedHook = renderHook(() => fetchGroupList({}, {}), {
       wrapper: ({ children }) => {
         const renderResult = render(children);
         client = renderResult.client;
         return renderResult.element;
       },
     });
-  });
 
-  afterEach(() => client.clear());
-
-  // cookie에 따라 다르게 동작함
-  it('should work', async () => {
     await waitFor(() => expect(renderedHook.result.current.isLoading).toEqual(false));
 
     const data = renderedHook.result.current.data;
     expect(data).toBeDefined();
     expectTypeOf(data as any).toHaveProperty('group');
-    expect(data?.group.length).toEqual(3);
+    expect(data?.group.length).toEqual(10);
+  });
+
+  it('should work with page query', async () => {
+    renderedHook = renderHook(() => fetchGroupList({}, { page: 2 }), {
+      wrapper: ({ children }) => {
+        const renderResult = render(children);
+        client = renderResult.client;
+        return renderResult.element;
+      },
+    });
+
+    await waitFor(() => expect(renderedHook.result.current.isLoading).toEqual(false));
+
+    const { group } = renderedHook.result.current.data as GroupListDTO;
+    expect(group).toBeDefined();
+    expect(group.length).toEqual(3);
   });
 });
