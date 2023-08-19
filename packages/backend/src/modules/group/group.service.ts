@@ -1,6 +1,6 @@
 import { GroupListDTO, User, groups, members, users } from '@my-task/common';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { DatabaseService } from '~/modules/database/database.service';
 
 type PageInfo = {
@@ -52,16 +52,33 @@ export class GroupService {
       ...options,
     } as PageInfo;
 
-    const group = await this.db
+    const groupQuery = this.db
       .select({ id: groups.id, name: groups.name })
       .from(groups)
       .innerJoin(members, eq(groups.id, members.groupId))
       .innerJoin(users, eq(members.userId, users.id))
       .where(eq(users.email, email))
       .limit(limit)
-      .offset((offset - 1) * limit)
-      .execute();
+      .offset((offset - 1) * limit);
 
-    return { group };
+    const groupCountQuery = this.db
+      .select({
+        count: sql<string>`count(${groups.id})`,
+      })
+      .from(groups)
+      .innerJoin(members, eq(groups.id, members.groupId))
+      .innerJoin(users, eq(members.userId, users.id))
+      .where(eq(users.email, email));
+
+    const [groupArrayResult, groupCountResult] = await Promise.allSettled([
+      groupQuery,
+      groupCountQuery,
+    ]);
+    const group = groupArrayResult.status === 'fulfilled' ? groupArrayResult.value : [];
+    const [count] = (
+      groupCountResult.status === 'fulfilled' ? groupCountResult.value : [{ count: '0' }]
+    ).map(({ count }) => parseInt(count));
+
+    return { group, count };
   }
 }

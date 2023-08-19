@@ -55,6 +55,8 @@ describe('GroupController', () => {
         expect(result).toBeDefined();
         expect(result).toHaveProperty('group');
         expect(result.group.length).toEqual(3);
+        expect(result).toHaveProperty('count');
+        expect(result.count).toEqual(3);
       });
 
       it('with page', async () => {
@@ -62,6 +64,8 @@ describe('GroupController', () => {
         expect(result).toBeDefined();
         expect(result).toHaveProperty('group');
         expect(result.group.length).toEqual(0);
+        expect(result).toHaveProperty('count');
+        expect(result.count).toEqual(3);
       });
     });
   });

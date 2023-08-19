@@ -70,7 +70,7 @@ describe('GroupService', () => {
   });
 
   describe('findGroupByEmail', () => {
-    describe('should work with', () => {
+    describe('should work', () => {
       beforeEach(async () => {
         // Promise.all causes 'open handles' problem
         await service.createGroup(creator, 'test1');
@@ -78,11 +78,13 @@ describe('GroupService', () => {
         await service.createGroup(creator, 'test3');
       });
 
-      it('no page info', async () => {
+      it('with no page info', async () => {
         const result = await service.findGroupByEmail(creator.email);
         expect(result).toBeDefined();
         expect(result).toHaveProperty('group');
         expect(result.group.length).toEqual(3);
+        expect(result).toHaveProperty('count');
+        expect(result.count).toEqual(3);
       });
 
       it('invalid email', async () => {
@@ -91,18 +93,22 @@ describe('GroupService', () => {
       });
 
       it('with offset, without limit', async () => {
-        const { group } = await service.findGroupByEmail(creator.email, { offset: 2 });
+        const { group, count } = await service.findGroupByEmail(creator.email, { offset: 2 });
         expect(group.length).toEqual(0);
+        expect(count).toEqual(3);
       });
 
       it('without offset, with limit', async () => {
-        const { group } = await service.findGroupByEmail(creator.email, { limit: 2 });
+        const { group, count } = await service.findGroupByEmail(creator.email, { limit: 2 });
         expect(group.length).toEqual(2);
+        expect(count).toEqual(3);
       });
 
-      it('without offset and limit', async () => {
-        const { group } = await service.findGroupByEmail(creator.email, { offset: 2, limit: 2 });
+      it('with offset and limit', async () => {
+        const pageInfo = { offset: 2, limit: 2 };
+        const { group, count } = await service.findGroupByEmail(creator.email, pageInfo);
         expect(group.length).toEqual(1);
+        expect(count).toEqual(3);
       });
     });
   });

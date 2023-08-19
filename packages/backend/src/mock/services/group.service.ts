@@ -32,8 +32,8 @@ const mockGroupService = async () => ({
     const start = (offset - 1) * limit;
 
     const arr = this.groups.get(email) ?? [];
-    const group = arr.slice(start, start + limit);
-    return { group };
+    const group = [...arr].slice(start, start + limit);
+    return { group, count: arr.length };
   },
 });
 
