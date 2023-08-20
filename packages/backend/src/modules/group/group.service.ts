@@ -2,6 +2,7 @@ import { GroupListDTO, User, groups, members, users } from '@my-task/common';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { eq, sql } from 'drizzle-orm';
 import { DatabaseService } from '~/modules/database/database.service';
+import { MemberService } from '~/modules/member/member.service';
 
 type PageInfo = {
   offset: number;
@@ -11,38 +12,28 @@ type PageInfo = {
 @Injectable()
 export class GroupService {
   private readonly db;
-  constructor(databaseService: DatabaseService) {
+  constructor(private readonly memberService: MemberService, databaseService: DatabaseService) {
     this.db = databaseService.db;
   }
 
   async createGroup(creator: User, name: string = 'My First Group') {
-    return this.db.transaction(async (tx) => {
-      const createdGroups = await tx.insert(groups).values({ name }).returning();
-      if (createdGroups.length !== 1)
-        throw new InternalServerErrorException('DB insertion failed when creating group!');
-      const createdGroup = createdGroups[0];
+    const createdGroups = await this.db.insert(groups).values({ name }).returning();
+    if (createdGroups.length !== 1)
+      throw new InternalServerErrorException('DB insertion failed when creating group!');
+    const createdGroup = createdGroups[0];
 
-      const createdCreators = await tx
-        .insert(members)
-        .values({ groupId: createdGroup.id, userId: creator.id, isManager: true })
-        .returning();
-      if (createdCreators.length !== 1)
-        throw new InternalServerErrorException('DB insertion failed when inserting member!');
-
-      return createdGroup;
-    });
+    await this.memberService.createMember(createdGroup.id, creator, true);
+    return createdGroup;
   }
 
   async createGroupByEmail(email: string, name: string) {
-    return this.db.transaction(async (tx) => {
-      const creator = await tx.query.users.findFirst({
-        where: (users, { eq }) => eq(users.email, email),
-      });
-
-      if (!creator) throw new BadRequestException(`User cannot be found with email: ${email}!`);
-
-      return this.createGroup(creator, name);
+    const creator = await this.db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.email, email),
     });
+
+    if (!creator) throw new BadRequestException(`User cannot be found with email: ${email}!`);
+
+    return this.createGroup(creator, name);
   }
 
   async findGroupByEmail(email: string, options: Partial<PageInfo> = {}): Promise<GroupListDTO> {
