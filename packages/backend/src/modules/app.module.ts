@@ -11,6 +11,7 @@ import { CacheModule } from './cache/cache.module';
 import { DatabaseModule } from './database/database.module';
 import { EmailModule } from './email/email.module';
 import { GroupModule } from './group/group.module';
+import { MemberModule } from './member/member.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { GroupModule } from './group/group.module';
     GroupModule,
     AuthModule,
     CacheModule,
+    MemberModule,
   ],
   controllers: [AppController],
   providers: [AppService],
