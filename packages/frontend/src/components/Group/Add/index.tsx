@@ -1,6 +1,6 @@
 import { FormEventHandler, MouseEventHandler, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import createGroup from '~/api/group/create';
+import { createGroup } from '~/api';
 import { Modal } from '~/components';
 import styles from './styles.module.scss';
 

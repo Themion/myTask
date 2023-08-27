@@ -1,2 +1,3 @@
+import createGroup from './create';
 import fetchGroupList from './list';
-export { fetchGroupList };
+export { createGroup, fetchGroupList };

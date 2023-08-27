@@ -9,6 +9,8 @@ export class DatabaseProvider {
 
   constructor(configService: ConfigService<Env>) {
     const config: PoolConfig = configService.getOrThrow<Env['DB']>('DB');
+    const NODE_ENV: string = configService.getOrThrow<Env['NODE_ENV']>('NODE_ENV');
+    if (NODE_ENV === 'testing') config.max = 10000;
     this._pool = new Pool(config);
   }
 
