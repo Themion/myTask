@@ -36,7 +36,7 @@ export class MemberService {
     return this.createMember(groupId, user, isManager);
   }
 
-  async softDelteMember(groupId: number, user: Pick<User, 'id'>) {
+  async softDeleteMember(groupId: number, user: Pick<User, 'id'>) {
     const softDeletedMembers = await this.db
       .update(members)
       .set({ isDeleted: true })
@@ -49,7 +49,7 @@ export class MemberService {
     return softDeletedMembers[0];
   }
 
-  async softDelteMemberByEmail(groupId: number, email: string) {
+  async softDeleteMemberByEmail(groupId: number, email: string) {
     const user = await this.db.query.users.findFirst({
       where: (users, { eq }) => eq(users.email, email),
       columns: { id: true },
@@ -57,7 +57,7 @@ export class MemberService {
 
     if (!user) throw new BadRequestException('Wrong Email!');
 
-    return this.softDelteMember(groupId, user);
+    return this.softDeleteMember(groupId, user);
   }
 
   async findMemberByGroupId(
