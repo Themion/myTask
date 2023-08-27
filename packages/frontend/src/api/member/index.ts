@@ -1,2 +1,3 @@
 import inviteMember from './invite';
-export { inviteMember };
+import leaveMember from './leave';
+export { inviteMember, leaveMember };
