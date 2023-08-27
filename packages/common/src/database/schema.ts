@@ -22,6 +22,7 @@ const members = pgTable(
       .references(() => users.id),
     name: varchar('name', { length: 20 }).notNull().default('member'),
     isManager: boolean('is_manager').default(false),
+    isDeleted: boolean('is_deleted').default(false),
   },
   (table) => ({
     unique: unique().on(table.groupId, table.userId),
