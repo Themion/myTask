@@ -1,6 +1,6 @@
 import { GroupListDTO, User, groups, members, users } from '@my-task/common';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { eq, sql } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { DatabaseService } from '~/modules/database/database.service';
 import { MemberService } from '~/modules/member/member.service';
 
@@ -48,7 +48,7 @@ export class GroupService {
       .from(groups)
       .innerJoin(members, eq(groups.id, members.groupId))
       .innerJoin(users, eq(members.userId, users.id))
-      .where(eq(users.email, email))
+      .where(and(eq(users.email, email), eq(members.isDeleted, false)))
       .limit(limit)
       .offset((offset - 1) * limit);
 
@@ -59,7 +59,7 @@ export class GroupService {
       .from(groups)
       .innerJoin(members, eq(groups.id, members.groupId))
       .innerJoin(users, eq(members.userId, users.id))
-      .where(eq(users.email, email));
+      .where(and(eq(users.email, email), eq(members.isDeleted, false)));
 
     const [groupArrayResult, groupCountResult] = await Promise.allSettled([
       groupQuery,

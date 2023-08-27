@@ -1,6 +1,7 @@
 import { inviteMemberDTOSchema, leaveMemberDTOSchema } from '@my-task/common';
-import { BadRequestException, Body, Controller, Delete, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Post, UseGuards } from '@nestjs/common';
 import { Email } from '~/decorators';
+import { JwtGuard } from '~/guard';
 import { EmailService } from '~/modules/email/email.service';
 import { MemberService } from './member.service';
 
@@ -19,6 +20,7 @@ export class MemberController {
     );
   }
 
+  @UseGuards(JwtGuard)
   @Post()
   async invite(@Body() body: any) {
     const result = inviteMemberDTOSchema.safeParse(body);
@@ -30,6 +32,7 @@ export class MemberController {
     return this.memberService.createMemberByEmail(data.groupId, data.email);
   }
 
+  @UseGuards(JwtGuard)
   @Delete()
   async leave(@Email() email: string, @Body() body: any) {
     const result = leaveMemberDTOSchema.safeParse(body);

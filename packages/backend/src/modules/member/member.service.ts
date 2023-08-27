@@ -73,11 +73,12 @@ export class MemberService {
         email: users.email,
         name: members.name,
         isManager: members.isManager,
+        isDeleted: members.isDeleted,
       })
       .from(users)
       .innerJoin(members, eq(members.userId, users.id))
       .innerJoin(groups, eq(groups.id, members.groupId))
-      .where(eq(groups.id, groupId))
+      .where(and(eq(groups.id, groupId), eq(members.isDeleted, false)))
       .limit(limit)
       .offset((offset - 1) * limit)
       .orderBy(desc(members.isManager), asc(members.id));
@@ -88,12 +89,13 @@ export class MemberService {
       })
       .from(members)
       .innerJoin(groups, eq(groups.id, members.groupId))
-      .where(eq(groups.id, groupId));
+      .where(and(eq(groups.id, groupId), eq(members.isDeleted, false)));
 
     const [memberArrayResult, memberCountResult] = await Promise.allSettled([
       memberArrayQuery,
       memberCountQuery,
     ]);
+
     const member = memberArrayResult.status === 'fulfilled' ? memberArrayResult.value : [];
     const [count] = (
       memberCountResult.status === 'fulfilled' ? memberCountResult.value : [{ count: '0' }]
