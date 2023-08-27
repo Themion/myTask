@@ -1,7 +1,7 @@
 import { Group } from '@my-task/common';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { fetchGroupList } from '~/api/group';
+import { fetchGroupList } from '~/api';
 import { GroupAdd } from '~/components';
 import styles from './styles.module.scss';
 
