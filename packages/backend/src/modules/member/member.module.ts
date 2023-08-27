@@ -3,5 +3,6 @@ import { MemberService } from './member.service';
 
 @Module({
   providers: [MemberService],
+  exports: [MemberService],
 })
 export class MemberModule {}

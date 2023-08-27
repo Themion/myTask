@@ -4,6 +4,7 @@ import { MockGroupService } from '~/mock/services';
 import { DatabaseService } from '~/modules/database/database.service';
 import { GroupController } from '~/modules/group/group.controller';
 import { GroupService } from '~/modules/group/group.service';
+import { MemberService } from '~/modules/member/member.service';
 
 type Props = {
   databaseService?: DatabaseService;
@@ -17,7 +18,7 @@ const mockGroupModule = ({ databaseService, groupService }: Props) => {
   const providers: Provider[] = [GroupService];
 
   if (databaseService) providers.push(DatabaseService);
-  if (groupService) providers.push(GroupService);
+  if (!groupService) providers.push(MemberService);
 
   const moduleFactory = Test.createTestingModule({
     providers,
