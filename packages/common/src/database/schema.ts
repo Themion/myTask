@@ -1,4 +1,4 @@
-import { integer, pgTable, serial, varchar } from 'drizzle-orm/pg-core';
+import { boolean, integer, pgTable, serial, varchar } from 'drizzle-orm/pg-core';
 
 const users = pgTable('users', {
   id: serial('id').primaryKey(),
@@ -19,6 +19,7 @@ const members = pgTable('users_to_groups', {
     .notNull()
     .references(() => users.id),
   name: varchar('name', { length: 20 }).notNull().default('member'),
+  isManager: boolean('is_manager').default(false),
 });
 
 export { users, groups, members };
