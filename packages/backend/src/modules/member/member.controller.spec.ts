@@ -49,4 +49,31 @@ describe('MemberController', () => {
       });
     });
   });
+
+  describe('leave', () => {
+    let groupId: number;
+
+    beforeEach(async () => {
+      groupId = Math.floor(Math.random() * 10);
+      await controller.invite({ groupId, email: validEmail });
+    });
+
+    it('should work', async () => {
+      const result = await controller.leave(validEmail, { groupId });
+      expect(result).toBeDefined();
+      expect(result).toHaveProperty('groupId');
+      expect(result.groupId).toEqual(groupId);
+    });
+
+    describe('should throw with', () => {
+      it('invalid email', async () => {
+        await expect(controller.leave(invalidEmail, { groupId })).rejects.toThrow();
+      });
+
+      it('duplicate request', async () => {
+        await controller.leave(validEmail, { groupId });
+        await expect(controller.leave(validEmail, { groupId })).rejects.toThrow();
+      });
+    });
+  });
 });

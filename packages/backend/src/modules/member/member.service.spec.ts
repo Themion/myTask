@@ -92,7 +92,7 @@ describe('MemberService', () => {
     });
   });
 
-  describe('softDelteMember', () => {
+  describe('softDeleteMember', () => {
     beforeEach(async () => {
       await databaseService.db.insert(members).values({
         groupId: group.id,
@@ -101,7 +101,7 @@ describe('MemberService', () => {
     });
 
     it('should work', async () => {
-      const deletedMember = await service.softDelteMember(group.id, user);
+      const deletedMember = await service.softDeleteMember(group.id, user);
       expect(deletedMember).toBeDefined();
 
       const result = await databaseService.db
@@ -119,17 +119,17 @@ describe('MemberService', () => {
 
     describe('should throw error when', () => {
       it('invalid group id', async () => {
-        await expect(service.softDelteMember(-1, user)).rejects.toThrow();
+        await expect(service.softDeleteMember(-1, user)).rejects.toThrow();
       });
 
       it('invalid user id', async () => {
         user.id = -1;
-        await expect(service.softDelteMember(group.id, user)).rejects.toThrow();
+        await expect(service.softDeleteMember(group.id, user)).rejects.toThrow();
       });
     });
   });
 
-  describe('softDelteMemberByEmail', () => {
+  describe('softDeleteMemberByEmail', () => {
     beforeEach(async () => {
       await databaseService.db.insert(members).values({
         groupId: group.id,
@@ -138,18 +138,18 @@ describe('MemberService', () => {
     });
 
     it('should work', async () => {
-      const deletedMember = await service.softDelteMemberByEmail(group.id, user.email);
+      const deletedMember = await service.softDeleteMemberByEmail(group.id, user.email);
       expect(deletedMember).toBeDefined();
     });
 
     describe('should throw error when', () => {
       it('invalid group id', async () => {
-        await expect(service.softDelteMemberByEmail(-1, user.email)).rejects.toThrow();
+        await expect(service.softDeleteMemberByEmail(-1, user.email)).rejects.toThrow();
       });
 
       it('invalid user email', async () => {
         user.id = -1;
-        await expect(service.softDelteMemberByEmail(group.id, invalidEmail)).rejects.toThrow();
+        await expect(service.softDeleteMemberByEmail(group.id, invalidEmail)).rejects.toThrow();
       });
     });
   });

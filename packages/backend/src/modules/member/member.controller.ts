@@ -1,5 +1,6 @@
-import { inviteMemberDTOSchema } from '@my-task/common';
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import { inviteMemberDTOSchema, leaveMemberDTOSchema } from '@my-task/common';
+import { BadRequestException, Body, Controller, Delete, Post } from '@nestjs/common';
+import { Email } from '~/decorators';
 import { EmailService } from '~/modules/email/email.service';
 import { MemberService } from './member.service';
 
@@ -27,5 +28,14 @@ export class MemberController {
     this.sendEmail(data.email);
 
     return this.memberService.createMemberByEmail(data.groupId, data.email);
+  }
+
+  @Delete()
+  async leave(@Email() email: string, @Body() body: any) {
+    const result = leaveMemberDTOSchema.safeParse(body);
+    if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
+    const { data } = result;
+
+    return this.memberService.softDeleteMemberByEmail(data.groupId, email);
   }
 }
