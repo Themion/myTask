@@ -1,3 +1,4 @@
 import GroupAdd from './Add';
 import GroupInvite from './Invite';
-export { GroupAdd, GroupInvite };
+import GroupLeave from './Leave';
+export { GroupAdd, GroupInvite, GroupLeave };

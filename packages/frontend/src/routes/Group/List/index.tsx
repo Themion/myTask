@@ -2,11 +2,11 @@ import { Group } from '@my-task/common';
 import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { fetchGroupList } from '~/api';
-import { GroupAdd } from '~/components';
+import { GroupAdd, GroupLeave } from '~/components';
 import styles from './styles.module.scss';
 
 const GroupList = () => {
-  const [group, setGroup] = useState<Partial<Group>[]>([]);
+  const [group, setGroup] = useState<Pick<Group, 'id' | 'name'>[]>([]);
   const [count, setCount] = useState(0);
   const [searchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') ?? '1');
@@ -39,11 +39,12 @@ const GroupList = () => {
         ) : (
           <div className={styles.list}>
             {group.map(({ id, name }) => (
-              <Link to={`/group/${id}`}>
-                <div key={id} className={styles.item}>
+              <div key={id} className={styles.item}>
+                <Link to={`/group/${id}`}>
                   <span className={styles.text}>{name}</span>
-                </div>
-              </Link>
+                </Link>
+                <GroupLeave groupId={id} />
+              </div>
             ))}
           </div>
         )}
