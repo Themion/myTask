@@ -1,6 +1,6 @@
 import { Group } from '@my-task/common';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { fetchGroupList } from '~/api';
 import { GroupAdd } from '~/components';
 import styles from './styles.module.scss';
@@ -39,9 +39,11 @@ const GroupList = () => {
         ) : (
           <div className={styles.list}>
             {group.map(({ id, name }) => (
-              <div key={id} className={styles.item}>
-                <span className={styles.text}>{name}</span>
-              </div>
+              <Link to={`/group/${id}`}>
+                <div key={id} className={styles.item}>
+                  <span className={styles.text}>{name}</span>
+                </div>
+              </Link>
             ))}
           </div>
         )}
