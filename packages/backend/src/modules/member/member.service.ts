@@ -1,6 +1,6 @@
 import { MemberListDTO, User, groups, members, users } from '@my-task/common';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { asc, desc, eq, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, sql } from 'drizzle-orm';
 import { DatabaseService } from '~/modules/database/database.service';
 
 type PageInfo = {
@@ -34,6 +34,30 @@ export class MemberService {
     if (!user) throw new BadRequestException('Wrong Email!');
 
     return this.createMember(groupId, user, isManager);
+  }
+
+  async softDelteMember(groupId: number, user: Pick<User, 'id'>) {
+    const softDeletedMembers = await this.db
+      .update(members)
+      .set({ isDeleted: true })
+      .where(and(eq(members.groupId, groupId), eq(members.userId, user.id)))
+      .returning();
+
+    if (softDeletedMembers.length !== 1)
+      throw new InternalServerErrorException('DB updated failed when updating member!');
+
+    return softDeletedMembers[0];
+  }
+
+  async softDelteMemberByEmail(groupId: number, email: string) {
+    const user = await this.db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.email, email),
+      columns: { id: true },
+    });
+
+    if (!user) throw new BadRequestException('Wrong Email!');
+
+    return this.softDelteMember(groupId, user);
   }
 
   async findMemberByGroupId(
