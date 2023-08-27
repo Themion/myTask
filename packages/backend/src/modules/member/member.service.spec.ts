@@ -1,6 +1,6 @@
+import { Group, User, groups, members, users } from '@my-task/common';
 import { invalidEmail, mockDatabaseModule, mockMemberModule, validEmail } from '~/mock';
 import { DatabaseService } from '~/modules/database/database.service';
-import { Group, User, groups, users } from '../../../../common/src';
 import { MemberService } from './member.service';
 
 describe('MemberService', () => {
@@ -88,6 +88,54 @@ describe('MemberService', () => {
 
     it('should throw error with invalid email', async () => {
       await expect(service.createMemberByEmail(group.id, invalidEmail)).rejects.toThrow();
+    });
+  });
+
+  describe('findMemberByGroupId', () => {
+    let emailArr: string[];
+    let userArr: User[];
+
+    beforeEach(async () => {
+      emailArr = new Array(3).fill(0).map((_, i) => `test${i}@email.com`);
+
+      userArr = await databaseService.db
+        .insert(users)
+        .values(emailArr.map((email) => ({ email })))
+        .returning();
+      await databaseService.db
+        .insert(members)
+        .values(
+          userArr.map((user, idx) => ({
+            groupId: group.id,
+            userId: user.id,
+            name: user.email.split('@')[0],
+            isManager: idx === 2,
+          })),
+        )
+        .returning();
+    });
+
+    describe('should work', () => {
+      it('with no page info', async () => {
+        const result = await service.findMemberByGroupId(group.id);
+        expect(result).toBeDefined();
+        expect(result).toHaveProperty('member');
+        expect(result.member.length).toEqual(3);
+        result.member.forEach((m, idx) => expect(m.isManager).toEqual(idx === 0));
+        expect(result).toHaveProperty('count');
+        expect(result.count).toEqual(3);
+      });
+
+      it('invalid group id', async () => {
+        const { member } = await service.findMemberByGroupId(-1);
+        expect(member.length).toEqual(0);
+      });
+
+      it('with offset', async () => {
+        const { member, count } = await service.findMemberByGroupId(group.id, { offset: 2 });
+        expect(member.length).toEqual(0);
+        expect(count).toEqual(3);
+      });
     });
   });
 });

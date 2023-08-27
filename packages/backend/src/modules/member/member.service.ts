@@ -1,6 +1,11 @@
-import { User, members } from '@my-task/common';
+import { MemberListDTO, User, groups, members, users } from '@my-task/common';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { asc, desc, eq, sql } from 'drizzle-orm';
 import { DatabaseService } from '~/modules/database/database.service';
+
+type PageInfo = {
+  offset: number;
+};
 
 @Injectable()
 export class MemberService {
@@ -29,5 +34,47 @@ export class MemberService {
     if (!user) throw new BadRequestException('Wrong Email!');
 
     return this.createMember(groupId, user, isManager);
+  }
+
+  async findMemberByGroupId(
+    groupId: number,
+    options: Partial<PageInfo> = {},
+  ): Promise<MemberListDTO> {
+    const limit = 30;
+    const offset = options.offset ?? 1;
+
+    const memberArrayQuery = this.db
+      .select({
+        id: users.id,
+        email: users.email,
+        name: members.name,
+        isManager: members.isManager,
+      })
+      .from(users)
+      .innerJoin(members, eq(members.userId, users.id))
+      .innerJoin(groups, eq(groups.id, members.groupId))
+      .where(eq(groups.id, groupId))
+      .limit(limit)
+      .offset((offset - 1) * limit)
+      .orderBy(desc(members.isManager), asc(members.id));
+
+    const memberCountQuery = this.db
+      .select({
+        count: sql<string>`count(${members.id})`,
+      })
+      .from(members)
+      .innerJoin(groups, eq(groups.id, members.groupId))
+      .where(eq(groups.id, groupId));
+
+    const [memberArrayResult, memberCountResult] = await Promise.allSettled([
+      memberArrayQuery,
+      memberCountQuery,
+    ]);
+    const member = memberArrayResult.status === 'fulfilled' ? memberArrayResult.value : [];
+    const [count] = (
+      memberCountResult.status === 'fulfilled' ? memberCountResult.value : [{ count: '0' }]
+    ).map(({ count }) => parseInt(count));
+
+    return { member, count };
   }
 }
