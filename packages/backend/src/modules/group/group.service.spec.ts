@@ -112,4 +112,21 @@ describe('GroupService', () => {
       });
     });
   });
+
+  describe('findGroupById', () => {
+    it('should work', async () => {
+      const name = 'groupName';
+      const group = await service.createGroup(creator, name);
+
+      const foundResult = await service.findGroupById(group.id);
+      expect(foundResult).toBeDefined();
+      expect(foundResult).toHaveProperty('name');
+      expect(foundResult?.name).toEqual(name);
+    });
+
+    it('should throw error with invalid data', async () => {
+      const foundResult = await service.findGroupById(-1);
+      await expect(foundResult).toBeUndefined();
+    });
+  });
 });
