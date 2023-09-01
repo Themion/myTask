@@ -5,22 +5,19 @@ import {
   REFRESH_TOKEN,
   REFRESH_TOKEN_LIFE_SPAN,
 } from '~/constants';
-import { mockAuthModule, validEmail } from '~/mock';
+import { MockCacheService, mockAuthModule, mockCacheService, validEmail } from '~/mock';
 import { CookieService } from '~/modules/auth/cookie.service';
-import { CacheService } from '~/modules/cache/cache.service';
 import { CookieSettings } from '~/types';
 
 describe('CookieService', () => {
   let service: CookieService;
+  let cacheService: MockCacheService;
   let email: string;
-  let cacheService: CacheService;
 
   beforeEach(async () => {
-    const module = await mockAuthModule({});
+    cacheService = await mockCacheService();
+    const module = await mockAuthModule({ cacheService });
     service = module.get<CookieService>(CookieService);
-    cacheService = module.get<CacheService>(CacheService);
-
-    await cacheService.onModuleInit();
 
     email = validEmail;
   });
