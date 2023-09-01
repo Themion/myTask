@@ -2,6 +2,7 @@ import { Provider } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import {
   MockAuthService,
+  MockCacheService,
   MockCookieService,
   MockEmailService,
   MockGroupService,
@@ -19,6 +20,7 @@ import mockJwtModule from './jwt.module';
 
 type Props = {
   authService?: MockAuthService;
+  cacheService?: MockCacheService;
   cookieService?: MockCookieService;
   databaseService?: DatabaseService;
   emailService?: MockEmailService;
@@ -27,12 +29,13 @@ type Props = {
 
 const mockAuthModule = async ({
   authService,
+  cacheService,
   cookieService,
   databaseService,
   emailService,
   groupService,
 }: Props) => {
-  const providers: Provider[] = [CookieService, CacheService, JwtStrategy];
+  const providers: Provider[] = [CacheService, CookieService, JwtStrategy];
 
   if (authService || databaseService) providers.push(AuthService);
   if (cookieService) providers.push(CookieService);
@@ -50,6 +53,7 @@ const mockAuthModule = async ({
   });
 
   if (authService) moduleFactory.overrideProvider(AuthService).useValue(authService);
+  if (cacheService) moduleFactory.overrideProvider(CacheService).useValue(cacheService);
   if (cookieService) moduleFactory.overrideProvider(CookieService).useValue(cookieService);
   if (databaseService) moduleFactory.overrideProvider(DatabaseService).useValue(databaseService);
   if (emailService) moduleFactory.overrideProvider(EmailService).useValue(emailService);

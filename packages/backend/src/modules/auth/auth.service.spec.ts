@@ -2,7 +2,15 @@ import { RequestAuthDTO } from '@my-task/common';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import { ACCESS_TOKEN, CACHE_TABLE_NAME, REFRESH_TOKEN } from '~/constants';
-import { mockAuthModule, mockDatabaseModule, mockGroupService, validEmail } from '~/mock';
+import {
+  MockCacheService,
+  MockGroupService,
+  mockAuthModule,
+  mockCacheService,
+  mockDatabaseModule,
+  mockGroupService,
+  validEmail,
+} from '~/mock';
 import { AuthService } from '~/modules/auth/auth.service';
 import { CacheService } from '~/modules/cache/cache.service';
 import { DatabaseService } from '~/modules/database/database.service';
@@ -10,7 +18,7 @@ import { DatabaseService } from '~/modules/database/database.service';
 describe('AuthService', () => {
   let service: AuthService;
   let databaseService: DatabaseService;
-  let cacheService: CacheService;
+  let cacheService: MockCacheService;
 
   let email: string;
   let uuid: string;
@@ -23,13 +31,12 @@ describe('AuthService', () => {
     databaseService = databaseModule.get<DatabaseService>(DatabaseService);
     await databaseService.onModuleInit();
 
-    const groupService = await mockGroupService();
+    let groupService: MockGroupService;
+    [cacheService, groupService] = await Promise.all([mockCacheService(), mockGroupService()]);
 
-    const module = await mockAuthModule({ databaseService, groupService });
+    const module = await mockAuthModule({ databaseService, cacheService, groupService });
     service = module.get<AuthService>(AuthService);
-    cacheService = module.get<CacheService>(CacheService);
 
-    await cacheService.onModuleInit();
     RT2Email = cacheService.toHash(CACHE_TABLE_NAME.RT2Email);
   });
 

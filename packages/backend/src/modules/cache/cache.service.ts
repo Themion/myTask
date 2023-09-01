@@ -62,8 +62,8 @@ export class CacheService implements OnModuleInit, OnModuleDestroy {
         }
         return result;
       },
-      get: (field: string) => {
-        return this.redisClient.hGet(tableName, field);
+      get: async (field: string): Promise<string | null> => {
+        return this.redisClient.hGet(tableName, field).then((val) => val || null);
       },
       has: (field: string) => {
         return this.redisClient.hExists(tableName, field);
