@@ -29,8 +29,10 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+
         # Set health checks to wait until postgres has started
         options: >-
+          --name database
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
@@ -45,6 +47,16 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
+      - name: Increase max_connections and shared_buffers
+        run: |
+          docker exec -i database bash << EOF
+            sed -i -e 's/max_connections = 100/max_connections = 1000/' /var/lib/postgresql/data/postgresql.conf
+            sed -i -e 's/shared_buffers = 128MB/shared_buffers = 2GB/' /var/lib/postgresql/data/postgresql.conf
+          EOF
+
+      - name: Restart database for config
+        run: docker restart --time 0 database
+
       - uses: actions/checkout@v3
       - name: Use Node.js
         uses: actions/setup-node@v3
