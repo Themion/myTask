@@ -1,6 +1,10 @@
 import { Member, User } from '@my-task/common';
 import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
-import { validEmail } from '~/mock';
+import { invalidEmail, validEmail } from '~/mock';
+
+type PageInfo = {
+  offset: number;
+};
 
 const getMemberKey = (groupId: number, email: string) => email + groupId;
 
@@ -14,7 +18,7 @@ const mockMemberService = async () => ({
   },
 
   async createMemberByEmail(groupId: number, email: string, isManager: boolean = false) {
-    if (email !== validEmail) throw new BadRequestException('');
+    if (email === invalidEmail) throw new BadRequestException('');
 
     const key = getMemberKey(groupId, email);
 
@@ -55,6 +59,20 @@ const mockMemberService = async () => ({
 
   async findIfUserIsMember(groupId: number, email: string) {
     return this.memberSet.has(getMemberKey(groupId, email));
+  },
+
+  async findMemberByGroupId(groupId: number, options: Partial<PageInfo> = {}) {
+    const limit = 30;
+    const offset = options.offset ?? 1;
+
+    const start = (offset - 1) * limit;
+
+    const member = [...this.memberSet]
+      .filter((key) => new RegExp(`${groupId}$`).test(key))
+      .slice(start, start + limit);
+    const count = this.memberSet.size;
+
+    return { member, count };
   },
 });
 
