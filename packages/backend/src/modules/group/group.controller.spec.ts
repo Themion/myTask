@@ -1,16 +1,26 @@
-import { MockGroupService, mockGroupModule, mockGroupService, validEmail } from '~/mock';
+import {
+  MockGroupService,
+  MockMemberService,
+  invalidEmail,
+  mockGroupModule,
+  mockGroupService,
+  mockMemberService,
+  validEmail,
+} from '~/mock';
+import { Group } from '../../../../common/src';
 import { GroupController } from './group.controller';
 
 describe('GroupController', () => {
   let controller: GroupController;
   let groupService: MockGroupService;
+  let memberService: MockMemberService;
 
   let name: string;
   let email: string;
 
   beforeEach(async () => {
-    groupService = await mockGroupService();
-    const module = await mockGroupModule({ groupService });
+    [groupService, memberService] = await Promise.all([mockGroupService(), mockMemberService()]);
+    const module = await mockGroupModule({ groupService, memberService });
     controller = module.get<GroupController>(GroupController);
   });
 
@@ -66,6 +76,34 @@ describe('GroupController', () => {
         expect(result.group.length).toEqual(0);
         expect(result).toHaveProperty('count');
         expect(result.count).toEqual(3);
+      });
+    });
+  });
+
+  describe('findGroupById', () => {
+    let name: string;
+    let group: Group;
+
+    beforeEach(async () => {
+      name = 'asdasdad';
+      group = await groupService.createGroupByEmail(validEmail, name);
+      await memberService.createMemberByEmail(group.id, validEmail);
+    });
+
+    it('should work', async () => {
+      const result = await controller.findGroupById(validEmail, group.id);
+      expect(result).toBeDefined();
+      expect(result).toHaveProperty('name');
+      expect(result?.name).toEqual(name);
+    });
+
+    describe('should throw error when', () => {
+      it('invalid email', async () => {
+        await expect(controller.findGroupById(invalidEmail, group.id)).rejects.toThrow();
+      });
+
+      it('invalid group id', async () => {
+        await expect(controller.findGroupById(validEmail, -1)).rejects.toThrow();
       });
     });
   });

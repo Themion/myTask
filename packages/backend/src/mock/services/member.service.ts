@@ -1,21 +1,32 @@
-import { Member } from '@my-task/common';
+import { Member, User } from '@my-task/common';
 import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { validEmail } from '~/mock';
 
+const getMemberKey = (groupId: number, email: string) => email + groupId;
+
 const mockMemberService = async () => ({
+  memberIncrement: 1,
+  userIncrement: 1,
   memberSet: new Set<string>(),
 
-  async createMemberByEmail(groupId: number, email: string) {
+  async createMember(groupId: number, user: User, isManager: boolean) {
+    return this.createMemberByEmail(groupId, user.email, isManager);
+  },
+
+  async createMemberByEmail(groupId: number, email: string, isManager: boolean = false) {
     if (email !== validEmail) throw new BadRequestException('');
-    if (this.memberSet.has(email + groupId)) throw new InternalServerErrorException('');
-    this.memberSet.add(email + groupId);
+
+    const key = getMemberKey(groupId, email);
+
+    if (this.memberSet.has(key)) throw new InternalServerErrorException('');
+    this.memberSet.add(key);
 
     const ret: Member = {
-      id: Math.floor(Math.random() * 10),
+      id: this.memberIncrement++,
       groupId,
-      userId: Math.floor(Math.random() * 10),
+      userId: this.userIncrement++,
       isDeleted: false,
-      isManager: false,
+      isManager,
       name: '',
     };
 
@@ -24,19 +35,26 @@ const mockMemberService = async () => ({
 
   async softDeleteMemberByEmail(groupId: number, email: string) {
     if (email !== validEmail) throw new BadRequestException('');
-    if (!this.memberSet.has(email + groupId)) throw new InternalServerErrorException('');
-    this.memberSet.delete(email + groupId);
+
+    const key = getMemberKey(groupId, email);
+
+    if (!this.memberSet.has(key)) throw new InternalServerErrorException('');
+    this.memberSet.delete(key);
 
     const ret: Member = {
-      id: Math.floor(Math.random() * 10),
+      id: this.memberIncrement++,
       groupId,
-      userId: Math.floor(Math.random() * 10),
+      userId: this.userIncrement++,
       isDeleted: false,
       isManager: false,
       name: '',
     };
 
     return ret;
+  },
+
+  async findIfUserIsMember(groupId: number, email: string) {
+    return this.memberSet.has(getMemberKey(groupId, email));
   },
 });
 

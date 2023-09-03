@@ -6,19 +6,26 @@ type PageInfo = {
 };
 
 const mockGroupService = async () => ({
-  groups: new Map<string, Group[]>(),
+  increment: 1,
+  groupsByEmail: new Map<string, Group[]>(),
+  groupById: new Map<number, Group>(),
 
   async createGroup(creator: User, name: string) {
-    const id = Math.floor(Math.random() * 10);
+    const id = this.increment++;
     const group: Group = { id, name };
-    this.groups.set(creator.email, (this.groups.get(creator.email) || []).concat([group]));
+    this.groupsByEmail.set(
+      creator.email,
+      (this.groupsByEmail.get(creator.email) || []).concat([group]),
+    );
+    this.groupById.set(id, group);
     return group;
   },
 
   async createGroupByEmail(email: string, name: string) {
-    const id = Math.floor(Math.random() * 10);
+    const id = this.increment++;
     const group: Group = { id, name };
-    this.groups.set(email, (this.groups.get(email) || []).concat([group]));
+    this.groupsByEmail.set(email, (this.groupsByEmail.get(email) || []).concat([group]));
+    this.groupById.set(id, group);
     return group;
   },
 
@@ -31,9 +38,13 @@ const mockGroupService = async () => ({
 
     const start = (offset - 1) * limit;
 
-    const arr = this.groups.get(email) ?? [];
+    const arr = this.groupsByEmail.get(email) ?? [];
     const group = [...arr].slice(start, start + limit);
     return { group, count: arr.length };
+  },
+
+  async findGroupById(groupId: number) {
+    return this.groupById.get(groupId);
   },
 });
 
