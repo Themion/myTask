@@ -154,6 +154,41 @@ describe('MemberService', () => {
     });
   });
 
+  describe('findIfUserIsMember', () => {
+    beforeEach(async () => {
+      await databaseService.db.insert(members).values({
+        groupId: group.id,
+        userId: user.id,
+      });
+    });
+
+    describe('should work', () => {
+      it('existing user and group', async () => {
+        const result = await service.findIfUserIsMember(group.id, user.email);
+        expect(result).toBeDefined();
+        expect(result).toEqual(true);
+      });
+
+      it('not existing user and existing group', async () => {
+        const result = await service.findIfUserIsMember(group.id, invalidEmail);
+        expect(result).toBeDefined();
+        expect(result).toEqual(false);
+      });
+
+      it('existing user and not existing group', async () => {
+        const result = await service.findIfUserIsMember(-1, user.email);
+        expect(result).toBeDefined();
+        expect(result).toEqual(false);
+      });
+
+      it('not existing user and group', async () => {
+        const result = await service.findIfUserIsMember(-1, invalidEmail);
+        expect(result).toBeDefined();
+        expect(result).toEqual(false);
+      });
+    });
+  });
+
   describe('findMemberByGroupId', () => {
     let emailArr: string[];
     let userArr: User[];
