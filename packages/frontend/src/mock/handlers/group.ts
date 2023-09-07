@@ -33,6 +33,15 @@ const groupHandlers = [
 
     return res(ctx.status(200), ctx.json({ id, name }));
   }),
+
+  rest.get(mockGroupDir('/:groupId'), async (req, res, ctx) => {
+    ctx.delay();
+
+    const { groupId } = req.params;
+    const name = `name${groupId}`;
+
+    return res(ctx.status(200), ctx.json({ id: groupId, name }));
+  }),
 ];
 
 export default groupHandlers;
