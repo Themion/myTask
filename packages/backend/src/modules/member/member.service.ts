@@ -62,14 +62,14 @@ export class MemberService {
 
   async findIfUserIsMember(groupId: number, email: string) {
     const result = await this.db
-      .select({ count: sql<string>`count(${members.id})` })
+      .select({ id: users.id })
       .from(members)
       .innerJoin(users, eq(members.userId, users.id))
       .where(
         and(eq(users.email, email), eq(members.groupId, groupId), eq(members.isDeleted, false)),
       );
 
-    return result.length === 1 && parseInt(result[0].count) > 0;
+    return result.length === 1 ? result[0].id : -1;
   }
 
   async findMemberByGroupId(

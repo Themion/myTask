@@ -61,8 +61,8 @@ export class MemberController {
     @Param('groupId', ParseIntPipe) groupId: number,
     @Query('page') offset: number = 1,
   ) {
-    const ifMember = await this.memberService.findIfUserIsMember(groupId, email);
-    if (!ifMember)
+    const userId = await this.memberService.findIfUserIsMember(groupId, email);
+    if (userId < 0)
       throw new ForbiddenException(`User ${email} is not a member of Group #${groupId}`);
     return this.memberService.findMemberByGroupId(groupId, { offset });
   }
