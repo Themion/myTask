@@ -75,7 +75,7 @@ export class GroupService {
 
   async findGroupById(groupId: number) {
     return this.db.query.groups.findFirst({
-      columns: { name: true },
+      columns: { id: true, name: true },
       where: (groups, { eq }) => eq(groups.id, groupId),
     });
   }
