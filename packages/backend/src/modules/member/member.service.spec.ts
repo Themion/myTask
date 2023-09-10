@@ -166,25 +166,25 @@ describe('MemberService', () => {
       it('existing user and group', async () => {
         const result = await service.findIfUserIsMember(group.id, user.email);
         expect(result).toBeDefined();
-        expect(result).toEqual(true);
+        expect(result).toBeGreaterThan(0);
       });
 
       it('not existing user and existing group', async () => {
         const result = await service.findIfUserIsMember(group.id, invalidEmail);
         expect(result).toBeDefined();
-        expect(result).toEqual(false);
+        expect(result).toEqual(-1);
       });
 
       it('existing user and not existing group', async () => {
         const result = await service.findIfUserIsMember(-1, user.email);
         expect(result).toBeDefined();
-        expect(result).toEqual(false);
+        expect(result).toEqual(-1);
       });
 
       it('not existing user and group', async () => {
         const result = await service.findIfUserIsMember(-1, invalidEmail);
         expect(result).toBeDefined();
-        expect(result).toEqual(false);
+        expect(result).toEqual(-1);
       });
     });
   });
