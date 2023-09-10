@@ -1,7 +1,6 @@
 import {
   MockGroupService,
   MockMemberService,
-  invalidEmail,
   mockGroupModule,
   mockGroupService,
   mockMemberService,
@@ -20,7 +19,7 @@ describe('GroupController', () => {
 
   beforeEach(async () => {
     [groupService, memberService] = await Promise.all([mockGroupService(), mockMemberService()]);
-    const module = await mockGroupModule({ groupService, memberService });
+    const module = await mockGroupModule({ groupService });
     controller = module.get<GroupController>(GroupController);
   });
 
@@ -90,21 +89,12 @@ describe('GroupController', () => {
       await memberService.createMemberByEmail(group.id, validEmail);
     });
 
+    // service 로직을 테스트하는 테스트 케이스는 넣지 않음
     it('should work', async () => {
-      const result = await controller.findGroupById(validEmail, group.id);
+      const result = await controller.findGroupById(group.id);
       expect(result).toBeDefined();
       expect(result).toHaveProperty('name');
       expect(result?.name).toEqual(name);
-    });
-
-    describe('should throw error when', () => {
-      it('invalid email', async () => {
-        await expect(controller.findGroupById(invalidEmail, group.id)).rejects.toThrow();
-      });
-
-      it('invalid group id', async () => {
-        await expect(controller.findGroupById(validEmail, -1)).rejects.toThrow();
-      });
     });
   });
 });

@@ -8,20 +8,15 @@ import {
   ParseIntPipe,
   Post,
   Query,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { Email } from '~/decorators';
 import { JwtGuard } from '~/guard';
-import { MemberService } from '~/modules/member/member.service';
 import { GroupService } from './group.service';
 
 @Controller('group')
 export class GroupController {
-  constructor(
-    private readonly groupService: GroupService,
-    private readonly memberService: MemberService,
-  ) {}
+  constructor(private readonly groupService: GroupService) {}
 
   @UseGuards(JwtGuard)
   @Post()
@@ -41,10 +36,7 @@ export class GroupController {
 
   @UseGuards(JwtGuard)
   @Get(':groupId')
-  async findGroupById(@Email() email: string, @Param('groupId', ParseIntPipe) groupId: number) {
-    const ifMember = await this.memberService.findIfUserIsMember(groupId, email);
-    if (!ifMember)
-      throw new UnauthorizedException(`User ${email} is not a member of Group #${groupId}`);
+  async findGroupById(@Param('groupId', ParseIntPipe) groupId: number) {
     return this.groupService.findGroupById(groupId);
   }
 }
