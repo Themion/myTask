@@ -76,4 +76,39 @@ describe('MemberController', () => {
       });
     });
   });
+
+  describe('findMemberByGroupId', () => {
+    let groupId: number;
+
+    beforeEach(async () => {
+      groupId = Math.floor(Math.random() * 10);
+      await Promise.all(
+        new Array(40)
+          .fill(0)
+          .map((_, i) => `test${i}@email.com`)
+          .concat(validEmail)
+          .map((email) => controller.invite({ groupId, email })),
+      );
+    });
+
+    describe('should work', () => {
+      it('without page info', async () => {
+        const result = await controller.findMemberByGroupId(validEmail, groupId);
+        expect(result).toBeDefined();
+        expect(result).toHaveProperty('member');
+        expect(result).toHaveProperty('count');
+        expect(result.member.length).toEqual(30);
+        expect(result.count).toEqual(41);
+      });
+
+      it('with page', async () => {
+        const result = await controller.findMemberByGroupId(validEmail, groupId, 2);
+        expect(result).toBeDefined();
+        expect(result).toHaveProperty('member');
+        expect(result).toHaveProperty('count');
+        expect(result.member.length).toEqual(11);
+        expect(result.count).toEqual(41);
+      });
+    });
+  });
 });

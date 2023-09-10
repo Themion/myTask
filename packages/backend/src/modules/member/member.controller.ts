@@ -1,5 +1,17 @@
 import { inviteMemberDTOSchema, leaveMemberDTOSchema } from '@my-task/common';
-import { BadRequestException, Body, Controller, Delete, Post, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  ForbiddenException,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { Email } from '~/decorators';
 import { JwtGuard } from '~/guard';
 import { EmailService } from '~/modules/email/email.service';
@@ -40,5 +52,18 @@ export class MemberController {
     const { data } = result;
 
     return this.memberService.softDeleteMemberByEmail(data.groupId, email);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get(':groupId')
+  async findMemberByGroupId(
+    @Email() email: string,
+    @Param('groupId', ParseIntPipe) groupId: number,
+    @Query('page') offset: number = 1,
+  ) {
+    const ifMember = await this.memberService.findIfUserIsMember(groupId, email);
+    if (!ifMember)
+      throw new ForbiddenException(`User ${email} is not a member of Group #${groupId}`);
+    return this.memberService.findMemberByGroupId(groupId, { offset });
   }
 }
