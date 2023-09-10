@@ -91,7 +91,7 @@ describe('GroupController', () => {
 
     // service 로직을 테스트하는 테스트 케이스는 넣지 않음
     it('should work', async () => {
-      const result = await controller.findGroupById(group.id);
+      const result = await controller.findGroupById(validEmail, group.id);
       expect(result).toBeDefined();
       expect(result).toHaveProperty('name');
       expect(result?.name).toEqual(name);

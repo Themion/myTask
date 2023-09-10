@@ -73,10 +73,20 @@ export class GroupService {
     return { group, count };
   }
 
-  async findGroupById(groupId: number) {
-    return this.db.query.groups.findFirst({
-      columns: { id: true, name: true },
-      where: (groups, { eq }) => eq(groups.id, groupId),
-    });
+  async findGroupById(groupId: number, email: string) {
+    const result = await this.db
+      .select({
+        id: groups.id,
+        name: groups.name,
+        isManager: members.isManager,
+      })
+      .from(groups)
+      .innerJoin(members, eq(groups.id, members.groupId))
+      .innerJoin(users, eq(members.userId, users.id))
+      .where(and(eq(groups.id, groupId), eq(users.email, email)));
+
+    if (result.length !== 1) throw new InternalServerErrorException('');
+
+    return result[0];
   }
 }

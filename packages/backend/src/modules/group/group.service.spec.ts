@@ -1,5 +1,5 @@
-import { User, users } from '@my-task/common';
-import { HttpException } from '@nestjs/common';
+import { Group, User, users } from '@my-task/common';
+import { HttpException, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseError } from 'pg';
 import { invalidEmail, mockDatabaseModule, mockGroupModule, validEmail } from '~/mock';
 import { DatabaseService } from '~/modules/database/database.service';
@@ -114,19 +114,39 @@ describe('GroupService', () => {
   });
 
   describe('findGroupById', () => {
-    it('should work', async () => {
-      const name = 'groupName';
-      const group = await service.createGroup(creator, name);
+    let name: string;
+    let group: Group;
 
-      const foundResult = await service.findGroupById(group.id);
-      expect(foundResult).toBeDefined();
-      expect(foundResult).toHaveProperty('name');
-      expect(foundResult?.name).toEqual(name);
+    beforeEach(async () => {
+      name = 'groupName';
+      group = await service.createGroup(creator, name);
     });
 
-    it('should throw error with invalid data', async () => {
-      const foundResult = await service.findGroupById(-1);
-      await expect(foundResult).toBeUndefined();
+    describe('should work with', () => {
+      it('valid user and email', async () => {
+        const foundResult = await service.findGroupById(group.id, validEmail);
+        expect(foundResult).toBeDefined();
+        expect(foundResult).toHaveProperty('name');
+        expect(foundResult?.name).toEqual(name);
+      });
+    });
+
+    describe('should throw error when', () => {
+      it('invalid group id', async () => {
+        await expect(service.findGroupById(-1, validEmail)).rejects.toThrowError(
+          InternalServerErrorException,
+        );
+      });
+      it('invalid email', async () => {
+        await expect(service.findGroupById(group.id, invalidEmail)).rejects.toThrowError(
+          InternalServerErrorException,
+        );
+      });
+      it('invalid group id and email', async () => {
+        await expect(service.findGroupById(-1, invalidEmail)).rejects.toThrowError(
+          InternalServerErrorException,
+        );
+      });
     });
   });
 });
