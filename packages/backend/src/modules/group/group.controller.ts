@@ -36,7 +36,7 @@ export class GroupController {
 
   @UseGuards(JwtGuard)
   @Get(':groupId')
-  async findGroupById(@Param('groupId', ParseIntPipe) groupId: number) {
-    return this.groupService.findGroupById(groupId);
+  async findGroupById(@Email() email: string, @Param('groupId', ParseIntPipe) groupId: number) {
+    return this.groupService.findGroupById(groupId, email);
   }
 }

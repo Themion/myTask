@@ -43,7 +43,7 @@ const mockGroupService = async () => ({
     return { group, count: arr.length };
   },
 
-  async findGroupById(groupId: number) {
+  async findGroupById(groupId: number, _: string) {
     return this.groupById.get(groupId);
   },
 });
