@@ -14,7 +14,16 @@ const memberHandlers = [
 
     const memberArr: MemberListDTO['member'] = new Array(33)
       .fill(0)
-      .map((_, i) => ({ id: i, name: `name${i}`, email: `test${i}@email.com`, isManager: false }));
+      .map((_, i) => ({
+        id: i,
+        name: `name${i}`,
+        email: `test${i}@email.com`,
+        isManager: i % 10 === 0,
+      }))
+      .sort((a, b) => {
+        if (a.isManager !== b.isManager) return a.isManager ? -1 : 1;
+        return a.id - b.id;
+      });
 
     const member = [...memberArr].slice((page - 1) * limit, page * limit);
 

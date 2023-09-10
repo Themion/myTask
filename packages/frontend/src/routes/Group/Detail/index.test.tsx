@@ -48,23 +48,25 @@ describe('GroupList', () => {
       expect(heading).not.toBeNull();
     });
 
-    it('mutation completed', async () => {
-      const memberRegExp = /^test\d+@email.com(\(manager\))?$/;
-      const filterMember = (itemlist: HTMLElement[]) =>
-        itemlist.filter((listitem) => memberRegExp.test(listitem.textContent ?? ''));
+    describe('mutation completed', async () => {
+      it('member list', async () => {
+        const memberRegExp = /^test\d+@email.com( \(manager\))?$/;
+        const filterMember = (itemlist: HTMLElement[]) =>
+          itemlist.filter((listitem) => memberRegExp.test(listitem.textContent ?? ''));
 
-      const button = screen.getByText('Load More User');
-      await waitFor(() => expect(client.isMutating()).toEqual(0));
+        const button = screen.getByText('Load More User');
+        await waitFor(() => expect(client.isMutating()).toEqual(0));
 
-      const itemsBeforeClick = filterMember(screen.getAllByRole('listitem'));
-      expect(itemsBeforeClick.length).toEqual(30);
+        const itemsBeforeClick = filterMember(screen.getAllByRole('listitem'));
+        expect(itemsBeforeClick.length).toEqual(30);
 
-      fireEvent.click(button);
-      expect(client.isMutating()).toEqual(1);
-      await waitFor(() => expect(client.isMutating()).toEqual(0));
+        fireEvent.click(button);
+        expect(client.isMutating()).toEqual(1);
+        await waitFor(() => expect(client.isMutating()).toEqual(0));
 
-      const itemsAfterClick = filterMember(screen.getAllByRole('listitem'));
-      expect(itemsAfterClick.length).toBeGreaterThan(30);
+        const itemsAfterClick = filterMember(screen.getAllByRole('listitem'));
+        expect(itemsAfterClick.length).toEqual(33);
+      });
     });
   });
 });
