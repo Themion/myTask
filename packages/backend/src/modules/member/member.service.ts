@@ -60,6 +60,18 @@ export class MemberService {
     return this.softDeleteMember(groupId, user);
   }
 
+  async findIfUserIsMember(groupId: number, email: string) {
+    const result = await this.db
+      .select({ count: sql<string>`count(${members.id})` })
+      .from(members)
+      .innerJoin(users, eq(members.userId, users.id))
+      .where(
+        and(eq(users.email, email), eq(members.groupId, groupId), eq(members.isDeleted, false)),
+      );
+
+    return result.length === 1 && parseInt(result[0].count) > 0;
+  }
+
   async findMemberByGroupId(
     groupId: number,
     options: Partial<PageInfo> = {},
