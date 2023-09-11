@@ -41,12 +41,6 @@ describe('GroupController', () => {
       expect(result).toBeDefined();
       expect(result.name).toEqual(name);
     });
-
-    describe('should throw error when', () => {
-      it('invalid body', async () => {
-        await expect(async () => controller.createGroup({}, email)).rejects.toThrow();
-      });
-    });
   });
 
   describe('findGroup', () => {
@@ -69,7 +63,7 @@ describe('GroupController', () => {
       });
 
       it('with page', async () => {
-        const result = await controller.findGroup(email, 2);
+        const result = await controller.findGroup(email, { offset: 2 });
         expect(result).toBeDefined();
         expect(result).toHaveProperty('group');
         expect(result.group.length).toEqual(0);

@@ -1,7 +1,10 @@
-import { RequestAuthDTO, confirmAuthDTOSchema, requestAuthDTOSchema } from '@my-task/common';
 import {
-  BadRequestException,
-  Body,
+  ConfirmAuthDTO,
+  RequestAuthDTO,
+  confirmAuthDTOSchema,
+  requestAuthDTOSchema,
+} from '@my-task/common';
+import {
   Controller,
   Delete,
   Get,
@@ -58,12 +61,11 @@ export class AuthController {
   }
 
   @Post('confirm')
-  async confirm(@Body() body: any, @Res({ passthrough: true }) res: Response) {
-    const result = confirmAuthDTOSchema.safeParse(body);
-    if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
-    const { data } = result;
-
-    const authInfo = await this.authService.confirm(data);
+  async confirm(
+    @ParsedBody(confirmAuthDTOSchema) body: ConfirmAuthDTO,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const authInfo = await this.authService.confirm(body);
 
     const cookieSettings = await this.cookieService.setCookie(authInfo.email);
     this.setAuthCookie(res, cookieSettings);
