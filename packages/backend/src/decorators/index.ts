@@ -1,2 +1,3 @@
 import Email from './email.decorator';
-export { Email };
+import ParsedBody from './parsed.body.decorator';
+export { Email, ParsedBody };
