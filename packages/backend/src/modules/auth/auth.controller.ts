@@ -1,4 +1,4 @@
-import { confirmAuthDTOSchema, requestAuthDTOSchema } from '@my-task/common';
+import { RequestAuthDTO, confirmAuthDTOSchema, requestAuthDTOSchema } from '@my-task/common';
 import {
   BadRequestException,
   Body,
@@ -18,6 +18,7 @@ import { JwtGuard } from '~/guard';
 import { AuthService } from '~/modules/auth/auth.service';
 import { CookieService } from '~/modules/auth/cookie.service';
 import { EmailService } from '~/modules/email/email.service';
+import { ZodParsePipe } from '~/pipe';
 import { CookieSettings, Env } from '~/types';
 
 @Controller('auth')
@@ -48,16 +49,12 @@ export class AuthController {
   }
 
   @Post('request')
-  async request(@Body() body: any) {
-    const result = requestAuthDTOSchema.safeParse(body);
-    if (!result.success) throw new BadRequestException('Wrong DTO: try again!');
-    const { data } = result;
-
-    const uuid = await this.authService.request(data);
+  async request(@Body(new ZodParsePipe(requestAuthDTOSchema)) body: RequestAuthDTO) {
+    const uuid = await this.authService.request(body);
     // E-Mail 송신은 동기적으로 진행할 필요 없음
-    this.sendEmail(data.email, uuid);
+    this.sendEmail(body.email, uuid);
 
-    return data;
+    return body;
   }
 
   @Post('confirm')
