@@ -2,6 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
+import { CauseExceptionFilter } from '~/filters';
 import { AppModule } from '~/modules/app.module';
 import { Env } from '~/types';
 
@@ -17,6 +18,7 @@ async function bootstrap() {
 
 function getConfig(app: INestApplication) {
   const configService = app.get(ConfigService<Env>);
+  app.useGlobalFilters(new CauseExceptionFilter());
   return configService.getOrThrow<Env['NETWORK']>('NETWORK');
 }
 
