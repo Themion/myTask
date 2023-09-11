@@ -1,12 +1,20 @@
-import { GroupListDTO, User, groups, members, users } from '@my-task/common';
+import {
+  GroupListDTO,
+  PageInfo,
+  User,
+  groups,
+  members,
+  mergeObjects,
+  users,
+} from '@my-task/common';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { and, eq, sql } from 'drizzle-orm';
 import { DatabaseService } from '~/modules/database/database.service';
 import { MemberService } from '~/modules/member/member.service';
 
-type PageInfo = {
-  offset: number;
-  limit: number;
+const defaultPageInfo: PageInfo = {
+  offset: 1,
+  limit: 10,
 };
 
 @Injectable()
@@ -37,11 +45,7 @@ export class GroupService {
   }
 
   async findGroupByEmail(email: string, options: Partial<PageInfo> = {}): Promise<GroupListDTO> {
-    const { offset, limit } = {
-      offset: 1,
-      limit: 10,
-      ...options,
-    } as PageInfo;
+    const { offset, limit } = mergeObjects(options, defaultPageInfo) as PageInfo;
 
     const groupQuery = this.db
       .select({ id: groups.id, name: groups.name })

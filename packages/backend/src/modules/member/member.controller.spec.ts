@@ -102,7 +102,7 @@ describe('MemberController', () => {
       });
 
       it('with page', async () => {
-        const result = await controller.findMemberByGroupId(validEmail, groupId, 2);
+        const result = await controller.findMemberByGroupId(validEmail, groupId, { offset: 2 });
         expect(result).toBeDefined();
         expect(result).toHaveProperty('member');
         expect(result).toHaveProperty('count');

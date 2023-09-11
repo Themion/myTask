@@ -1,10 +1,19 @@
-import { MemberListDTO, User, groups, members, users } from '@my-task/common';
+import {
+  MemberListDTO,
+  PageInfo,
+  User,
+  groups,
+  members,
+  mergeObjects,
+  users,
+} from '@my-task/common';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { and, asc, desc, eq, sql } from 'drizzle-orm';
 import { DatabaseService } from '~/modules/database/database.service';
 
-type PageInfo = {
-  offset: number;
+const defaultPageInfo: PageInfo = {
+  offset: 1,
+  limit: 30,
 };
 
 @Injectable()
@@ -76,8 +85,7 @@ export class MemberService {
     groupId: number,
     options: Partial<PageInfo> = {},
   ): Promise<MemberListDTO> {
-    const limit = 30;
-    const offset = options.offset ?? 1;
+    const { offset, limit } = mergeObjects(options, defaultPageInfo) as PageInfo;
 
     const memberArrayQuery = this.db
       .select({
