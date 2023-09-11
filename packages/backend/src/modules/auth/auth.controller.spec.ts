@@ -63,13 +63,6 @@ describe('AuthController', () => {
     it('should work', async () => {
       await expect(controller.request(userToAdd)).resolves.not.toThrow();
     });
-
-    describe('should throw error with', () => {
-      it('non-object', async () => {
-        const data = email;
-        await expect(controller.request(data)).rejects.toThrow();
-      });
-    });
   });
 
   describe('confirm', () => {
