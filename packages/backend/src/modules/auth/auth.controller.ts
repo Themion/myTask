@@ -14,11 +14,11 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '~/constants';
+import { ParsedBody } from '~/decorators';
 import { JwtGuard } from '~/guard';
 import { AuthService } from '~/modules/auth/auth.service';
 import { CookieService } from '~/modules/auth/cookie.service';
 import { EmailService } from '~/modules/email/email.service';
-import { ZodParsePipe } from '~/pipe';
 import { CookieSettings, Env } from '~/types';
 
 @Controller('auth')
@@ -49,7 +49,7 @@ export class AuthController {
   }
 
   @Post('request')
-  async request(@Body(new ZodParsePipe(requestAuthDTOSchema)) body: RequestAuthDTO) {
+  async request(@ParsedBody(requestAuthDTOSchema) body: RequestAuthDTO) {
     const uuid = await this.authService.request(body);
     // E-Mail 송신은 동기적으로 진행할 필요 없음
     this.sendEmail(body.email, uuid);
