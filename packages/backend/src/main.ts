@@ -9,8 +9,9 @@ import { Env } from '~/types';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const { HOST, BE_PORT, FE_PORT } = getConfig(app);
-
   const corsOptions = { origin: `http://${HOST}:${FE_PORT}`, credentials: true };
+
+  app.useGlobalFilters(new CauseExceptionFilter());
   app.enableCors(corsOptions);
   app.use(cookieParser());
   await app.listen(BE_PORT);
@@ -18,7 +19,6 @@ async function bootstrap() {
 
 function getConfig(app: INestApplication) {
   const configService = app.get(ConfigService<Env>);
-  app.useGlobalFilters(new CauseExceptionFilter());
   return configService.getOrThrow<Env['NETWORK']>('NETWORK');
 }
 
