@@ -19,6 +19,24 @@ services:
     expose:
       - ${POSTGRES_PORT}
 
+  cache:
+    build:
+      dockerfile: packages/cache/Dockerfile
+      context: .
+      args:
+        REDIS_USER: ${REDIS_USER}
+        REDIS_PASS: ${REDIS_PASS}
+        REDIS_PORT: ${REDIS_PORT}
+    restart: always
+    networks:
+      - app
+    env_file:
+      - .env
+    ports:
+      - ${REDIS_PORT}:6379
+    expose:
+      - ${REDIS_PORT}
+
   backend:
     build:
       dockerfile: packages/backend/Dockerfile
@@ -34,6 +52,7 @@ services:
       - ${BE_PORT}
     depends_on:
       - database
+      - cache
 
   frontend:
     build:
