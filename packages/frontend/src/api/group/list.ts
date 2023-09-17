@@ -1,14 +1,16 @@
-import { GroupListDTO } from '@my-task/common';
+import { GroupListDTO, mergeObjects } from '@my-task/common';
 import { useQuery } from '@tanstack/react-query';
 import { GroupListParam, QueryOptions } from '~/types';
+import { objectToQueryString } from '~/utils';
 import _fetch from '../core';
 
 const fetchGroupList = (options: QueryOptions<GroupListDTO>, param: Partial<GroupListParam>) =>
   useQuery({
     queryKey: ['fetchGroupList', (param.page ?? 1).toString()],
     queryFn: () => {
-      const paramArr = Object.entries(param).map(([key, value]) => `${key}=${value}`);
-      return _fetch(`/group?${paramArr.join('&')}`);
+      const queryObject = mergeObjects(param, { page: 1 }) as GroupListParam;
+      const queryString = objectToQueryString(queryObject);
+      return _fetch(`/group${queryString}`);
     },
     ...options,
   });
