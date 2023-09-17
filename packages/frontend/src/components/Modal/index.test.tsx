@@ -8,13 +8,11 @@ describe('Modal', () => {
 
   let buttonText: string;
   let contentText: string;
-  let outsideText: string;
 
   let modalRef: RefObject<HTMLDialogElement>;
 
   let content: HTMLElement;
   let button: HTMLElement;
-  let outside: HTMLElement;
   let showModalFunc: ReturnType<typeof vi.fn>;
   let closeFunc: ReturnType<typeof vi.fn>;
 
@@ -27,7 +25,6 @@ describe('Modal', () => {
 
   beforeEach(() => {
     buttonText = 'button';
-    outsideText = 'outside';
     contentText = 'content';
     modalRef = createRef();
   });
@@ -43,7 +40,6 @@ describe('Modal', () => {
 
       screen = render(
         <div style={{ width: '1920px', height: '1080px' }}>
-          <span>{outsideText}</span>
           <span onClick={onClick}>{buttonText}</span>
           <Modal ref={modalRef}>
             <div>{contentText}</div>
@@ -53,7 +49,6 @@ describe('Modal', () => {
 
       button = screen.getByText(buttonText);
       content = screen.getByText(contentText);
-      outside = screen.getByText(outsideText);
     });
 
     it('should render', () => {
@@ -63,6 +58,14 @@ describe('Modal', () => {
     it('should open modal', () => {
       fireEvent.click(button);
       expect(showModalFunc).toBeCalled();
+    });
+
+    describe('should not close modal when', () => {
+      it('modal content', () => {
+        fireEvent.click(button);
+        fireEvent.click(content);
+        expect(closeFunc).not.toBeCalled();
+      });
     });
 
     describe('should close modal when', () => {
@@ -94,7 +97,6 @@ describe('Modal', () => {
 
       const nullScreen = render(
         <div style={{ width: '1920px', height: '1080px' }}>
-          <span>{outsideText}</span>
           <span onClick={onClick}>{buttonText}</span>
           <Modal ref={null}>
             <div>{contentText}</div>
@@ -104,7 +106,6 @@ describe('Modal', () => {
 
       button = nullScreen.getByText(buttonText);
       content = nullScreen.getByText(contentText);
-      outside = nullScreen.getByText(outsideText);
       const close = nullScreen.getByText('x');
 
       fireEvent.click(button);

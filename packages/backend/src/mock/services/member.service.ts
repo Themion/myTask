@@ -58,7 +58,7 @@ const mockMemberService = async () => ({
   },
 
   async findIfUserIsMember(groupId: number, email: string) {
-    return this.memberSet.has(getMemberKey(groupId, email));
+    return this.memberSet.has(getMemberKey(groupId, email)) ? 1 : -1;
   },
 
   async findMemberByGroupId(groupId: number, options: Partial<PageInfo> = {}) {

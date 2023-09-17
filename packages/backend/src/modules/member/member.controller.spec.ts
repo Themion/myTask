@@ -110,5 +110,15 @@ describe('MemberController', () => {
         expect(result.count).toEqual(41);
       });
     });
+
+    describe('should throw error when', () => {
+      it('invalid email', async () => {
+        await expect(controller.findMemberByGroupId(invalidEmail, groupId, {})).rejects.toThrow();
+      });
+
+      it('invalid group id', async () => {
+        await expect(controller.findMemberByGroupId(validEmail, -1, {})).rejects.toThrow();
+      });
+    });
   });
 });
