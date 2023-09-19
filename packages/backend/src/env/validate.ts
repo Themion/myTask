@@ -3,13 +3,13 @@ import { ZodIssueCode, z } from 'zod';
 
 const envSchema = z
   .object({
-    HOST: HOST_RULE,
-
+    DB_HOST: HOST_RULE,
     DB_PORT: USER_PORT_RULE,
     DB_USER: STRING_RULE,
     DB_PASSWORD: STRING_RULE,
     DB_DB: STRING_RULE,
 
+    REDIS_HOST: HOST_RULE,
     REDIS_PORT: USER_PORT_RULE,
     REDIS_USER: STRING_RULE,
     REDIS_PASS: STRING_RULE,
@@ -26,6 +26,7 @@ const envSchema = z
     EMAIL_SENDER: EMAIL_RULE,
 
     FE_PORT: USER_PORT_RULE,
+    FE_HOST: HOST_RULE,
   })
   .refine(({ BE_PORT, DB_PORT, FE_PORT, EMAIL_PORT, REDIS_PORT }) => {
     const portArr = [BE_PORT, DB_PORT, FE_PORT, EMAIL_PORT, REDIS_PORT];
@@ -36,7 +37,7 @@ const envSchema = z
     (env) =>
       ({
         DB: {
-          host: env.HOST,
+          host: env.DB_HOST,
           port: env.DB_PORT,
           database: env.DB_DB,
           user: env.DB_USER,
@@ -54,9 +55,8 @@ const envSchema = z
           SENDER: env.EMAIL_SENDER,
         },
         NETWORK: {
-          HOST: env.HOST,
+          FE_URL: `${env.FE_HOST}:${env.FE_PORT}`,
           BE_PORT: env.BE_PORT,
-          FE_PORT: env.FE_PORT,
         },
         JWT: {
           publicKey: env.JWT_PUBLIC_KEY,
@@ -64,7 +64,7 @@ const envSchema = z
         },
         REDIS: {
           socket: {
-            host: env.HOST,
+            host: env.REDIS_HOST,
             port: env.REDIS_PORT,
           },
           username: env.REDIS_USER,

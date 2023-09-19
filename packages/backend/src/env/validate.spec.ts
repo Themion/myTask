@@ -6,13 +6,13 @@ describe('env validation', () => {
 
   beforeEach(() => {
     testEnv = {
-      HOST: 'localhost',
-
+      DB_HOST: 'localhost',
       DB_PORT: '5432',
       DB_USER: 'a',
       DB_PASSWORD: 'a',
       DB_DB: 'a',
 
+      REDIS_HOST: 'localhost',
       REDIS_PORT: '6379',
       REDIS_USER: 'aa',
       REDIS_PASS: 'a',
@@ -28,6 +28,7 @@ describe('env validation', () => {
       EMAIL_PASS: 'a',
       EMAIL_SENDER: 'test@example.com',
 
+      FE_HOST: 'localhost',
       FE_PORT: '5173',
     };
   });
