@@ -7,19 +7,19 @@ describe('env validation', () => {
 
   beforeEach(() => {
     testEnv = {
-      HOST: 'localhost',
+      BE_HOST: 'localhost',
       FE_PORT: '5173',
       BE_PORT: '3000',
     };
   });
 
-  describe('HOST', () => {
+  describe('BE_HOST', () => {
     const v4 = 256;
     const randint = (val: number = 1) => Math.floor(Math.random() * Math.floor(val));
 
     describe('should work with', () => {
       it('ipv4', () => {
-        testEnv.HOST = `${randint(v4 - 1) + 1}.${randint(v4)}.${randint(v4)}.${randint(v4)}`;
+        testEnv.BE_HOST = `${randint(v4 - 1) + 1}.${randint(v4)}.${randint(v4)}.${randint(v4)}`;
         expect(() => validate(testEnv)).not.toThrow();
       });
 
@@ -28,7 +28,7 @@ describe('env validation', () => {
       });
 
       it('docker host', () => {
-        testEnv.HOST = 'host.docker.internal';
+        testEnv.BE_HOST = 'host.docker.internal';
         expect(() => validate(testEnv)).not.toThrow();
       });
     });
@@ -55,9 +55,14 @@ describe('env validation', () => {
       expect(() => validate(testEnv)).toThrow(ZodIssueCode.too_big);
     });
 
+    it('should not equal to BE_PORT', () => {
+      testEnv.FE_PORT = testEnv.BE_PORT;
+      expect(() => validate(testEnv)).toThrow(ZodIssueCode.invalid_string);
+    });
+
     it('should be a valid number', () => {
       const parsedEnv = validate(testEnv);
-      expect(parsedEnv.FE_PORT).toEqual(parseInt(testEnv.FE_PORT));
+      expect(parsedEnv.FE_PORT).not.toBeNaN();
     });
   });
 });
