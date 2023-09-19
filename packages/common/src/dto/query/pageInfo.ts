@@ -1,10 +1,11 @@
 import { z } from 'zod';
+import { NUMERIC_STRING_RULE } from '../../utils';
 
 const getPageInfoSchema = (limit: number = 10) =>
   z
     .object({
-      page: z.number().min(1).default(1),
-      limit: z.number().min(1).default(limit),
+      page: NUMERIC_STRING_RULE.default('1'),
+      limit: NUMERIC_STRING_RULE.default(`${limit}`),
     })
     .transform((data) => ({
       offset: data.page,
