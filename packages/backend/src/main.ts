@@ -8,8 +8,8 @@ import { Env } from '~/types';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const { HOST, BE_PORT, FE_PORT } = getConfig(app);
-  const corsOptions = { origin: `http://${HOST}:${FE_PORT}`, credentials: true };
+  const { FE_URL, BE_PORT } = getConfig(app);
+  const corsOptions = { origin: `http://${FE_URL}`, credentials: true };
 
   app.useGlobalFilters(new CauseExceptionFilter());
   app.enableCors(corsOptions);

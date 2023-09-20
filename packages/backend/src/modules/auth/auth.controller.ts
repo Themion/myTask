@@ -26,7 +26,7 @@ import { CookieSettings, Env } from '~/types';
 
 @Controller('auth')
 export class AuthController {
-  private readonly FE_ORIGIN: string;
+  private readonly FE_URL: string;
 
   constructor(
     private readonly authService: AuthService,
@@ -34,15 +34,15 @@ export class AuthController {
     private readonly emailService: EmailService,
     configService: ConfigService<Env>,
   ) {
-    const { HOST, FE_PORT } = configService.getOrThrow<Env['NETWORK']>('NETWORK');
-    this.FE_ORIGIN = `http://${HOST}:${FE_PORT}`;
+    const { FE_URL } = configService.getOrThrow<Env['NETWORK']>('NETWORK');
+    this.FE_URL = `http://${FE_URL}`;
   }
 
   private sendEmail(receiver: string, uuid: string) {
     return this.emailService.sendEmail(
       receiver,
       '[MyTask] Please verify your E-Mail!',
-      `Click <a href="${this.FE_ORIGIN}/auth/${uuid}">HERE</a> to verify your E-Mail!`,
+      `Click <a href="${this.FE_URL}/auth/${uuid}">HERE</a> to verify your E-Mail!`,
     );
   }
 

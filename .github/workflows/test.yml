@@ -76,8 +76,7 @@ jobs:
       - name: Test Backend
         run: yarn backend test:migrate
         env:
-          HOST: ${{ secrets.HOST }}
-
+          DB_HOST: ${{ secrets.HOST }}
           DB_PORT: 5432
           DB_USER: ${{ secrets.POSTGRES_USER }}
           DB_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
@@ -90,11 +89,13 @@ jobs:
           EMAIL_SENDER: ${{secrets.EMAIL_SENDER}}
           EMAIL_TEST_RECEIVER: ${{secrets.EMAIL_TEST_RECEIVER}}
 
+          REDIS_HOST: ${{ secrets.HOST }}
           REDIS_PORT: 6379
           REDIS_USER: default
           REDIS_PASS: 'redis_pass'
 
           BE_PORT: ${{ vars.BE_PORT }}
+          FE_HOST: ${{ secrets.HOST }}
           FE_PORT: ${{ vars.FE_PORT }}
 
           JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
