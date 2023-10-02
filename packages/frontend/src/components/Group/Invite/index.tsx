@@ -9,16 +9,18 @@ type Props = {
 const GroupInvite = (props: Props) => {
   const { groupId } = props;
   const modalRef = useRef<HTMLDialogElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
   const mutation = inviteMember({});
 
   const isDisabled = mutation.isLoading;
 
   const getElements = () => {
     const modal = modalRef.current;
-    const input = inputRef.current;
+    const emailInput = emailRef.current;
+    const nameInput = nameRef.current;
 
-    return { modal, input };
+    return { modal, emailInput, nameInput };
   };
 
   const onClick: MouseEventHandler = () => {
@@ -31,11 +33,12 @@ const GroupInvite = (props: Props) => {
   const onSubmit: FormEventHandler = (e) => {
     e.preventDefault();
 
-    const { modal, input } = getElements();
-    if (!input) return;
+    const { modal, emailInput, nameInput } = getElements();
+    if (!emailInput || !nameInput) return;
 
-    const email = input.value;
-    mutation.mutate({ groupId, email });
+    const email = emailInput.value;
+    const name = nameInput.value;
+    mutation.mutate({ groupId, name, email });
     if (modal) modal.close();
   };
 
@@ -46,8 +49,14 @@ const GroupInvite = (props: Props) => {
       </button>
       <Modal title="Invite Member" ref={modalRef}>
         <form onSubmit={onSubmit}>
-          <label htmlFor="member-email">User E-Mail: </label>
-          <input id="member-email" type="email" ref={inputRef} required aria-required />
+          <div>
+            <label htmlFor="member-email">User E-Mail: </label>
+            <input id="member-email" type="email" ref={emailRef} required aria-required />
+          </div>
+          <div>
+            <label htmlFor="member-email">User Name: </label>
+            <input id="member-name" type="text" ref={nameRef} required aria-required />
+          </div>
           <button type="submit" disabled={isDisabled} aria-disabled={isDisabled}>
             Invite
           </button>

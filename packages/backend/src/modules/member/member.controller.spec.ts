@@ -9,6 +9,7 @@ import { MemberController } from './member.controller';
 
 describe('MemberController', () => {
   let controller: MemberController;
+  let name: string;
 
   beforeEach(async () => {
     const [memberService, emailService] = await Promise.all([
@@ -18,6 +19,7 @@ describe('MemberController', () => {
     const module = await mockMemberModule({ memberService, emailService });
 
     controller = module.get<MemberController>(MemberController);
+    name = 'member';
   });
 
   it('should be defined', () => {
@@ -32,7 +34,7 @@ describe('MemberController', () => {
     });
 
     it('should work', async () => {
-      const result = await controller.invite({ groupId, email: validEmail });
+      const result = await controller.invite({ groupId, name, email: validEmail });
       expect(result).toBeDefined();
       expect(result).toHaveProperty('groupId');
       expect(result.groupId).toEqual(groupId);
@@ -40,12 +42,12 @@ describe('MemberController', () => {
 
     describe('should throw with', () => {
       it('invalid email', async () => {
-        await expect(controller.invite({ groupId, email: invalidEmail })).rejects.toThrow();
+        await expect(controller.invite({ groupId, name, email: invalidEmail })).rejects.toThrow();
       });
 
       it('duplicate request', async () => {
-        await controller.invite({ groupId, email: validEmail });
-        await expect(controller.invite({ groupId, email: validEmail })).rejects.toThrow();
+        await controller.invite({ groupId, name, email: validEmail });
+        await expect(controller.invite({ groupId, name, email: validEmail })).rejects.toThrow();
       });
     });
   });
@@ -55,7 +57,7 @@ describe('MemberController', () => {
 
     beforeEach(async () => {
       groupId = Math.floor(Math.random() * 10);
-      await controller.invite({ groupId, email: validEmail });
+      await controller.invite({ groupId, name, email: validEmail });
     });
 
     it('should work', async () => {
@@ -87,7 +89,7 @@ describe('MemberController', () => {
           .fill(0)
           .map((_, i) => `test${i}@email.com`)
           .concat(validEmail)
-          .map((email) => controller.invite({ groupId, email })),
+          .map((email) => controller.invite({ groupId, name, email })),
       );
     });
 

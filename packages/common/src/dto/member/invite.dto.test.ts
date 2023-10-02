@@ -8,7 +8,7 @@ describe('inviteMemberDTOSchema', () => {
   let dto: JsonObject;
 
   beforeEach(() => {
-    dto = { groupId: 1, email: 'test@email.com' };
+    dto = { groupId: 1, name: 'name', email: 'test@email.com' };
   });
 
   it('should work', () => {
@@ -26,6 +26,18 @@ describe('inviteMemberDTOSchema', () => {
 
       it('numeric string', () => {
         dto.groupId = '1';
+        expect(() => inviteMemberDTOSchema.parse(dto)).throw(ZodIssueCode.invalid_type);
+      });
+    });
+
+    describe('name', () => {
+      it('no name field', () => {
+        delete dto.name;
+        expect(() => inviteMemberDTOSchema.parse(dto)).throw(ZodIssueCode.invalid_type);
+      });
+
+      it('numeric name value', () => {
+        dto.name = 123;
         expect(() => inviteMemberDTOSchema.parse(dto)).throw(ZodIssueCode.invalid_type);
       });
     });

@@ -11,6 +11,7 @@ describe('GroupInvite', () => {
   let client: QueryClient;
   let addButton: HTMLElement | null;
   let emailInput: HTMLElement | null;
+  let nameInput: HTMLElement | null;
   let submitButton: HTMLElement | null;
 
   beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
@@ -30,6 +31,7 @@ describe('GroupInvite', () => {
 
     addButton = screen.queryByText('Invite New Member');
     emailInput = screen.queryByLabelText('User E-Mail:');
+    nameInput = screen.queryByLabelText('User Name:');
     submitButton = screen.queryByText('Invite');
   });
 
@@ -41,6 +43,7 @@ describe('GroupInvite', () => {
   it('should have expected elements', () => {
     expect(addButton).not.toBeNull();
     expect(emailInput).not.toBeNull();
+    expect(nameInput).not.toBeNull();
     expect(submitButton).not.toBeNull();
   });
 
@@ -55,6 +58,7 @@ describe('GroupInvite', () => {
   describe('event', () => {
     it('should fire event with email', async () => {
       fireEvent.change(emailInput as HTMLInputElement, 'test@email.com');
+      fireEvent.change(nameInput as HTMLInputElement, 'member');
       fireEvent.click(submitButton as HTMLButtonElement);
       // 서버 실행 후 테스트한 경우 제대로 작동함
       // expect(client.isMutating()).toEqual(1);
@@ -63,6 +67,19 @@ describe('GroupInvite', () => {
 
     it('should not fire event with non-email', async () => {
       fireEvent.change(emailInput as HTMLInputElement, 'invalid@email');
+      fireEvent.change(nameInput as HTMLInputElement, 'member');
+      fireEvent.click(submitButton as HTMLButtonElement);
+      expect(client.isMutating()).toEqual(0);
+    });
+
+    it('should not fire event with empty email field', async () => {
+      fireEvent.change(nameInput as HTMLInputElement, 'member');
+      fireEvent.click(submitButton as HTMLButtonElement);
+      expect(client.isMutating()).toEqual(0);
+    });
+
+    it('should not fire event with empty name field', async () => {
+      fireEvent.change(emailInput as HTMLInputElement, 'test@email.com');
       fireEvent.click(submitButton as HTMLButtonElement);
       expect(client.isMutating()).toEqual(0);
     });
