@@ -31,6 +31,6 @@
     "test": "mocha './src/**/*.test.ts' -r ts-node/register"
   },
   "dependencies": {
-    "zod": "^3.21.4"
+    "zod": "^3.22.3"
   }
 }
